@@ -15,6 +15,7 @@ async function request<T = any>(
       ...options,
       headers: {
         ...options?.headers,
+        'Content-Type': 'application/json',
         'Accept-Language': currentLocale,
         Authorization: `Bearer ${TOKEN}`,
       },
@@ -22,7 +23,9 @@ async function request<T = any>(
 
     if (response.status === NO_CONTENT) return null as any
     const payload = await response.json()
-
+    if (response.ok) {
+      return payload
+    }
     if (response.status === UNAUTHORIZED) {
       const refreshToken = Cookies.get('refresh_token')
       if (!refreshToken) {

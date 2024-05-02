@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .loader {
+    width: 5em;
+    height: 5em;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+  }
+
+  .loader::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+  }
+}
