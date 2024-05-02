@@ -1,18 +1,31 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        gradient: "url('../../public/images/bg-image-authenticate.png')",
+      },
+      keyframes: {
+        spin: {
+          '0%': {
+            transform: 'rotate(-45deg)',
+          },
+          '50%': {
+            transform: 'rotate(-360deg)',
+            'border-radius': '50%',
+          },
+          '100%': {
+            transform: 'rotate(-45deg)',
+          },
+        },
+      },
+      animation: {
+        spin: 'spin 3s linear infinite',
       },
     },
   },
   plugins: [],
-};
-export default config;
+}
+export default config

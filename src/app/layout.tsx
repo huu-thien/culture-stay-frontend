@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/styles/global.css'
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
+import { Flip, ToastContainer } from 'react-toastify'
+import Head from 'next/head'
+// import FaviconImage from '../../public/images/favicon_travel.png'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,10 +19,26 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <Head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </Head>
       <body className={inter.className}>
         {children}
-        <ToastContainer />
+        <ToastContainer
+          // style={{ fontFamily: 'Lexend', fontSize: '13px', width: `255px` }}
+          transition={Flip}
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html>
   )

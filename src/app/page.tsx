@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic'
 import { Metadata } from 'next'
-import CircularProgress from '@mui/material/CircularProgress'
+import Loading from '@/src/components/Loading/Loading'
 const DynamicHomePage = dynamic(
   () => import('@/src/page-components/Home/Home'),
   {
     ssr: false,
-    loading: () => <CircularProgress />,
+    loading: () => <Loading />,
   }
 )
 

@@ -18,6 +18,11 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
+import { routes } from '@/src/routes'
+import { useRouter } from 'next/navigation'
+import { postLogout } from '@/src/apis/auth'
+import { handleSaveLogout } from '@/src/utils/common'
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -28,9 +33,21 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  const router = useRouter()
+
   const handleLogout = async () => {
-    console.log('Logout')
+    try {
+      const refreshToken = Cookies.get('refresh_token')
+      // await postLogout(refreshToken)
+      handleSaveLogout()
+      router.push(routes.authenticate.generatePath())
+    } catch (error) {
+      toast.error('Đăng xuất thất bại !')
+    }
   }
+  const user = localStorage.getItem('user_login')
+  console.log('user', user)
+
   const userLogin = {
     isHost: true,
     avatarUrl:
@@ -186,7 +203,7 @@ const Header = () => {
                     Tin nhắn
                   </Link>
                 </MenuItem>
-                <Divider light />
+                <Divider />
                 <MenuItem onClick={handleClose}>
                   <Link className="w-full text-cyan-800" href="/help">
                     Trung tâm trợ giúp
@@ -199,7 +216,7 @@ const Header = () => {
                 </MenuItem>
               </Menu>
             )}
-            {true && (
+            {/* {true && (
               <Menu
                 className="rouned-lg"
                 id="account-menu"
@@ -232,7 +249,7 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               </Menu>
-            )}
+            )} */}
           </div>
         </div>
       </div>
