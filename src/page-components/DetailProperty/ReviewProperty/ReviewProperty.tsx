@@ -142,12 +142,12 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
                   >
                     <div className="">
                       <div className="flex items-center gap-4 p-3">
-                        <Link href={routes.guestInfomation.generatePath(1)}>
+                        <Link href={routes.viewProfile.generatePath(1)}>
                           <Avatar src={review.guestAvatarUrl} />
                         </Link>
                         <div className=" w-full flex justify-between">
                           <div>
-                            <Link href={routes.guestInfomation.generatePath(1)}>
+                            <Link href={routes.viewProfile.generatePath(1)}>
                               <p className="text-cyan-700">
                                 {review.guestName}
                               </p>

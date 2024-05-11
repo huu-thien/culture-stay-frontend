@@ -8,10 +8,7 @@ export const routes = {
   detailProperty: {
     generatePath: (id) => `/detail-property/${id}`,
   },
-  hostInfomation: {
-    generatePath: (id) => `/host-infomation/${id}`,
-  },
-  guestInfomation: {
-    generatePath: (id) => `/guest-infomation/${id}`,
+  viewProfile: {
+    generatePath: (id) => `/view-profile/${id}`,
   },
 }

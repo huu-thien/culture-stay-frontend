@@ -26,8 +26,10 @@ export const mergeBusyDates = (reservations: Reservation[]): Date[] => {
   })
   return busyDates
 }
-export const getCurrentDate = (): string => format(new Date(), 'yyyy-MM-dd')
+// export const getCurrentDate = (): string => format(new Date(), 'yyyy-MM-dd')
 export const getNextYearDate = (): string => {
   const nextYear = addYears(new Date(), 1)
   return format(nextYear, 'yyyy-MM-dd')
 }
+
+export const formatDateYYYYMMDD = (date: string | Date) => format(date, 'yyyy-MM-dd')

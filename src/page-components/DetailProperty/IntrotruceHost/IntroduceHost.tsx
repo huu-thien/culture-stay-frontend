@@ -150,7 +150,7 @@ const IntroduceHost = () => {
           </DialogActions>
         </Dialog> */}
         <Button variant="contained" sx={{ height: 50 }}>
-          <Link href={routes.hostInfomation.generatePath(1)}>
+          <Link href={routes.viewProfile.generatePath(1)}>
             Thông tin của chủ nhà
           </Link>
         </Button>
