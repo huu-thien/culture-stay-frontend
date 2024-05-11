@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
-import { getCurrentDate, getNextYearDate, mergeBusyDates } from '@/src/utils/DateBookingHandler'
+import { formatDateYYYYMMDD, getNextYearDate, mergeBusyDates } from '@/src/utils/DateBookingHandler'
 
 // import { getCurrentDate, getNextYearDate } from '@/helpers/GetTime/getTime'
 // import { mergeBusyDates } from '@/hooks/mergeBusyDates'
@@ -31,7 +31,7 @@ const CalendarProperty = ({
 
   const disabledDates = mergeBusyDates(scheduleBooking)
   useEffect(() => {
-    const currentDate = getCurrentDate()
+    const currentDate = formatDateYYYYMMDD(new Date())
     const nextyear = getNextYearDate()
     // getScheduleBookingOfProperty(propertyId, currentDate, nextyear)
   }, [propertyId, dateStart, dateEnd])
