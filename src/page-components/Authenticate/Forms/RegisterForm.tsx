@@ -36,10 +36,14 @@ const RegisterForm = ({ setAuthenticateType }: IRegisterFormProps) => {
       password: values.password,
     }
     try {
-      // const response = await postRegister(registerRequest)
-      // toast.success('Tài khoản đã đã đăng kí thành công')
+      await toast.promise(postRegister(registerRequest), {
+        pending: 'Đang đăng kí tài khoản',
+        success: 'Tài khoản đã đã đăng kí thành công',
+      })
       setAuthenticateType(AuthenticateType.LOGIN)
-    } catch (error) {}
+    } catch ({ title }) {
+      toast.error(title)
+    }
   }
 
   const handleMouseDownPassword = (

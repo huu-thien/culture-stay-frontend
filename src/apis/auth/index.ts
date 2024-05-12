@@ -1,3 +1,4 @@
+import { BACK_END_API_URL } from '@/src/constant'
 import { http } from '@/src/library/http'
 import {
   LoginRequest,
@@ -5,11 +6,11 @@ import {
   RegisterRequest,
 } from '@/src/page-components/Authenticate/Authenticate.type'
 
-const AUTHENTICATE_PATH = process.env.NEXT_PUBLIC_BACKEND_API_URL
+const AUTHENTICATE_PATH = `${BACK_END_API_URL}/api/auth`
 
 export const postLogin = (loginRequest: LoginRequest) => {
   return http.post<{ accessToken; refreshToken; user }>(
-    `${AUTHENTICATE_PATH}/api/auth/login`,
+    `${AUTHENTICATE_PATH}/login`,
     {
       method: 'POST',
       body: JSON.stringify(loginRequest),
@@ -18,7 +19,7 @@ export const postLogin = (loginRequest: LoginRequest) => {
 }
 
 export const postRegister = (registerRequest: RegisterRequest) => {
-  return http.post(`${AUTHENTICATE_PATH}/api/auth/register`, {
+  return http.post(`${AUTHENTICATE_PATH}/register`, {
     method: 'POST',
     body: JSON.stringify(registerRequest),
   })
@@ -26,7 +27,7 @@ export const postRegister = (registerRequest: RegisterRequest) => {
 
 export const postLoginGoogle = (loginGoggleRequest) => {
   return http.post<{ accessToken; refreshToken; user }>(
-    `${AUTHENTICATE_PATH}/api/auth/google-login?accessToken=${loginGoggleRequest}`,
+    `${AUTHENTICATE_PATH}/google-login?accessToken=${loginGoggleRequest}`,
     {
       method: 'POST',
     }
@@ -35,7 +36,7 @@ export const postLoginGoogle = (loginGoggleRequest) => {
 
 export const postLogout = (logoutRequest) => {
   return http.post(
-    `${AUTHENTICATE_PATH}/api/auth/revoke-token?refreshToken=${logoutRequest}`,
+    `${AUTHENTICATE_PATH}/revoke-token?refreshToken=${logoutRequest}`,
     {
       method: 'POST',
     }

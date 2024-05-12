@@ -6,7 +6,6 @@ export const handleTrim = (value: string) => {
   return value
 }
 export const handleSaveLogin = ({ accessToken, refreshToken, user }) => {
-  toast.success('Đăng nhập thành công !')
   Cookies.set('jwt_token', accessToken)
   Cookies.set('refresh_token', refreshToken)
   localStorage.setItem('user_login', JSON.stringify(user))
@@ -15,5 +14,19 @@ export const handleSaveLogout = () => {
   Cookies.remove('jwt_token')
   Cookies.remove('refresh_token')
   localStorage.removeItem('user_login')
-  toast.success('Đăng xuất thành công !')
+}
+
+export const getFilterParamsFromObject = (obj: any) => {
+  const queryParams = []
+  for (const key in obj) {
+    if (Array.isArray(obj[key]) && obj[key]) {
+      for (let i = 0; i < obj[key].length; i++) {
+        queryParams.push(`Type=${obj[key][i]}`)
+      }
+    }
+    if (obj[key] && !Array.isArray(obj[key])) {
+      queryParams.push(`${key}=${obj[key]}`)
+    }
+  }
+  return queryParams.join('&')
 }

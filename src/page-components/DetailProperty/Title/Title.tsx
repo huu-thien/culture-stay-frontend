@@ -7,7 +7,13 @@ import { Breadcrumbs } from '@mui/material'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
 
-const Title = () => {
+interface ITitleProps {
+  title: string
+  address: string
+  city: string
+}
+
+const Title = ({ title, address, city }: ITitleProps) => {
   return (
     <>
       <Breadcrumbs aria-label="breadcrumb">
@@ -22,15 +28,11 @@ const Title = () => {
       <div className="flex justify-between items-start py-4">
         <div className="flex-auto pr-12">
           <h1 className="font-bold text-2xl  text-cyan-800 line-clamp-1">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Assumenda,
-            magnam officia? Asperiores est repellendus expedita blanditiis,
-            veritatis velit excepturi itaque in nostrum! Aliquam, quidem quod.
-            Qui aliquid perferendis quos quidem.
+            {title}
           </h1>
           <p className="text-gray-500 py-3">
             <PlaceIcon sx={{ color: '#c92327' }} />
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Assumenda
-            - Da nang
+            {address} - {city}
           </p>
         </div>
         <div className="flex min-w-[200px]">

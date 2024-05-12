@@ -15,7 +15,7 @@ const Attachments = () => {
         rowHeight={300}
       >
         {itemData.map((item, index) => (
-          <Gallery>
+          <Gallery key={index}>
             <Item
               original={item.img as string}
               thumbnail={item.img as string}

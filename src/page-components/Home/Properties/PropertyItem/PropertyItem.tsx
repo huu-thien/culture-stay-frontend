@@ -13,36 +13,34 @@ import { IconButton } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { routes } from '@/src/routes'
+import { useState } from 'react'
+import { IPropertyImage } from '@/src/page-components/Home/Properties/Properties.type'
+import { toast } from 'react-toastify'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
-const images = [
-  {
-    label: 'San Francisco – Oakland Bay Bridge, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-  },
-  {
-    label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-]
+interface IPropertyItemProps {
+  propertyId: number
+  title: string
+  propertyImages: IPropertyImage[]
+  numberOfReviews: number
+  rating: number
+  isFavorite: boolean
+}
 
-const PropertyItem = () => {
+const PropertyItem = ({
+  propertyId,
+  title,
+  propertyImages,
+  numberOfReviews,
+  rating,
+  isFavorite,
+}: IPropertyItemProps) => {
   const theme = useTheme()
   const [activeStep, setActiveStep] = React.useState(0)
-  const maxSteps = images.length
+  const maxSteps = propertyImages.length
+
+  const [showFavorite, setShowFavorite] = useState(isFavorite)
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -56,7 +54,42 @@ const PropertyItem = () => {
     setActiveStep(step)
   }
 
-  const showFavorite = true
+  // add wish list
+  const handleAddWishlistProperty = async (propertyId: number) => {
+    toast.success('Thêm vào wishist thành công !')
+    // try {
+    //   const response = await postWishlistProperty(propertyId);
+    //   if (response && response.status === 200) {
+    //     toast.success('Thêm vào wishist thành công !');
+    //     setShowFavorite(!showFavorite);
+    //   }
+    // } catch (err) {
+    //   if (err.response.status === 400) {
+    //     dispatch(saveLogout());
+    //     toast.error('Đăng nhập để thêm wishlist');
+    //   }
+    //   console.log(err);
+    // }
+  }
+  // Remove wish list
+  const handleRemoveWishlistProperty = async (propertyId: number) => {
+    toast.success('Xóa wishist thành công !')
+    // try {
+    //   const response = await deleteWishlistProperty(propertyId);
+    //   if (response && response.status === 200) {
+    //     toast.success('Xóa wishist thành công !');
+    //     setShowFavorite(!showFavorite);
+    //     console.log(response);
+    //   }
+    // } catch (err) {
+    //   if (err.response.status === 400) {
+    //     dispatch(saveLogout());
+    //     toast.error('Đăng nhập để xóa wishlist');
+    //   }
+    //   console.log(err);
+    // }
+  }
+
   return (
     <div className="shadow-md p-2 rounded-lg mx-auto">
       <Box sx={{ maxWidth: 350, flexGrow: 1 }}>
@@ -66,8 +99,8 @@ const PropertyItem = () => {
           onChangeIndex={handleStepChange}
           enableMouseEvents
         >
-          {images.map((step, index) => (
-            <div key={step.label}>
+          {propertyImages.map((step, index) => (
+            <div key={`${step.url}-${index}`}>
               {Math.abs(activeStep - index) <= 2 ? (
                 <Box
                   component="img"
@@ -78,8 +111,8 @@ const PropertyItem = () => {
                     overflow: 'hidden',
                     width: '100%',
                   }}
-                  src={step.imgPath}
-                  alt={step.label}
+                  src={step.url}
+                  alt="Img"
                 />
               ) : null}
             </div>
@@ -110,23 +143,20 @@ const PropertyItem = () => {
         />
         <div className="p-4">
           <div className="flex justify-between">
-            <Link href={routes.detailProperty.generatePath(1)}>
+            <Link href={routes.detailProperty.generatePath(propertyId)}>
               <h2 className="text-md text-[#3c3834] font-semibold hover:text-cyan-800 line-clamp-2 h-[50px] pr-6">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s
+                {title}
               </h2>
             </Link>
             <span className="flex">
-              <StarIcon sx={{ mr: 1, color: '#feb207' }} />5
-              {/* {rating.toFixed(2)} */}
+              <StarIcon sx={{ mr: 1, color: '#feb207' }} />
+              {rating.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between py-3">
             <p>
               <Link href="/review" className="text-cyan-700">
-                {/* Review ({numberOfReviews}) */}
-                Review (5)
+                Review ({numberOfReviews})
               </Link>
             </p>
           </div>
@@ -135,14 +165,14 @@ const PropertyItem = () => {
               {showFavorite ? (
                 <IconButton
                   aria-label="add-wishlist"
-                  // onClick={() => handleRemoveWishlistProperty(id)}
+                  onClick={() => handleRemoveWishlistProperty(propertyId)}
                 >
                   <FavoriteIcon sx={{ color: '#c92327' }} />
                 </IconButton>
               ) : (
                 <IconButton
                   aria-label="add-wishlist"
-                  // onClick={() => handleAddWishlistProperty(id)}
+                  onClick={() => handleAddWishlistProperty(propertyId)}
                 >
                   <FavoriteBorderIcon sx={{ color: '#257b9a' }} />
                 </IconButton>
