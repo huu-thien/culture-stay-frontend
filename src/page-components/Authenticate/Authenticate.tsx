@@ -16,13 +16,13 @@ const Authenticate = () => {
   const [authenticatetype, setAuthenticateType] = useState<AuthenticateType>(
     AuthenticateType.LOGIN
   )
-  const router = useRouter()
-  useEffect(() => {
-    const token = Cookies.get('jwt_token')
-    if (token) {
-      router.push(routes.home.generatePath())
-    }
-  }, [])
+  // const router = useRouter()
+  // useEffect(() => {
+  //   const token = Cookies.get('jwt_token')
+  //   if (token) {
+  //     router.push(routes.home.generatePath())
+  //   }
+  // }, [])
   return (
     <div className="px-5 md:px-10 pb-5 md:pb-0 bg-gradient bg-no-repeat">
       <div className="mx-auto w-full max-w-7xl h-screen">

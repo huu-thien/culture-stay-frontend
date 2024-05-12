@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation'
 import { routes } from '@/src/routes'
 import { toast } from 'react-toastify'
 import { handleSaveLogin } from '@/src/utils/common'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 // import { Link, useNavigate } from 'react-router-dom';
 // import ButtonLoginGoogle from '@/components/Authenticate/ButtonLoginGoogle';
 // import { initialValues, LoginSchema } from '@/helpers/AuthenticateValidate/LoginValidate';
@@ -57,17 +58,20 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
       identifier: values.username,
       password: values.password,
     }
-    setDisableButtonLogin(true)
+    // setDisableButtonLogin(true)
     try {
-      const { accessToken, refreshToken, user } = await postLogin(loginRequest)
-      handleSaveLogin({ accessToken, refreshToken, user })
-      router.push(routes.home.generatePath())
-    } catch (error) {
-      toast.error(
-        'Đăng nhập thất bại ! Vui lòng kiểm tra lại thông tin đăng nhập !'
+      const { accessToken, refreshToken, user } = await toast.promise(
+        postLogin(loginRequest),
+        {
+          pending: TOAST_MESSAGE.login.pending,
+          success: TOAST_MESSAGE.login.success,
+          error: TOAST_MESSAGE.login.error,
+        }
       )
+    } catch (error) {
+      toast.error(TOAST_MESSAGE.login.error)
     } finally {
-      setDisableButtonLogin(false)
+      // setDisableButtonLogin(false)
     }
   }
 

@@ -46,7 +46,7 @@ const Header = () => {
     }
   }
   const user = localStorage.getItem('user_login')
-  console.log('user', user)
+  // console.log('user', user)
 
   const userLogin = {
     isHost: true,

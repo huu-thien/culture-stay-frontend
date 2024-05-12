@@ -23,6 +23,8 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { routes } from '@/src/routes'
+import { getPropertyReview } from '@/src/apis/detail-property'
+import { IReviewProperty } from '@/src/page-components/DetailProperty/ReviewProperty/ReviewProperty.type'
 // import { formatDateTime } from '@/helpers/FormatDateTime/formatDateTime';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '@/store';
@@ -40,32 +42,14 @@ const style = {
   p: 4,
 }
 interface PropsType {
-  propertyId: number
+  propertyId: string
   updateReview?: number
 }
 const ReviewProperty = ({ propertyId }: PropsType) => {
   // const userIdLogin = useSelector((state: RootState) => state.auth.user?.id) || null;
   // PropertyReview[]
   // GeneralScore
-  const [listReview, setListReview] = useState([
-    {
-      accuracy: 1,
-      averageRating: 1,
-      checkIn: 1,
-      cleanliness: 1,
-      communication: 1,
-      content: 'Thoen dep trai',
-      guestAvatarUrl: 'Thoen dep trai',
-      guestId: 1,
-      guestName: 1,
-      id: 1,
-      location: 1,
-      propertyId: 1,
-      reviewTime: new Date(),
-      value: 1,
-      userId: 1,
-    },
-  ])
+  const [listReview, setListReview] = useState<IReviewProperty[]>([])
   const [generalScore, setGeneralScore] = useState({
     cleanliness: 0,
     accuracy: 0,
@@ -87,10 +71,19 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
 
   useEffect(() => {
     getListReviewProperty(propertyId, currentPage)
-    getGeneralScoreProperty(propertyId)
+    // getGeneralScoreProperty(propertyId)
   }, [propertyId, currentPage])
 
-  const getListReviewProperty = async (id: number, currentPage: number) => {
+  const getListReviewProperty = async (id: string, currentPage: number) => {
+    try {
+      const { data, totalPages } = await getPropertyReview(id, currentPage)
+      setTotalPages(totalPages)
+      setListReview(data)
+      console.log('data', data)
+    } catch ({ title }) {
+      toast.error(title)
+    }
+
     // const response = await getPropertyReview(id, currentPage)
     // if (response && response.status === 200) {
     //   setListReview(response.data.data)
