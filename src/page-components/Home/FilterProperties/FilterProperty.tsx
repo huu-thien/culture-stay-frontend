@@ -101,7 +101,6 @@ const FilterProperty = ({
       TotalPages: filterParams.TotalPages,
     })
   }
-  console.log('filterParams', filterParams)
 
   return (
     <div className="flex gap-4 items-center">
@@ -204,7 +203,7 @@ const FilterProperty = ({
           size="large"
           onClick={() => getListPropertyAsync(filterParams)}
         >
-          Tìm kiếm
+          <p>Tìm kiếm</p>
         </Button>
       </div>
     </div>

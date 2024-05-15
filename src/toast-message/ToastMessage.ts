@@ -9,4 +9,21 @@ export const TOAST_MESSAGE = {
     success: 'Đăng ký thành công',
     error: 'Đăng ký thất bại ! Vui lòng kiểm tra lại thông tin đăng ký !',
   },
+  logout: {
+    pending: 'Đang tiến hành đăng xuất',
+    success: 'Đăng xuất thành công',
+    error: 'Đăng xuất thất bại !',
+  },
+  wishlist: {
+    add: {
+      pending: 'Đang thêm vào danh sách yêu thích...',
+      success: 'Đã thêm vào danh sách yêu thích',
+      error: 'Thêm vào danh sách yêu thích thất bại !',
+    },
+    remove: {
+      pending: 'Đang xóa khỏi danh sách yêu thích...',
+      success: 'Đã xóa khỏi danh sách yêu thích',
+      error: 'Xóa khỏi danh sách yêu thích thất bại !',
+    },
+  },
 }

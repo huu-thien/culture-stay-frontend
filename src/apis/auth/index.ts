@@ -34,9 +34,9 @@ export const postLoginGoogle = (loginGoggleRequest) => {
   )
 }
 
-export const postLogout = (logoutRequest) => {
+export const postLogout = (refreshToken) => {
   return http.post(
-    `${AUTHENTICATE_PATH}/revoke-token?refreshToken=${logoutRequest}`,
+    `${AUTHENTICATE_PATH}/revoke-token?refreshToken=${refreshToken}`,
     {
       method: 'POST',
     }

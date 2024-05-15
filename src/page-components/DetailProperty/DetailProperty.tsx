@@ -19,7 +19,6 @@ import { useParams } from 'next/navigation'
 
 const DetailProperty = () => {
   const { id } = useParams()
-  console.log('id', id)
 
   const [propertyDetail, setPropertyDetail] = useState<IPropertyDetail>()
 
@@ -31,8 +30,6 @@ const DetailProperty = () => {
       toast.error(title)
     }
   }
-
-  console.log('propertyDetail', propertyDetail)
 
   useEffect(() => {
     getInfoProperty()

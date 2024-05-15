@@ -21,8 +21,9 @@ import Link from 'next/link'
 import Cookies from 'js-cookie'
 import { routes } from '@/src/routes'
 import { useRouter } from 'next/navigation'
-import { postLogout } from '@/src/apis/auth'
+// import { postLogout } from '@/src/apis/auth'
 import { handleSaveLogout } from '@/src/utils/common'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -37,23 +38,29 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const refreshToken = Cookies.get('refresh_token')
-      // await postLogout(refreshToken)
-      handleSaveLogout()
-      router.push(routes.authenticate.generatePath())
-    } catch (error) {
-      toast.error('Đăng xuất thất bại !')
-    }
+      // const refreshToken = Cookies.get('refresh_token')
+      // await toast.promise(postLogout(refreshToken), {
+      //   pending: TOAST_MESSAGE.logout.pending,
+      //   success: TOAST_MESSAGE.logout.success,
+      //   error: TOAST_MESSAGE.logout.error,
+      // })
+      const resolveAfter2Sec = new Promise((resolve) =>
+        setTimeout(resolve, 2000)
+      )
+      toast
+        .promise(resolveAfter2Sec, {
+          pending: TOAST_MESSAGE.logout.pending,
+          success: TOAST_MESSAGE.logout.success,
+        })
+        .then(() => {
+          handleSaveLogout()
+          router.push(routes.authenticate.generatePath())
+        })
+    } catch (error) {}
   }
-  const user = localStorage.getItem('user_login')
-  // console.log('user', user)
+  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  console.log('user', userLogin)
 
-  const userLogin = {
-    isHost: true,
-    avatarUrl:
-      'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-    fullName: 'Nguyen Huu Thien',
-  }
   // const buttonStyle = {
   //   backgroundColor: '#ff385c',
   //   '&:hover': {
@@ -128,7 +135,9 @@ const Header = () => {
                     : { width: 30, height: 30 }
                 }
                 src={
-                  true && userLogin.avatarUrl ? `${userLogin?.avatarUrl}` : ``
+                  userLogin && userLogin.avatarUrl
+                    ? `${userLogin?.avatarUrl}`
+                    : ``
                 }
               >
                 {userLogin && userLogin.avatarUrl
@@ -216,7 +225,7 @@ const Header = () => {
                 </MenuItem>
               </Menu>
             )}
-            {/* {true && (
+            {!userLogin && (
               <Menu
                 className="rouned-lg"
                 id="account-menu"
@@ -233,7 +242,10 @@ const Header = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <MenuItem onClick={handleClose}>
-                  <Link className="w-full text-cyan-800" href="/authenticate">
+                  <Link
+                    className="w-full text-cyan-800"
+                    href={routes.authenticate.generatePath()}
+                  >
                     Đăng nhập
                   </Link>
                 </MenuItem>
@@ -249,7 +261,7 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               </Menu>
-            )} */}
+            )}
           </div>
         </div>
       </div>
