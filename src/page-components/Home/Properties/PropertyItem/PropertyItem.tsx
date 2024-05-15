@@ -16,6 +16,8 @@ import { routes } from '@/src/routes'
 import { useState } from 'react'
 import { IPropertyImage } from '@/src/page-components/Home/Properties/Properties.type'
 import { toast } from 'react-toastify'
+import { postAddToWishlists, postRemoveWishlists } from '@/src/apis/wishlist'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -56,38 +58,25 @@ const PropertyItem = ({
 
   // add wish list
   const handleAddWishlistProperty = async (propertyId: number) => {
-    toast.success('Thêm vào wishist thành công !')
-    // try {
-    //   const response = await postWishlistProperty(propertyId);
-    //   if (response && response.status === 200) {
-    //     toast.success('Thêm vào wishist thành công !');
-    //     setShowFavorite(!showFavorite);
-    //   }
-    // } catch (err) {
-    //   if (err.response.status === 400) {
-    //     dispatch(saveLogout());
-    //     toast.error('Đăng nhập để thêm wishlist');
-    //   }
-    //   console.log(err);
-    // }
+    try {
+      await toast.promise(postAddToWishlists(propertyId), {
+        pending: TOAST_MESSAGE.wishlist.add.pending,
+        success: TOAST_MESSAGE.wishlist.add.success,
+        error: TOAST_MESSAGE.wishlist.add.error,
+      })
+      setShowFavorite(!showFavorite)
+    } catch (err) {}
   }
   // Remove wish list
   const handleRemoveWishlistProperty = async (propertyId: number) => {
-    toast.success('Xóa wishist thành công !')
-    // try {
-    //   const response = await deleteWishlistProperty(propertyId);
-    //   if (response && response.status === 200) {
-    //     toast.success('Xóa wishist thành công !');
-    //     setShowFavorite(!showFavorite);
-    //     console.log(response);
-    //   }
-    // } catch (err) {
-    //   if (err.response.status === 400) {
-    //     dispatch(saveLogout());
-    //     toast.error('Đăng nhập để xóa wishlist');
-    //   }
-    //   console.log(err);
-    // }
+    try {
+      await toast.promise(postRemoveWishlists(propertyId), {
+        pending: TOAST_MESSAGE.wishlist.remove.pending,
+        success: TOAST_MESSAGE.wishlist.remove.success,
+        error: TOAST_MESSAGE.wishlist.remove.error,
+      })
+      setShowFavorite(!showFavorite)
+    } catch (err) {}
   }
 
   return (

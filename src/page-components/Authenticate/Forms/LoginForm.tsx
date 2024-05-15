@@ -58,7 +58,7 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
       identifier: values.username,
       password: values.password,
     }
-    // setDisableButtonLogin(true)
+    setDisableButtonLogin(true)
     try {
       const { accessToken, refreshToken, user } = await toast.promise(
         postLogin(loginRequest),
@@ -68,10 +68,12 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
           error: TOAST_MESSAGE.login.error,
         }
       )
+      handleSaveLogin({ accessToken, refreshToken, user })
+      router.push(routes.home.generatePath())
     } catch (error) {
       toast.error(TOAST_MESSAGE.login.error)
     } finally {
-      // setDisableButtonLogin(false)
+      setDisableButtonLogin(false)
     }
   }
 

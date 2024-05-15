@@ -116,7 +116,6 @@ const FormPostReview = ({ propertyId, onUpdateReview }: PropsType) => {
         //     });
         // }
       } catch (err) {
-        console.log(err)
       }
     } else {
       toast.error('Bạn cần nhập đầy đủ thông tin để đánh giá !')

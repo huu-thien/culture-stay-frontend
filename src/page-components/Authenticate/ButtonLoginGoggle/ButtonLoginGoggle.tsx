@@ -6,6 +6,7 @@ import { postLoginGoogle } from '@/src/apis/auth'
 import { handleSaveLogin } from '@/src/utils/common'
 import { useRouter } from 'next/navigation'
 import { routes } from '@/src/routes'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 const ButtonLoginGoogle = () => {
   const router = useRouter()
@@ -22,13 +23,18 @@ const ButtonLoginGoogle = () => {
       //   .catch((err) => console.error(err));
       // console.log(data.access_token);
       try {
-        const { accessToken, refreshToken, user } = await postLoginGoogle(
-          data.access_token
+        const { accessToken, refreshToken, user } = await toast.promise(
+          postLoginGoogle(data.access_token),
+          {
+            pending: TOAST_MESSAGE.login.pending,
+            success: TOAST_MESSAGE.login.success,
+            error: TOAST_MESSAGE.login.error,
+          }
         )
         handleSaveLogin({ accessToken, refreshToken, user })
         router.push(routes.home.generatePath())
       } catch (error) {
-        toast.error('Đăng nhập bằng Google thất bại !')
+        toast.error(TOAST_MESSAGE.login.error)
       }
     },
   })

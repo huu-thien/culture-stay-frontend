@@ -47,7 +47,6 @@ const CalendarProperty = ({
   //       setScheduleBooking(response.data)
   //     }
   //   } catch (err) {
-  //     console.log(err)
   //   }
   // }
   const shouldDisableDate = (date: Date) => {
@@ -97,8 +96,7 @@ const CalendarProperty = ({
       }
     }
   }
-  // console.log(new Date(String(dateStart)).getDate());
-  console.log(dateStart)
+
   return (
     <div className="flex gap-2">
       <LocalizationProvider dateAdapter={AdapterDayjs}>

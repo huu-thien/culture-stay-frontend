@@ -9,6 +9,7 @@ import {
 } from '@/src/page-components/Home/FilterProperties/FilterProperty.type'
 import Properties from '@/src/page-components/Home/Properties/Properties'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
+import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -38,7 +39,7 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <main className="flex flex-col items-center justify-between ">
+      <main className="flex flex-col items-center justify-between">
         <FilterProperty
           filterParams={filterParams}
           setFilterParams={setFilterParams}

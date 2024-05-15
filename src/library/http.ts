@@ -3,13 +3,14 @@ import { routes } from '@/src/routes'
 import Cookies from 'js-cookie'
 
 const CURRENT_LOCALE = Cookies.get('locale') || DEFAULT_LANGUAGE
-const TOKEN = Cookies.get('jwt_token')
 
 async function request<T = any>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
+  const TOKEN = Cookies.get('jwt_token')
   const currentLocale = CURRENT_LOCALE
+
   try {
     const response = await fetch(url, {
       ...options,

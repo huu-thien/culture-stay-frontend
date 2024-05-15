@@ -1,10 +1,6 @@
 'use client'
-// import { PropertyType } from '@/@types/property';
-// import RoomItem from '@/components/HomePage/RoomItem';
-// import { getWishlistProperty } from '@/services/WishlistService/wishlistService';
 import { Breadcrumbs, Pagination } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
-// import { Link, Navigate } from 'react-router-dom';
 import Link from 'next/link'
 import PropertyItem from '@/src/page-components/Home/Properties/PropertyItem/PropertyItem'
 import { routes } from '@/src/routes'
@@ -12,14 +8,18 @@ import { routes } from '@/src/routes'
 import { useRouter } from 'next/navigation'
 import EmptyWishList from '@/src/page-components/WishList/EmptyWishList/EmptyWishList'
 import MainLayout from '@/src/components/layouts/MainLayout'
+import { DEFAULT_PAGE } from '@/src/constant'
+import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
+import { getWishlists } from '@/src/apis/wishlist'
+import Skeleton from '@/src/page-components/Home/Properties/Skeleton/Skeleton'
 
 const WishList = () => {
   const user = true
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(DEFAULT_PAGE)
   const [totalPages, setTotalPages] = useState<number>(0)
   const router = useRouter()
-  // const [wishlistProperty, setWishlistProperty] = useState<PropertyType[]>([]);
-  const [wishlistProperty, setWishlistProperty] = useState([])
+  const [wishlistProperty, setWishlistProperty] = useState<IProperty[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     getPropertyWishlist(currentPage)
@@ -27,14 +27,15 @@ const WishList = () => {
 
   const getPropertyWishlist = async (page: number) => {
     try {
-      // const response = await getWishlistProperty(page);
-      // if (response && response.status === 200) {
-      //   setWishlistProperty(response.data.data);
-      //   setTotalPages(response.data.totalPages);
-      //   console.log('goi api thanh cong', response.data);
-      // }
+      setIsLoading(true)
+      const {
+        data: { data, totalPages },
+      } = await getWishlists(page)
+      setWishlistProperty(data)
+      setTotalPages(totalPages)
     } catch (err) {
-      console.log('err wishlist: ')
+    } finally {
+      setIsLoading(false)
     }
   }
   const handleChangePage = (event: ChangeEvent<unknown>, value: number) => {
@@ -58,41 +59,51 @@ const WishList = () => {
         </Link>
         <p className="text-cyan-600">Danh sách yêu thích</p>
       </Breadcrumbs>
-      {wishlistProperty.length > 0 ? (
-        <>
-          <PropertyItem />
-          <PropertyItem />
-          <PropertyItem />
-          <PropertyItem />
-        </>
-      ) : (
-        // <div>
-        //   <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-6 mt-5'>
-        //     {wishlistProperty.map((property, index) => (
-        //       <PropertyItem
-        //         // key={`perroperty_${index}`}
-        //         // id={property.id}
-        //         // title={property.title}
-        //         // propertyImage={property.propertyImages}
-        //         // pricePerNight={property.pricePerNight}
-        //         // numberOfReviews={property.numberOfReviews}
-        //         // rating={property.rating}
-        //         // isFavorite={property.isFavorite}
-        //       />
-        //     ))}
-        //   </div>
-        //   <div className='py-8 flex items-center'>
-        //     <Pagination
-        //       color='primary'
-        //       count={totalPages}
-        //       page={currentPage}
-        //       onChange={handleChangePage}
-        //       sx={{ width: '100%', mx: 'auto' }}
-        //     />
-        //   </div>
-        // </>
-        <EmptyWishList />
-      )}
+      <>
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 mt-5">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        ) : wishlistProperty.length > 0 ? (
+          <div className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 mt-5">
+              {wishlistProperty.map((property) => (
+                <PropertyItem
+                  key={property.id}
+                  propertyId={property.id}
+                  title={property.title}
+                  propertyImages={property.propertyImages}
+                  numberOfReviews={property.numberOfReviews}
+                  rating={property.rating}
+                  isFavorite={property.isFavorite}
+                />
+              ))}
+            </div>
+            <div className="py-8 flex items-center justify-center">
+              <Pagination
+                color="primary"
+                count={totalPages}
+                page={currentPage}
+                onChange={handleChangePage}
+                sx={{ mx: 'auto' }}
+              />
+            </div>
+          </div>
+        ) : (
+          <EmptyWishList />
+        )}
+      </>
     </MainLayout>
   )
 }

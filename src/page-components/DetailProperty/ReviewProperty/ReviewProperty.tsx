@@ -79,7 +79,6 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
       const { data, totalPages } = await getPropertyReview(id, currentPage)
       setTotalPages(totalPages)
       setListReview(data)
-      console.log('data', data)
     } catch ({ title }) {
       toast.error(title)
     }

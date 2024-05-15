@@ -62,7 +62,6 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
       //   setTotalPages(response.data.totalPages)
       // }
     } catch (error) {
-      console.log(error)
     }
   }
   const handleChangePage = (_event: ChangeEvent<unknown>, value: number) => {
@@ -82,7 +81,6 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
       //   setIsStayed(response.data)
       // }
     } catch (err) {
-      console.log(err)
     }
   }
 
@@ -111,7 +109,6 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
         //     })
         // }
       } catch (error) {
-        console.log(error)
       }
     } else {
       toast.error('Bạn phải nhập đủ thông tin để đánh giá !')
