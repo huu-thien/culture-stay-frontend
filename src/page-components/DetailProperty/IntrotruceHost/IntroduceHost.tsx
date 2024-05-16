@@ -16,22 +16,25 @@ import {
 } from '@mui/material'
 import { routes } from '@/src/routes'
 import Link from 'next/link'
+import { IHostInfo } from '@/src/page-components/DetailProperty/IntrotruceHost/IntroduceHost.type'
+import { getHostInfo } from '@/src/apis/host'
 
-interface Propstype {
+interface IIntroduceHostProps {
   hostId: number
 }
-const IntroduceHost = () => {
-  const [hostInfo, setHostInfo] = useState({
-    address: '',
-    avatarUrl: '',
-    city: '',
-    id: 0,
-    introduction: '',
-    joinedAt: '',
-    name: '',
-    numberOfReviews: 0,
-    rating: 0,
-    userId: 0,
+const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
+  const [hostInfo, setHostInfo] = useState<IHostInfo>({
+    id: 20,
+    userId: 100,
+    name: 'Davion Kerluke',
+    introduction:
+      'In quia quos ea perferendis et impedit nobis hic. Perferendis nihil ducimus. Impedit dolor cupiditate illum sint laborum.',
+    avatarUrl: 'https://picsum.photos/640/480/?image=144',
+    address: '322 Wyatt Camp',
+    city: 'Luzton',
+    joinedAt: '2024-02-04T08:28:21.2445044',
+    numberOfReviews: 14,
+    rating: 3.2857142857142856,
   })
 
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -44,20 +47,15 @@ const IntroduceHost = () => {
   const closeDialog = () => {
     toggleDialog(false)
   }
-  // useEffect(() => {
-  //   getHostInfoApi(hostId)
-  // }, [hostId])
-
-  const getHostInfoApi = async (hostId: number) => {
-    // try {
-    //   const response = await getHostDetail(hostId)
-    //   if (response && response.status === 200) {
-    //     setHostInfo(response.data)
-    //   }
-    // } catch (err) {
-    //   console.log(err)
-    // }
+  const getHostInfoAsync = async () => {
+    try {
+      const data = await getHostInfo(hostId)
+      setHostInfo(data as IHostInfo)
+    } catch (err) {}
   }
+  useEffect(() => {
+    getHostInfoAsync()
+  }, [hostId])
   // const sendMessage = () => {
   //   if (message) {
   //     const connection = new signalR.HubConnectionBuilder()

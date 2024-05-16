@@ -1,29 +1,37 @@
 import React from 'react'
-
 import ImageListMUI from '@mui/material/ImageList'
-import ImageListItem from '@mui/material/ImageListItem'
-import Image from 'next/image'
 
 import { Gallery, Item } from 'react-photoswipe-gallery'
-const Attachments = () => {
+import { IPropertyImage } from '@/src/page-components/Home/Properties/Properties.type'
+
+interface IAttachmentProps {
+  propertyImages: IPropertyImage[]
+}
+
+const Attachments = ({ propertyImages }: IAttachmentProps) => {
+  const numberDevide4 = propertyImages?.length - (propertyImages?.length % 4)
+  const listImageCustom = []
+  for (let i = 0; i < numberDevide4; i++) {
+    listImageCustom.push(propertyImages[i])
+  }
   return (
-    <div className="rounded-md pb-6 mx-auto">
+    <div className="rounded-md pb-6 mx-auto shadow-md my-12">
       <ImageListMUI
         sx={{ height: 500 }}
         variant="quilted"
         cols={4}
         rowHeight={300}
       >
-        {itemData.map((item, index) => (
+        {listImageCustom?.map((item, index) => (
           <Gallery key={index}>
             <Item
               original={item.img as string}
               thumbnail={item.img as string}
-              width="300"
-              height="200"
+              width="1024"
+              height="768"
             >
               {({ ref, open }) => (
-                <img ref={ref} onClick={open} src={item.img as string} />
+                <img ref={ref} onClick={open} src={item.url as string} />
               )}
             </Item>
           </Gallery>
@@ -34,53 +42,3 @@ const Attachments = () => {
 }
 
 export default Attachments
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1549388604-817d15aa0110',
-    title: 'Bed',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1525097487452-6278ff080c31',
-    title: 'Books',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6',
-    title: 'Sink',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3',
-    title: 'Kitchen',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1588436706487-9d55d73a39e3',
-    title: 'Blinds',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1574180045827-681f8a1a9622',
-    title: 'Chairs',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1530731141654-5993c3016c77',
-    title: 'Laptop',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61',
-    title: 'Doors',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7',
-    title: 'Coffee',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee',
-    title: 'Storage',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62',
-    title: 'Candle',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4',
-    title: 'Coffee table',
-  },
-]

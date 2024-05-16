@@ -59,7 +59,7 @@ const Header = () => {
     } catch (error) {}
   }
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
-  console.log('user', userLogin)
+  // console.log('user', userLogin)
 
   // const buttonStyle = {
   //   backgroundColor: '#ff385c',

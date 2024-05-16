@@ -7,20 +7,24 @@ import { routes } from '@/src/routes'
 
 import { useRouter } from 'next/navigation'
 import EmptyWishList from '@/src/page-components/WishList/EmptyWishList/EmptyWishList'
-import MainLayout from '@/src/components/layouts/MainLayout'
 import { DEFAULT_PAGE } from '@/src/constant'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
 import { getWishlists } from '@/src/apis/wishlist'
 import Skeleton from '@/src/page-components/Home/Properties/Skeleton/Skeleton'
+import HomePageLayout from '@/src/components/layouts/HomePageLayout'
+import useAuthenticate from '@/src/hooks/useAuthenticate'
 
 const WishList = () => {
-  const user = true
   const [currentPage, setCurrentPage] = useState<number>(DEFAULT_PAGE)
   const [totalPages, setTotalPages] = useState<number>(0)
   const router = useRouter()
   const [wishlistProperty, setWishlistProperty] = useState<IProperty[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  useEffect(() => {
+    const { isAuthen } = useAuthenticate()
+    !isAuthen && router.push(routes.authenticate.generatePath())
+  }, [])
   useEffect(() => {
     getPropertyWishlist(currentPage)
   }, [currentPage])
@@ -45,11 +49,8 @@ const WishList = () => {
       behavior: 'smooth', // Sử dụng thuộc tính behavior để tạo hiệu ứng cuộn mượt
     })
   }
-  if (!user) {
-    router.push(routes.authenticate.generatePath())
-  }
   return (
-    <MainLayout>
+    <HomePageLayout>
       <Breadcrumbs aria-label="breadcrumb" className="py-4">
         <Link
           className="hover:underline hover:text-cyan-600 cursor-pointer"
@@ -104,7 +105,7 @@ const WishList = () => {
           <EmptyWishList />
         )}
       </>
-    </MainLayout>
+    </HomePageLayout>
   )
 }
 

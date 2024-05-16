@@ -23,7 +23,7 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { routes } from '@/src/routes'
-import { getPropertyReview } from '@/src/apis/detail-property'
+import { getPropertyReview } from '@/src/apis/review'
 import { IReviewProperty } from '@/src/page-components/DetailProperty/ReviewProperty/ReviewProperty.type'
 // import { formatDateTime } from '@/helpers/FormatDateTime/formatDateTime';
 // import { useSelector } from 'react-redux';
@@ -46,19 +46,10 @@ interface PropsType {
   updateReview?: number
 }
 const ReviewProperty = ({ propertyId }: PropsType) => {
-  // const userIdLogin = useSelector((state: RootState) => state.auth.user?.id) || null;
-  // PropertyReview[]
+  const userLogin = JSON.parse(localStorage.getItem('user_login'))
   // GeneralScore
   const [listReview, setListReview] = useState<IReviewProperty[]>([])
-  const [generalScore, setGeneralScore] = useState({
-    cleanliness: 0,
-    accuracy: 0,
-    communication: 0,
-    checkIn: 0,
-    value: 0,
-    location: 0,
-    numberOfReviews: 2,
-  })
+  const [generalScore, setGeneralScore] = useState()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -122,7 +113,7 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
     <div className="pt-6">
       <>
         <h2 className="text-xl text-cyan-800 font-bold pb-2 pt-5">Đánh giá</h2>
-        {generalScore.numberOfReviews > 0 ? (
+        {listReview?.length > 0 ? (
           <>
             <div className="grid grid-cols-2 gap-5">
               {listReview &&
@@ -148,8 +139,7 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
                               {format(review.reviewTime, 'yyyy-MM-dd')}
                             </p>
                           </div>
-                          {/* {review.userId === userIdLogin && ( */}
-                          {true && (
+                          {userLogin?.id === review.userId && (
                             <>
                               <IconButton
                                 aria-label="delete"
