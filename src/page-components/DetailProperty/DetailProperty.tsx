@@ -1,5 +1,4 @@
 'use client'
-import { getPropertyById } from '@/src/apis/detail-property'
 import MainLayout from '@/src/components/layouts/MainLayout'
 import { Attachments } from '@/src/page-components/DetailProperty/Attachments'
 import { BookingProperty } from '@/src/page-components/DetailProperty/BookingProperty'
@@ -16,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useParams } from 'next/navigation'
+import { getPropertyById } from '@/src/apis/property'
 
 const DetailProperty = () => {
   const { id } = useParams()
@@ -43,10 +43,10 @@ const DetailProperty = () => {
           address={propertyDetail?.address}
           city={propertyDetail?.city}
         />
-        <Attachments />
+        <Attachments propertyImages={propertyDetail?.propertyImages} />
         <div className="lg:flex lg:items-start lg:justify-between mb-5 gap-16">
           <div className="flex flex-col gap-6 w-full lg:w-3/5">
-            <IntroduceHost />
+            <IntroduceHost hostId={propertyDetail?.hostId} />
             <Divider />
             <IntroduceProperty
               bathroomCount={propertyDetail?.bathroomCount}

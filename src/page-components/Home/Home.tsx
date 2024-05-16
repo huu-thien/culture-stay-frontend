@@ -1,5 +1,6 @@
 'use client'
-import { getListProperty } from '@/src/apis/home'
+import { getListProperty } from '@/src/apis/property'
+import HomePageLayout from '@/src/components/layouts/HomePageLayout'
 import MainLayout from '@/src/components/layouts/MainLayout'
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/src/constant'
 import FilterProperty from '@/src/page-components/Home/FilterProperties/FilterProperty'
@@ -38,7 +39,7 @@ const Home = () => {
   }, [filterParams.PageIndex])
 
   return (
-    <MainLayout>
+    <HomePageLayout>
       <main className="flex flex-col items-center justify-between">
         <FilterProperty
           filterParams={filterParams}
@@ -52,7 +53,7 @@ const Home = () => {
           isLoading={isLoading}
         />
       </main>
-    </MainLayout>
+    </HomePageLayout>
   )
 }
 export default Home

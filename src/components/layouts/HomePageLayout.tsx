@@ -3,7 +3,7 @@ import { Header } from '@/src/components/Header'
 import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material'
 
-const MainLayout = ({ children }) => {
+const HomePageLayout = ({ children }) => {
   const theme = createTheme({
     typography: {
       fontFamily: 'Lexend',
@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <Header />
-      <div className="mx-auto w-full max-w-7xl mt-[80px] py-10 overflow-hidden">
+      <div className="mx-auto w-full max-w-[1440px] mt-[80px] py-10 overflow-hidden">
         {children}
       </div>
       <Footer />
@@ -20,4 +20,4 @@ const MainLayout = ({ children }) => {
   )
 }
 
-export default MainLayout
+export default HomePageLayout
