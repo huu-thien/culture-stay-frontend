@@ -1,4 +1,9 @@
-import { DEFAULT_LANGUAGE, NO_CONTENT, UNAUTHORIZED } from '@/src/constant'
+import {
+  BACK_END_API_URL,
+  DEFAULT_LANGUAGE,
+  NO_CONTENT,
+  UNAUTHORIZED,
+} from '@/src/constant'
 import { routes } from '@/src/routes'
 import Cookies from 'js-cookie'
 
@@ -33,17 +38,21 @@ async function request<T = any>(
         location.replace(routes.authenticate.generatePath())
         return Promise.reject(new Error('Unauthorized'))
       }
-      const refreshResponse = await fetch('/refreshToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        body: JSON.stringify({ refreshToken }),
-      })
+      const refreshResponse = await fetch(
+        `${BACK_END_API_URL}/api/auth/refresh?refreshToken=${refreshToken}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify({ refreshToken }),
+        }
+      )
       if (refreshResponse.ok) {
-        const { token } = await refreshResponse.json()
-        Cookies.set('jwt_token', token)
+        const { accessToken, refreshToken } = await refreshResponse.json()
+        Cookies.set('jwt_token', accessToken)
+        Cookies.set('refresh_token', refreshToken)
         return request(url, options)
       }
       return Promise.reject(payload || new Error('Something went wrong'))
