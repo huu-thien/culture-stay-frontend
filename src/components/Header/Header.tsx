@@ -175,7 +175,7 @@ const Header = () => {
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <Link className="w-full text-cyan-800" href="/info-account">
+                  <Link className="w-full text-cyan-800" href={routes.myAccount.generatePath()}>
                     Tài khoản
                   </Link>
                 </MenuItem>
