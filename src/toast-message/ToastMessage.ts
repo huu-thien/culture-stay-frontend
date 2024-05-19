@@ -26,4 +26,9 @@ export const TOAST_MESSAGE = {
       error: 'Xóa khỏi danh sách yêu thích thất bại !',
     },
   },
+  updateProfile: {
+    pending: 'Đang cập nhật thông tin cá nhân...',
+    success: 'Cập nhật thông tin cá nhân thành công',
+    error: 'Cập nhật thông tin cá nhân thất bại !',
+  },
 }

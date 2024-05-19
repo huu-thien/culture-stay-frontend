@@ -1,6 +1,7 @@
 import {
   DEFAULT_FILTER_PARAMS,
   IFilterPamrams,
+  MenuProps,
   OrderBy,
   OrderByOptions,
   provinces,
@@ -23,17 +24,6 @@ import dayjs from 'dayjs'
 import { Button, IconButton, Tooltip } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
-// PropertyType
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 200,
-    },
-  },
-}
 const Types: PropertyType[] = [
   PropertyType.ROOM,
   PropertyType.HOUSE,
