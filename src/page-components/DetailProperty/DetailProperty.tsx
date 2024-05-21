@@ -24,8 +24,8 @@ const DetailProperty = () => {
 
   const getInfoProperty = async () => {
     try {
-      const response = await getPropertyById(id)
-      setPropertyDetail(response)
+      const { data } = await getPropertyById(id)
+      setPropertyDetail(data)
     } catch ({ title }) {
       toast.error(title)
     }

@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic'
 import { Metadata } from 'next'
 import Loading from '@/src/components/Loading/Loading'
-const DynamicHostGuestProfile = dynamic(
-  () => import('@/src/page-components/HostGuestProfile/HostGuestProfile'),
+const DynamicHostProfile = dynamic(
+  () => import('@/src/page-components/HostProfile/HostProfile'),
   {
     ssr: false,
     loading: () => <Loading />,
@@ -10,14 +10,14 @@ const DynamicHostGuestProfile = dynamic(
 )
 
 const IndexPage = async (props) => {
-  return <DynamicHostGuestProfile {...props.searchParams} />
+  return <DynamicHostProfile {...props.searchParams} />
 }
 
 export default IndexPage
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'View Profile',
-    description: 'View Profile',
+    title: 'Host Profile',
+    description: 'Host Profile',
   }
 }

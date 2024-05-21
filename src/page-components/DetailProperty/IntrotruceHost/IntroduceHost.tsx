@@ -49,8 +49,8 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
   }
   const getHostInfoAsync = async () => {
     try {
-      const data = await getHostInfo(hostId)
-      setHostInfo(data as IHostInfo)
+      const { data } = await getHostInfo(hostId)
+      setHostInfo(data)
     } catch (err) {}
   }
   useEffect(() => {
@@ -148,7 +148,7 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
           </DialogActions>
         </Dialog> */}
         <Button variant="contained" sx={{ height: 50 }}>
-          <Link href={routes.viewProfile.generatePath(1)}>
+          <Link href={routes.hostProfile.generatePath(hostId)}>
             Thông tin của chủ nhà
           </Link>
         </Button>
