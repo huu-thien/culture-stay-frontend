@@ -1,10 +1,5 @@
-// import { ReviewHostType } from '@/@types/review'
-// import {
-//   getCheckUserStayedInPropertyOfHost,
-//   getHostReviews,
-//   postCreateReviewHost,
-// } from '@/services/HostService/hostService'
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -13,11 +8,14 @@ import {
   Rating,
 } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
-// import ReviewItem from './ReviewItem'
+
 import StarIcon from '@mui/icons-material/Star'
 import { toast } from 'react-toastify'
-import { ReviewCard } from '@/src/page-components/HostGuestProfile/ReviewCard'
-// import { ContentReviewHostType } from '@/@types/host'
+import { ReviewCard } from '@/src/page-components/HostProfile/ReviewCard'
+import { getHostReviews, postCreateReviewHost } from '@/src/apis/review'
+import { DEFAULT_DATA_REVIEW } from '@/src/page-components/HostProfile/HostProfile.type'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { CheckHostRentedGuestYet } from '@/src/apis/host'
 
 const labels: { [index: string]: string } = {
   1: 'Quá tệ',
@@ -32,11 +30,10 @@ function getLabelText(value: number) {
 interface PropsType {
   hostId: number
   name: string
-  setPostReviewUpdate: React.Dispatch<React.SetStateAction<number>>
+  getHostInfoAsync: () => Promise<void>
 }
 
-const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
-  // const [listReview, setListReview] = useState<ReviewHostType[]>([])
+const ModalReviewGuest = ({ hostId, name, getHostInfoAsync }: PropsType) => {
   const [listReview, setListReview] = useState([])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -46,70 +43,58 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
 
   const [open, setOpen] = useState(false)
 
-  const [scoreHost, setScoreHost] = useState<number | null>(3)
   const [hoverHost, setHoverHost] = useState(-1)
 
-  const [contentReview, setContentReview] = useState('')
+  const [dataReview, setDataReview] = useState<{
+    rating: number
+    content: string
+  }>(DEFAULT_DATA_REVIEW)
+
+  const getListReview = async () => {
+    try {
+      const { data, totalPages } = await getHostReviews(hostId, currentPage)
+      setListReview(data)
+      setTotalPages(totalPages)
+    } catch (error) {}
+  }
+
   useEffect(() => {
-    getListReview(hostId, currentPage)
+    getListReview()
   }, [hostId, currentPage])
 
-  const getListReview = async (hostId: number, page: number) => {
-    try {
-      // const response = await getHostReviews(hostId, page)
-      // if (response && response.status === 200) {
-      //   setListReview(response.data.data)
-      //   setTotalPages(response.data.totalPages)
-      // }
-    } catch (error) {
-    }
-  }
   const handleChangePage = (_event: ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value)
   }
 
   const handleCancelReview = async () => {
-    setScoreHost(3)
-    setContentReview('')
+    setDataReview(DEFAULT_DATA_REVIEW)
     setOpen(false)
   }
 
   const CheckUserStayedInPropertyOfHost = async (hostId: number) => {
     try {
-      // const response = await getCheckUserStayedInPropertyOfHost(hostId)
-      // if (response && response.status === 200) {
-      //   setIsStayed(response.data)
-      // }
-    } catch (err) {
-    }
+      const { data } = await CheckHostRentedGuestYet(hostId)
+      setIsStayed(true)
+    } catch (err) {}
   }
 
   const handlePostReviewHost = async () => {
-    if (contentReview !== '' && scoreHost !== null) {
+    if (dataReview.content !== '' && dataReview.rating !== null) {
       try {
-        // const dataPostReview: ContentReviewHostType = {
-        //   rating: scoreHost || 0,
-        //   content: contentReview,
-        // }
-        // const response = await postCreateReviewHost(hostId, dataPostReview)
-        // if (response && response.status === 200) {
-        //   const resolveAfter2Sec = new Promise((resolve) =>
-        //     setTimeout(resolve, 1400)
-        //   )
-        //   toast
-        //     .promise(resolveAfter2Sec, {
-        //       pending: 'Đang đăng đánh giá của bạn',
-        //       success: 'Đăng đánh giá thành công',
-        //     })
-        //     .then(() => {
-        //       setPostReviewUpdate((prev) => prev + 1)
-        //       handleCancelReview()
-        //       setCurrentPage(1)
-        //       getListReview(hostId, 1)
-        //     })
-        // }
-      } catch (error) {
-      }
+        await toast.promise(postCreateReviewHost(hostId, dataReview), {
+          pending: TOAST_MESSAGE.review.post.pending,
+          success: TOAST_MESSAGE.review.post.success,
+          error: TOAST_MESSAGE.review.post.error,
+        })
+        getListReview()
+        getHostInfoAsync()
+        setDataReview(DEFAULT_DATA_REVIEW)
+        setOpen(false)
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+      } catch (error) {}
     } else {
       toast.error('Bạn phải nhập đủ thông tin để đánh giá !')
     }
@@ -125,31 +110,34 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
         Đánh giá về {name}
       </h2>
       <>
-        <div className="grid grid-cols-3 gap-4">
-          {listReview.map((review, index) => (
-            <ReviewCard
-              key={`${review.reviewerName}_${index}`}
-              content={review.content}
-              reviewerAvatarUrl={review.reviewerAvatarUrl}
-              reviewerName={review.reviewerName}
-              reviewTime={review.reviewTime}
-              rating={review.rating}
-              userId={review.userId}
-              reviewId={review.id}
-              setPostReviewUpdate={setPostReviewUpdate}
-              setCurrentPage={setCurrentPage}
-              getListReview={getListReview}
-              hostId={hostId}
-            />
-          ))}
-        </div>
-        <div className="py-4">
-          <Pagination
-            color="primary"
-            count={totalPages}
-            page={currentPage}
-            onChange={handleChangePage}
-          />
+        <div className="">
+          {listReview.length > 0 ? (
+            <>
+              <div className="grid grid-cols-3 gap-4">
+                {listReview.map((review, index) => (
+                  <ReviewCard
+                    key={`${review.reviewerName}_${index}`}
+                    review={review}
+                    getListReview={getListReview}
+                    getHostInfoAsync={getHostInfoAsync}
+                    hostId={hostId}
+                  />
+                ))}
+              </div>
+              <div className="py-4">
+                <Pagination
+                  color="primary"
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handleChangePage}
+                />
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-gray-700">
+              Người này chưa có đánh giá nào !
+            </p>
+          )}
         </div>
       </>
       {isStayed ? (
@@ -179,14 +167,14 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
               <div>
                 <p className="pb-2 text-cyan-700">Sự hài lòng của bạn</p>
                 <div className="flex items-center gap-4 py-1">
-                  <p className="text-gray-700 min-w-[120px]">Địa điểm:</p>
+                  <p className="text-gray-700 min-w-[120px]">Tốt bụng</p>
                   <Rating
                     name="scoreHost"
-                    value={scoreHost}
+                    value={dataReview.rating}
                     precision={1}
                     getLabelText={getLabelText}
                     onChange={(_event, newValue) => {
-                      setScoreHost(newValue)
+                      setDataReview((prev) => ({ ...prev, rating: newValue }))
                     }}
                     onChangeActive={(_event, newHover) => {
                       setHoverHost(newHover)
@@ -195,9 +183,9 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
                       <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
                     }
                   />
-                  {scoreHost !== null && (
+                  {dataReview.rating !== null && (
                     <p className="text-xs text-cyan-700 ">
-                      {labels[hoverHost !== -1 ? hoverHost : scoreHost]}
+                      {labels[hoverHost !== -1 ? hoverHost : dataReview.rating]}
                     </p>
                   )}
                 </div>
@@ -209,8 +197,13 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
                   rows={4}
                   className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none"
                   placeholder="Nội dung đánh giá ..."
-                  value={contentReview}
-                  onChange={(e) => setContentReview(e.target.value)}
+                  value={dataReview.content}
+                  onChange={(e) =>
+                    setDataReview((prev) => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
+                  }
                 ></textarea>
               </div>
               <div className="flex justify-end gap-4 pt-4">
@@ -225,9 +218,9 @@ const ModalReviewGuest = ({ hostId, name, setPostReviewUpdate }: PropsType) => {
           </Dialog>
         </div>
       ) : (
-        <p className="text-sm text-gray-700">
+        <Alert severity="warning">
           Hãy thuê phòng của {name} và quay lại đánh giá !
-        </p>
+        </Alert>
       )}
     </div>
   )

@@ -31,4 +31,16 @@ export const TOAST_MESSAGE = {
     success: 'Cập nhật thông tin cá nhân thành công',
     error: 'Cập nhật thông tin cá nhân thất bại !',
   },
+  review: {
+    post: {
+      pending: 'Đang tiến hành đánh giá...',
+      success: 'Đánh giá thành công',
+      error: 'Đánh giá thất bại !',
+    },
+    delete: {
+      pending: 'Đang xóa đánh giá...',
+      success: 'Xóa đánh giá thành công',
+      error: 'Xóa đánh giá thất bại !',
+    },
+  },
 }

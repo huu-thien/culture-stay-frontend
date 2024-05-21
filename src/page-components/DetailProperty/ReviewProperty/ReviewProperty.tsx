@@ -1,5 +1,3 @@
-// import { PropertyReview, GeneralScore } from '@/@types/property';
-// import { deleteReviewProperty, getGeneralScore, getPropertyReview } from '@/services/PropertyService/propertyService';
 import {
   Avatar,
   Fade,
@@ -25,10 +23,6 @@ import { format } from 'date-fns'
 import { routes } from '@/src/routes'
 import { getPropertyReview } from '@/src/apis/review'
 import { IReviewProperty } from '@/src/page-components/DetailProperty/ReviewProperty/ReviewProperty.type'
-// import { formatDateTime } from '@/helpers/FormatDateTime/formatDateTime';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '@/store';
-// import { Link } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -62,7 +56,6 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
 
   useEffect(() => {
     getListReviewProperty(propertyId, currentPage)
-    // getGeneralScoreProperty(propertyId)
   }, [propertyId, currentPage])
 
   const getListReviewProperty = async (id: string, currentPage: number) => {
@@ -73,18 +66,6 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
     } catch ({ title }) {
       toast.error(title)
     }
-
-    // const response = await getPropertyReview(id, currentPage)
-    // if (response && response.status === 200) {
-    //   setListReview(response.data.data)
-    //   setTotalPages(response.data.totalPages)
-    // }
-  }
-  const getGeneralScoreProperty = async (id: number) => {
-    // const response = await getGeneralScore(id)
-    // if (response && response.status === 200) {
-    //   setGeneralScore(response.data)
-    // }
   }
 
   const handleDeleteReview = async (id: number) => {
@@ -125,12 +106,20 @@ const ReviewProperty = ({ propertyId }: PropsType) => {
                   >
                     <div className="">
                       <div className="flex items-center gap-4 p-3">
-                        <Link href={routes.viewProfile.generatePath(1)}>
+                        <Link
+                          href={routes.guestProfile.generatePath(
+                            review.guestId
+                          )}
+                        >
                           <Avatar src={review.guestAvatarUrl} />
                         </Link>
                         <div className=" w-full flex justify-between">
                           <div>
-                            <Link href={routes.viewProfile.generatePath(1)}>
+                            <Link
+                              href={routes.guestProfile.generatePath(
+                                review.guestId
+                              )}
+                            >
                               <p className="text-cyan-700">
                                 {review.guestName}
                               </p>

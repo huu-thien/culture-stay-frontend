@@ -3,13 +3,14 @@ import StarIcon from '@mui/icons-material/Star'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Fade, Modal, Box, Backdrop, IconButton, Button } from '@mui/material'
 import { useState } from 'react'
-// import { useSelector } from 'react-redux';
-// import { RootState } from '@/store';
-// import { deleteReviewHost } from '@/services/HostService/hostService';
-import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
 import { formatDateYYYYMMDD } from '@/src/utils/DateBookingHandler'
+import { IGuestReview } from '@/src/page-components/GuestProfile/GuestProfile.type'
+import { deleteReviewGuest, deleteReviewHost } from '@/src/apis/review'
+import { toast } from 'react-toastify'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { USER_ROLE } from '@/src/constant'
 
 const style = {
   position: 'absolute',
@@ -23,37 +24,26 @@ const style = {
   p: 4,
 }
 interface PropsType {
-  content: string
-  reviewerAvatarUrl: string
-  reviewerName: string
-  reviewTime: string
-  rating: number
-  userId: number
-  reviewId: number
-  setPostReviewUpdate: React.Dispatch<React.SetStateAction<number>>
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
-  getListReview: (hostId: number, page: number) => Promise<void>
+  review: IGuestReview
+  setPostReviewUpdate?: React.Dispatch<React.SetStateAction<number>>
+  getGuestInfoAsync?: () => Promise<void>
+  getHostInfoAsync?: () => Promise<void>
+  getListReview?: () => Promise<void>
   hostId?: number
   guestId?: number
 }
 
 const ReviewCard = ({
-  content = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
-  reviewerAvatarUrl,
-  reviewerName = 'Nguyen Huu Thien',
-  reviewTime = new Date().toISOString(),
-  rating = 3,
-  userId = 3,
-  reviewId = 4,
-  setPostReviewUpdate,
-  setCurrentPage,
+  review,
   getListReview,
   hostId,
   guestId,
+  getGuestInfoAsync,
+  getHostInfoAsync,
 }: PropsType) => {
-  // const userIdLogin = useSelector((state: RootState) => state.auth.user?.id) || null;
+  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
 
-  const yellowStars = Math.round(rating) // Số ngôi sao màu vàng
+  const yellowStars = Math.round(review.rating) // Số ngôi sao màu vàng
   const grayStars = 5 - yellowStars // Số ngôi sao màu xám
   const yellowStarArray = Array(yellowStars).fill('yellow')
   const grayStarArray = Array(grayStars).fill('gray')
@@ -63,47 +53,47 @@ const ReviewCard = ({
   const handleClose = () => setOpen(false)
 
   const handleDeleteReview = async (reviewId: number) => {
+    const reviewType = guestId ? USER_ROLE.GUEST : USER_ROLE.HOST
     try {
-      // const response = await deleteReviewHost(reviewId);
-      // if (response && response.status === 204) {
-      //   const resolveAfter2Sec = new Promise((resolve) => setTimeout(resolve, 1400));
-      //   toast
-      //     .promise(resolveAfter2Sec, {
-      //       pending: 'Đang xóa đánh giá của bạn',
-      //       success: 'Xóa đánh giá thành công',
-      //     })
-      //     .then(() => {
-      //       setPostReviewUpdate((prev) => prev + 1);
-      //       setCurrentPage(1);
-      //       handleClose();
-      //       getListReview(hostId, 1);
-      //     });
-      // }
-    } catch (err) {
-      console.log(err)
-    }
+      await toast.promise(
+        reviewType === USER_ROLE.GUEST
+          ? deleteReviewGuest(reviewId)
+          : deleteReviewHost(reviewId),
+        {
+          pending: TOAST_MESSAGE.review.delete.pending,
+          success: TOAST_MESSAGE.review.delete.success,
+          error: TOAST_MESSAGE.review.delete.error,
+        }
+      )
+      getListReview()
+      reviewType === USER_ROLE.GUEST ? getGuestInfoAsync() : getHostInfoAsync()
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    } catch (err) {}
   }
 
   return (
-    <div className="shadow-md p-4 rounded-lg">
+    <div className="shadow-md border p-4 rounded-lg">
       <div className="m-2">
         <div className="flex gap-4 items-center">
-          <Link href={routes.viewProfile.generatePath(2)}>
+          <Link href={routes.hostProfile.generatePath(hostId)}>
             <img
-              src={reviewerAvatarUrl}
-              alt={reviewerName}
+              src={review.reviewerAvatarUrl}
+              alt={review.reviewerName}
               className="w-[70px] h-[70px] rounded-full"
             />
           </Link>
           <div className="">
-            <p className="font-semibold pb-2">{reviewerName}</p>
+            <p className="font-semibold pb-2">{review.reviewerName}</p>
             <p className="font-thin text-gray-400 text-xs">
-              {formatDateYYYYMMDD(reviewTime)}
+              {formatDateYYYYMMDD(review.reviewTime)}
             </p>
           </div>
         </div>
-        <p className="font-light text-justify text-sm text-gray-500 pt-4 line-clamp-3 min-h-[76px]">
-          "{content}"
+        <p className="font-light text-sm text-gray-500 py-4 line-clamp-3 min-h-[76px]">
+          "{review.content}"
         </p>
       </div>
       <div className="flex items-center justify-between">
@@ -115,8 +105,7 @@ const ReviewCard = ({
             <StarIcon key={`review_${index}`} sx={{ color: '#eaeaea' }} />
           ))}
         </div>
-        {/* userId === userIdLogin */}
-        {true && (
+        {userLogin?.id === review.userId && (
           <>
             <IconButton aria-label="delete" onClick={handleOpen}>
               <DeleteIcon sx={{ color: '#c92327 ' }} />
@@ -148,7 +137,7 @@ const ReviewCard = ({
                     <Button
                       variant="contained"
                       size="small"
-                      onClick={() => handleDeleteReview(reviewId)}
+                      onClick={() => handleDeleteReview(review.id)}
                     >
                       Có
                     </Button>

@@ -13,8 +13,11 @@ export const routes = {
   myAccount: {
     generatePath: () => '/my-account',
   },
-  viewProfile: {
-    generatePath: (id) => `/view-profile/${id}`,
+  hostProfile: {
+    generatePath: (id) => `/host-profile/${id}`,
+  },
+  guestProfile: {
+    generatePath: (id) => `/guest-profile/${id}`,
   },
   wishlist: {
     generatePath: () => '/wishlist',
