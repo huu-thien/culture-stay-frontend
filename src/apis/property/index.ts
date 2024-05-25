@@ -28,3 +28,7 @@ export const getListPropertyOfHost = (hostId: number, pageIndex: number) => {
     `${PROPERTY_PATH}/host/${hostId}?PageIndex=${pageIndex}&PageSize=${DEFAULT_PAGE_SIZE_PROPERTY_FOR_RENT}`
   )
 }
+
+export const checkUserStayedInProperty = (propertyId: number) => {
+  return http.get<{ data: boolean}>(`${PROPERTY_PATH}/${propertyId}/is-stayed`)
+}

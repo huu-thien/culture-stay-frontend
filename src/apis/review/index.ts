@@ -13,7 +13,7 @@ const REVIEWS_PATH = `${BACK_END_API_URL}/api/reviews`
 // GET
 export const getPropertyReview = (id, page) => {
   return http.get<{ data: IReviewProperty[]; totalPages: number }>(
-    `${REVIEWS_PATH}/property/${id}?PageSize=${DEFAULT_PAGE_SIZE_REVIEW_PROPERTY}&PageIndex=${page}`
+    `${REVIEWS_PATH}/property/${id}?OrderBy=CreatedAt&IsDescending=false&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_PROPERTY}&PageIndex=${page}`
   )
 }
 export const getGuestReviews = (guestId: number, page: number) => {
@@ -41,6 +41,12 @@ export const postCreateReviewHost = (hostId, data) => {
     body: JSON.stringify(data),
   })
 }
+export const postCreateReviewProperty = (propertyId, data) => {
+  return http.post(`${REVIEWS_PATH}/property/${propertyId}`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
 
 // DELETE
 export const deleteReviewGuest = (reviewId: number) => {
@@ -48,4 +54,7 @@ export const deleteReviewGuest = (reviewId: number) => {
 }
 export const deleteReviewHost = (reviewId: number) => {
   return http.delete(`${REVIEWS_PATH}/host/${reviewId}`)
+}
+export const deleteReviewProperty = (reviewId: number) => {
+  return http.delete(`${REVIEWS_PATH}/property/${reviewId}`)
 }

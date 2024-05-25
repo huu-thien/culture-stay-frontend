@@ -14,15 +14,17 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import StarIcon from '@mui/icons-material/Star'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Pagination from '@mui/material/Pagination'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { routes } from '@/src/routes'
-import { getPropertyReview } from '@/src/apis/review'
+import { deleteReviewProperty } from '@/src/apis/review'
 import { IReviewProperty } from '@/src/page-components/DetailProperty/ReviewProperty/ReviewProperty.type'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { DEFAULT_PAGE } from '@/src/constant'
 
 const style = {
   position: 'absolute',
@@ -37,55 +39,33 @@ const style = {
 }
 interface PropsType {
   propertyId: string
-  updateReview?: number
+  listReview: IReviewProperty[]
+  getListReviewProperty: (currentPage: number) => Promise<void>
+  totalPages: number
+  currentPage: number
+  handleChangePage: (event: ChangeEvent<unknown>, value: number) => void
 }
-const ReviewProperty = ({ propertyId }: PropsType) => {
+const ReviewProperty = ({
+  listReview,
+  getListReviewProperty,
+  currentPage,
+  totalPages,
+  handleChangePage,
+}: PropsType) => {
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
-  // GeneralScore
-  const [listReview, setListReview] = useState<IReviewProperty[]>([])
-  const [generalScore, setGeneralScore] = useState()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [totalPages, setTotalPages] = useState<number>(1)
-  const handleChangePage = (event: ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value)
-  }
-
-  useEffect(() => {
-    getListReviewProperty(propertyId, currentPage)
-  }, [propertyId, currentPage])
-
-  const getListReviewProperty = async (id: string, currentPage: number) => {
-    try {
-      const { data, totalPages } = await getPropertyReview(id, currentPage)
-      setTotalPages(totalPages)
-      setListReview(data)
-    } catch ({ title }) {
-      toast.error(title)
-    }
-  }
-
   const handleDeleteReview = async (id: number) => {
     try {
-      // const response = await deleteReviewProperty(id)
-      // if (response && response.status === 204) {
-      //   const resolveAfter2Sec = new Promise((resolve) =>
-      //     setTimeout(resolve, 1400)
-      //   )
-      //   toast
-      //     .promise(resolveAfter2Sec, {
-      //       pending: 'Đang xóa đánh giá của bạn',
-      //       success: 'Xóa đánh giá thành công',
-      //     })
-      //     .then(() => {
-      //       setCurrentPage(1)
-      //       handleClose()
-      //       getListReviewProperty(propertyId, 1)
-      //     })
-      // }
+      await toast.promise(deleteReviewProperty(id), {
+        pending: TOAST_MESSAGE.review.delete.pending,
+        success: TOAST_MESSAGE.review.delete.success,
+        error: TOAST_MESSAGE.review.delete.error,
+      })
+      await getListReviewProperty(DEFAULT_PAGE)
+      setOpen(false)
     } catch (error) {
       console.log(error)
     }

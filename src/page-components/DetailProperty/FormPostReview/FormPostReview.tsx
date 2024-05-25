@@ -2,6 +2,10 @@ import { Button, Box, Modal, Fade, Backdrop, Rating } from '@mui/material'
 import { useEffect, useState } from 'react'
 import StarIcon from '@mui/icons-material/Star'
 import { toast } from 'react-toastify'
+import { checkUserStayedInProperty } from '@/src/apis/property'
+import { postCreateReviewProperty } from '@/src/apis/review'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { DEFAULT_PAGE } from '@/src/constant'
 // import { getCheckGuestStayed, postCreateReviewProperty } from '@/services/PropertyService/propertyService';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '@/store';
@@ -31,31 +35,25 @@ function getLabelText(value: number) {
 
 interface PropsType {
   propertyId: number
-  onUpdateReview?: React.Dispatch<React.SetStateAction<number>>
+  getListReviewProperty: (currentPage: number) => Promise<void>
 }
 
-const FormPostReview = ({ propertyId, onUpdateReview }: PropsType) => {
-  // const user = useSelector((state: RootState) => state.auth.user);
+const FormPostReview = ({ propertyId, getListReviewProperty }: PropsType) => {
   const [isStayed, setIsStayed] = useState<boolean>(true)
 
   const [scoreLocation, setScoreLocation] = useState<number | null>(3)
-  const [hoverLocation, setHoverLocation] = useState(-1)
-
   const [scoreClean, setScoreClean] = useState<number | null>(3)
-  const [hoverClean, setHoverClean] = useState(-1)
-
   const [scoreCommunication, setScoreCommunication] = useState<number | null>(3)
-  const [hoverCommunication, setHoverCommunication] = useState(-1)
-
   const [scoreCheckIn, setScoreCheckIn] = useState<number | null>(3)
-  const [hoverCheckIn, setHoverCheckIn] = useState(-1)
-
   const [scoreAccuracy, setScoreAccuracy] = useState<number | null>(3)
-  const [hoverAccuracy, setHoverAccuracy] = useState(-1)
-
   const [scoreValue, setScoreValue] = useState<number | null>(3)
-  const [hoverValue, setHoverValue] = useState(-1)
 
+  const [hoverLocation, setHoverLocation] = useState(-1)
+  const [hoverClean, setHoverClean] = useState(-1)
+  const [hoverCommunication, setHoverCommunication] = useState(-1)
+  const [hoverCheckIn, setHoverCheckIn] = useState(-1)
+  const [hoverAccuracy, setHoverAccuracy] = useState(-1)
+  const [hoverValue, setHoverValue] = useState(-1)
   const [contentReview, setContentReview] = useState('')
 
   const [openModal, setOpenModal] = useState(false)
@@ -72,15 +70,11 @@ const FormPostReview = ({ propertyId, onUpdateReview }: PropsType) => {
     setScoreValue(3)
     setContentReview('')
   }
-  const CheckUserStayedInProperty = async (propertyId: number) => {
+  const CheckUserStayedInPropertyAsync = async () => {
     try {
-      // const response = await getCheckGuestStayed(propertyId);
-      // if (response && response.status === 200) {
-      //   setIsStayed(response.data);
-      // }
-    } catch (err) {
-      console.log(err)
-    }
+      const { data } = await checkUserStayedInProperty(propertyId)
+      setIsStayed(data)
+    } catch (err) {}
   }
   const handlePostReview = async () => {
     if (
@@ -102,19 +96,16 @@ const FormPostReview = ({ propertyId, onUpdateReview }: PropsType) => {
           value: scoreValue,
           content: contentReview,
         }
-        // const response = await postCreateReviewProperty(propertyId, dataPostReview);
-        // if (response && response.status === 200) {
-        //   const resolveAfter2Sec = new Promise((resolve) => setTimeout(resolve, 1400));
-        //   toast
-        //     .promise(resolveAfter2Sec, {
-        //       pending: 'Đang đăng đánh giá !',
-        //       success: 'Đánh giá thành công !',
-        //     })
-        //     .then(() => {
-        //       handleCancel();
-        //       onUpdateReview((prev) => prev + 1);
-        //     });
-        // }
+        await toast.promise(
+          postCreateReviewProperty(propertyId, dataPostReview),
+          {
+            pending: TOAST_MESSAGE.review.post.pending,
+            success: TOAST_MESSAGE.review.post.success,
+            error: TOAST_MESSAGE.review.post.error,
+          }
+        )
+        await getListReviewProperty(DEFAULT_PAGE)
+        handleCancel()
       } catch (err) {}
     } else {
       toast.error('Bạn cần nhập đầy đủ thông tin để đánh giá !')
@@ -122,9 +113,8 @@ const FormPostReview = ({ propertyId, onUpdateReview }: PropsType) => {
   }
 
   useEffect(() => {
-    CheckUserStayedInProperty(propertyId)
+    CheckUserStayedInPropertyAsync()
   }, [propertyId])
-  // console.log(isStayed);
 
   return (
     <>

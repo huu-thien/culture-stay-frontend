@@ -11,16 +11,38 @@ import { ReviewProperty } from '@/src/page-components/DetailProperty/ReviewPrope
 import { Title } from '@/src/page-components/DetailProperty/Title'
 import { IPropertyDetail } from '@/src/page-components/Home/Properties/Properties.type'
 import { Divider } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useParams } from 'next/navigation'
 import { getPropertyById } from '@/src/apis/property'
+import { IReviewProperty } from '@/src/page-components/DetailProperty/ReviewProperty/ReviewProperty.type'
+import { getPropertyReview } from '@/src/apis/review'
 
 const DetailProperty = () => {
   const { id } = useParams()
 
   const [propertyDetail, setPropertyDetail] = useState<IPropertyDetail>()
+  const [listReview, setListReview] = useState<IReviewProperty[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+
+  const handleChangePage = (event: ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value)
+  }
+  useEffect(() => {
+    getListReviewProperty(currentPage)
+  }, [id, currentPage])
+
+  const getListReviewProperty = async (currentPage: number) => {
+    try {
+      const { data, totalPages } = await getPropertyReview(id, currentPage)
+      setTotalPages(totalPages)
+      setListReview(data)
+    } catch ({ title }) {
+      toast.error(title)
+    }
+  }
 
   const getInfoProperty = async () => {
     try {
@@ -66,13 +88,17 @@ const DetailProperty = () => {
             maxChildCount={1}
           />
         </div>
+        <FormPostReview
+          propertyId={propertyDetail?.id}
+          getListReviewProperty={getListReviewProperty}
+        />
         <ReviewProperty
           propertyId={id as string}
-          // updateReview={updateReview}
-        />
-        <FormPostReview
-          propertyId={1}
-          // onUpdateReview={setUpdateReview}
+          listReview={listReview}
+          getListReviewProperty={getListReviewProperty}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          handleChangePage={handleChangePage}
         />
         <Divider className="py-4" />
         {propertyDetail && (
