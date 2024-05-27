@@ -28,4 +28,7 @@ export const routes = {
   becomeHost: {
     generatePath: () => '/become-host',
   },
+  hostManageProperty: {
+    generatePath: () => '/host-manage-property',
+  },
 }

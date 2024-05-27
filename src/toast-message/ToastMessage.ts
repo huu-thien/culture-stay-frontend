@@ -49,5 +49,10 @@ export const TOAST_MESSAGE = {
       success: 'Tạo phòng thành công! Hãy chờ admin duyệt phòng của bạn!',
       error: 'Tạo phòng thất bại !',
     },
-  }
+    delete: {
+      pending: 'Đang xóa phòng...',
+      success: 'Xóa phòng thành công',
+      error: 'Xóa phòng thất bại !',
+    },
+  },
 }

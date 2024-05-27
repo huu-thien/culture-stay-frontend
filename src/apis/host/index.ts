@@ -14,3 +14,7 @@ export const getHostInfo = (id) => {
 export const CheckHostRentedGuestYet = (hostId: number) => {
   return http.get<{ data: boolean }>(`${HOST_PATH}/${hostId}/is-stayed`)
 }
+
+export const getHostByUserId = (userId: number) => {
+  return http.get<{ data: IHostInfo }>(`${HOST_PATH}/user/${userId}`)
+}

@@ -1,3 +1,4 @@
+
 export const BACK_END_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL
 
 export const DEFAULT_PAGE = 1
@@ -16,4 +17,9 @@ export enum USER_ROLE {
 export enum APP_ROLE {
   ADMIN = 'Admin',
   USER = 'User',
+}
+export enum STATUS_PROPERTY {
+  PENDING = 'Pending',
+  APPROVED = 'Approved',
+  REJECTED = 'Radio',
 }

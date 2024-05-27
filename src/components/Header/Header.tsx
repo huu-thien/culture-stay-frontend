@@ -175,7 +175,10 @@ const Header = () => {
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <Link className="w-full text-cyan-800" href={routes.myAccount.generatePath()}>
+                  <Link
+                    className="w-full text-cyan-800"
+                    href={routes.myAccount.generatePath()}
+                  >
                     Tài khoản
                   </Link>
                 </MenuItem>
@@ -183,7 +186,7 @@ const Header = () => {
                   <MenuItem onClick={handleClose}>
                     <Link
                       className="w-full text-cyan-800"
-                      href="/host-manage-property"
+                      href={routes.hostManageProperty.generatePath()}
                     >
                       Quản lý phòng cho thuê
                     </Link>
