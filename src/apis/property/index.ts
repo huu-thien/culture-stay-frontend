@@ -10,8 +10,10 @@ import {
   IPropertyDetail,
 } from '@/src/page-components/Home/Properties/Properties.type'
 import { getFilterParamsFromObject } from '@/src/utils/common'
+import axios from 'axios'
 
 const PROPERTY_PATH = `${BACK_END_API_URL}/api/properties`
+const ATTACHMENT_PATH = `${BACK_END_API_URL}/api/attachments/upload-attachment`
 
 export const getListProperty = (params: IFilterPamrams) => {
   const queryParams = getFilterParamsFromObject(params)
@@ -30,5 +32,13 @@ export const getListPropertyOfHost = (hostId: number, pageIndex: number) => {
 }
 
 export const checkUserStayedInProperty = (propertyId: number) => {
-  return http.get<{ data: boolean}>(`${PROPERTY_PATH}/${propertyId}/is-stayed`)
+  return http.get<{ data: boolean }>(`${PROPERTY_PATH}/${propertyId}/is-stayed`)
+}
+
+export const postCreateProperty = (data) => {
+  return http.post(`${PROPERTY_PATH}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
 }

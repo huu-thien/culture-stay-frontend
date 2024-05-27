@@ -1,4 +1,4 @@
-import Logo from '@/public/images/logo-aircnc-ft.png'
+import Logo from '@/assets/images/logo-aircnc-ft.png'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'

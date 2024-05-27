@@ -6,7 +6,7 @@ import { IProperty } from '@/src/page-components/Home/Properties/Properties.type
 import Skeleton from '@/src/page-components/Home/Properties/Skeleton/Skeleton'
 import { IFilterPamrams } from '@/src/page-components/Home/FilterProperties/FilterProperty.type'
 import Image from 'next/image'
-import EmtyData from '../../../../public/images/empty_box.png'
+import EmtyData from '@/src/assets/images/empty_box.png'
 
 interface IPropertiesProps {
   filterParams: IFilterPamrams

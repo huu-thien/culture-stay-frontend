@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 
-import Logo from '@/public/images/logo-aircnc.png'
+import Logo from '@/assets/images/logo-aircnc.png'
 import {
   Avatar,
   Button,

@@ -1,5 +1,5 @@
 import { Alert, Button } from '@mui/material'
-import PageNotFoundImage from '../../public/images/page-not-found.jpg'
+import PageNotFoundImage from '@/src/assets/images/page-not-found.jpg'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Link from 'next/link'
 import { routes } from '@/src/routes'

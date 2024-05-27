@@ -15,7 +15,8 @@
       "@/utils/*": ["src/utils/*"],
       "@/public/*": ["public/*"],
       "@/hooks/*": ["src/hooks/*"],
-      "@/constant/*": ["src/constant/*"]
+      "@/constant/*": ["src/constant/*"],
+      "@/assets/*": ["src/assets/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
