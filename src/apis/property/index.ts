@@ -42,3 +42,6 @@ export const postCreateProperty = (data) => {
     body: JSON.stringify(data),
   })
 }
+export const deleteProperty = (id) => {
+  return http.delete(`${PROPERTY_PATH}/${id}`)
+}
