@@ -4,9 +4,9 @@ const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
-      backgroundImage: {
-        gradient: "url('../../public/images/bg-image-authenticate.png')",
-      },
+      // backgroundImage: {
+      //   gradient: "url('./src/assets/images/empty_box.png')",
+      // },
       keyframes: {
         spin: {
           '0%': {

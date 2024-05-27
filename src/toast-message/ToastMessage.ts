@@ -43,4 +43,11 @@ export const TOAST_MESSAGE = {
       error: 'Xóa đánh giá thất bại !',
     },
   },
+  property: {
+    create: {
+      pending: 'Đang tạo phòng...',
+      success: 'Tạo phòng thành công! Hãy chờ admin duyệt phòng của bạn!',
+      error: 'Tạo phòng thất bại !',
+    },
+  }
 }

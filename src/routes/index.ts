@@ -25,4 +25,7 @@ export const routes = {
   guestManageBooking: {
     generatePath: () => '/guest-manage-bookings',
   },
+  becomeHost: {
+    generatePath: () => '/become-host',
+  },
 }

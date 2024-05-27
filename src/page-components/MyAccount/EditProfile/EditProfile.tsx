@@ -19,6 +19,7 @@ import {
 } from '@/src/page-components/Home/FilterProperties/FilterProperty.type'
 import { toast } from 'react-toastify'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { postUploadAttachment } from '@/src/apis/attachments'
 
 const EditProfile = () => {
   const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
@@ -36,17 +37,8 @@ const EditProfile = () => {
     getMyInfoByIdAsync()
   }, [])
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = async (infoUpdate) => {
     try {
-      const infoUpdate: IMyAccountUpdate = {
-        fullName: myInfo?.fullName,
-        phoneNumber: myInfo?.phoneNumber,
-        city: myInfo?.city,
-        address: myInfo?.address,
-        introduction: myInfo?.introduction,
-        email: myInfo?.email,
-        avatarUrl: myInfo?.avatarUrl,
-      }
       const { data } = await toast.promise(
         putUpdateInfoUser(userLogin?.id, infoUpdate),
         {
@@ -60,6 +52,37 @@ const EditProfile = () => {
     } catch (error) {}
   }
 
+  const handleAvatarChange = async (event: any) => {
+    const selectedFile = event.target.files[0]
+    console.log('selectedFile', selectedFile)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      console.log('formData', formData)
+
+      const { data } = await postUploadAttachment(formData)
+      console.log('data', data)
+
+      const infoUpdate: IMyAccountUpdate = {
+        fullName: myInfo?.fullName,
+        phoneNumber: myInfo?.phoneNumber,
+        city: myInfo?.city,
+        address: myInfo?.address,
+        introduction: myInfo?.introduction,
+        email: myInfo?.email,
+        avatarUrl: data,
+      }
+      handleUpdateProfile(infoUpdate)
+    } catch (error) {}
+  }
+  const handleUploadAvatar = () => {
+    const fileInput = document.getElementById('avatarInput')
+    if (fileInput) {
+      fileInput.click()
+    }
+  }
+
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between">
@@ -67,7 +90,21 @@ const EditProfile = () => {
         <div>
           {isEdit ? (
             <div className="flex gap-4">
-              <Button variant="contained" onClick={handleUpdateProfile}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  const infoUpdate: IMyAccountUpdate = {
+                    fullName: myInfo?.fullName,
+                    phoneNumber: myInfo?.phoneNumber,
+                    city: myInfo?.city,
+                    address: myInfo?.address,
+                    introduction: myInfo?.introduction,
+                    email: myInfo?.email,
+                    avatarUrl: myInfo?.avatarUrl,
+                  }
+                  handleUpdateProfile(infoUpdate)
+                }}
+              >
                 Save
               </Button>
               <Button
@@ -111,7 +148,16 @@ const EditProfile = () => {
               />
             )}
           </div>
-          <Button variant="contained">Change photo</Button>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            id="avatarInput"
+            style={{ display: 'none' }}
+          />
+          <Button variant="contained" onClick={handleUploadAvatar}>
+            Change photo
+          </Button>
         </div>
         <div className="py-4">
           <p className="font-medium text-sm pb-2 text-cyan-700">Introduce</p>

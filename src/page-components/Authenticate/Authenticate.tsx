@@ -2,7 +2,7 @@
 import LoginForm from '@/src/page-components/Authenticate/Forms/LoginForm'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import BannerAuthenticatie from '../../../public/images/banner-authenticate.webp'
+import BannerAuthenticatie from '@/src/assets/images/banner-authenticate.webp'
 import { AuthenticateType } from '@/src/page-components/Authenticate/Authenticate.type'
 import RegisterForm from '@/src/page-components/Authenticate/Forms/RegisterForm'
 import { GoogleOAuthProvider } from '@react-oauth/google'

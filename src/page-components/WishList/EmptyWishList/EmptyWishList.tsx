@@ -1,6 +1,6 @@
 import React from 'react'
-import EmptyData from '../../../../public/images/empty_box.png'
-import ImageDecorate from '../../../../public/images/booking-decorate.webp'
+import EmptyData from '@/src/assets/images/empty_box.png'
+import ImageDecorate from '@/src/assets/images/booking-decorate.webp'
 
 import { Alert } from '@mui/material'
 import Image from 'next/image'
