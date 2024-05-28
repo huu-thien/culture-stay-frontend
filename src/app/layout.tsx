@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { Lexend } from 'next/font/google'
 
-import '@/styles/global.css'
 import 'photoswipe/dist/photoswipe.css'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { Flip, ToastContainer } from 'react-toastify'
 import Head from 'next/head'
+import '@/styles/global.css'
 
 // const inter = Inter({ subsets: ['latin'] })
 const lexend = Lexend({ subsets: ['latin'] })
@@ -27,21 +27,21 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </Head>
       <body className={lexend.className}>
-          {children}
-          <ToastContainer
-            style={{ fontFamily: 'Lexend', fontSize: '13px', width: `255px` }}
-            transition={Flip}
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+        {children}
+        <ToastContainer
+          style={{ fontFamily: 'Lexend', fontSize: '13px', width: `255px` }}
+          transition={Flip}
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html>
   )

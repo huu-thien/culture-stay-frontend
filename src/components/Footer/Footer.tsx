@@ -1,4 +1,4 @@
-import Logo from '@/assets/images/logo-aircnc-ft.png'
+import Logo from '@/assets/images/culture-stay-logo.png'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'
@@ -14,27 +14,52 @@ const Footer = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <div className="flex flex-col gap-4 items-center w-full text-center pb-4">
                 <a href="#" className="inline-block max-w-full">
-                  <Image src={Logo} alt="" className="inline-block w-full" />
+                  <Image
+                    src={Logo}
+                    alt="Culture Stay Logo"
+                    className="inline-block w-full"
+                  />
                 </a>
                 <div>
                   <span>
                     <PlaceIcon sx={{ color: '#c92327', mr: 1, my: 1 }} />
                     <span className="text-[#636262]">
-                      Trường đại học Bách Khoa Đà Nẵng
+                      Trụ sở chính: 123 Phố Văn Hóa, Hà Nội, Việt Nam
                     </span>
                   </span>
                   <br />
                   <span>
                     <EmailIcon sx={{ color: '#fcce00', mr: 1 }} />
-                    <a className="text-[#636262]" href="nhthien.dut@gmail.com">
-                      aricnc.contact@gmail.com
+                    <a
+                      className="text-[#636262]"
+                      href="mailto:info@culturestay.com"
+                    >
+                      info@culturestay.com
                     </a>
                   </span>
                 </div>
                 <div className="flex gap-4">
-                  <FacebookIcon sx={{ color: '#1976d2' }} />
-                  <InstagramIcon sx={{ color: '#f2106f' }} />
-                  <TwitterIcon sx={{ color: '#1c96e8' }} />
+                  <a
+                    href="https://facebook.com/CultureStay"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FacebookIcon sx={{ color: '#1976d2' }} />
+                  </a>
+                  <a
+                    href="https://instagram.com/CultureStay"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <InstagramIcon sx={{ color: '#f2106f' }} />
+                  </a>
+                  <a
+                    href="https://twitter.com/CultureStay"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <TwitterIcon sx={{ color: '#1c96e8' }} />
+                  </a>
                 </div>
               </div>
               <div className="flex flex-col items-center font-semibold pt-4 sm:pt-0">
@@ -51,65 +76,65 @@ const Footer = () => {
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  AirCover
+                  Chính sách bảo mật
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Chống phân biệt đối xử
+                  Điều khoản sử dụng
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Hỗ trợ người khuyết tật
+                  Hỗ trợ khách hàng
                 </a>
               </div>
               <div className="flex flex-col items-center font-semibold pt-4 sm:pt-0">
                 <div className="mb-4">
-                  <div className="font-bold uppercase">Đón tiếp khách</div>
+                  <div className="font-bold uppercase">Khám phá</div>
                 </div>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Cho thuê nhà trên Airbnb
+                  Điểm đến phổ biến
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  AirCover cho Chủ nhà
+                  Trải nghiệm văn hóa
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Tài nguyên về đón tiếp khách
+                  Blog du lịch
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Diễn đàn cộng đồng
+                  Sự kiện và lễ hội
                 </a>
               </div>
               <div className="flex flex-col items-center font-semibold pt-4 sm:pt-0">
                 <div className="mb-4">
-                  <div className="font-bold uppercase">AirCnC</div>
+                  <div className="font-bold uppercase">Về chúng tôi</div>
                 </div>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Trang tin tức
+                  Giới thiệu Culture Stay
                 </a>
                 <a
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Tính năng mới
+                  Sứ mệnh và tầm nhìn
                 </a>
                 <a
                   href="#"
@@ -121,7 +146,7 @@ const Footer = () => {
                   href="#"
                   className="py-2 font-normal text-[#636262] transition hover:text-[#302dd7]"
                 >
-                  Nhà đầu tư
+                  Liên hệ
                 </a>
               </div>
             </div>

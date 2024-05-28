@@ -118,7 +118,7 @@ const FormPostReview = ({ propertyId, getListReviewProperty }: PropsType) => {
 
   return (
     <>
-      <h2 className="text-xl text-cyan-800 font-bold pb-4 pt-5">
+      <h2 className="text-xl text-[#ff385c] font-bold pb-4 pt-5">
         Đánh giá của bạn
       </h2>
       {true ? (
@@ -373,7 +373,9 @@ const FormPostReview = ({ propertyId, getListReviewProperty }: PropsType) => {
           )}
         </div>
       ) : (
-        <p>Hãy đặt phòng để trải nghiệm và quay lại đây đánh giá !</p>
+        <p className="text-gray-600">
+          Hãy đặt phòng để trải nghiệm và quay lại đây đánh giá !
+        </p>
       )}
     </>
   )

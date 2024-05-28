@@ -19,7 +19,7 @@ const Title = ({ title, address, city }: ITitleProps) => {
       <Breadcrumbs aria-label="breadcrumb">
         <Link
           href={routes.home.generatePath()}
-          className="hover:underline hover:text-cyan-600"
+          className="hover:underline hover:text-[#ff385c]"
         >
           Trang chủ
         </Link>
@@ -27,12 +27,14 @@ const Title = ({ title, address, city }: ITitleProps) => {
       </Breadcrumbs>
       <div className="flex justify-between items-start py-4">
         <div className="flex-auto pr-12">
-          <h1 className="font-bold text-2xl  text-cyan-800 line-clamp-1">
+          <h1 className="font-bold text-2xl  text-gray-600 line-clamp-1">
             {title}
           </h1>
-          <p className="text-gray-500 py-3">
+          <p className="text-gray-500 py-3 flex items-end gap-3">
             <PlaceIcon sx={{ color: '#c92327' }} />
-            {address} - {city}
+            <span>
+              {address} - {city}
+            </span>
           </p>
         </div>
         <div className="flex min-w-[200px]">

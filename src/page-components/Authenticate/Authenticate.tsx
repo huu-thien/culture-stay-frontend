@@ -2,7 +2,8 @@
 import LoginForm from '@/src/page-components/Authenticate/Forms/LoginForm'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import BannerAuthenticatie from '@/src/assets/images/banner-authenticate.webp'
+import BannerAuthenticatie from '@/src/assets/images/payment-failed.jpg'
+
 import { AuthenticateType } from '@/src/page-components/Authenticate/Authenticate.type'
 import RegisterForm from '@/src/page-components/Authenticate/Forms/RegisterForm'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -10,6 +11,7 @@ import Cookies from 'js-cookie'
 import { routes } from '@/src/routes'
 import { useRouter } from 'next/navigation'
 import { createTheme, ThemeProvider } from '@mui/material'
+import { THEME_DEFAULT } from '@/src/constant'
 
 const clientID = process.env.NEXT_PUBLIC_CLIENT_GOOGLE_ID
 
@@ -17,11 +19,7 @@ const Authenticate = () => {
   const [authenticatetype, setAuthenticateType] = useState<AuthenticateType>(
     AuthenticateType.LOGIN
   )
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Lexend',
-    },
-  })
+  const theme = createTheme(THEME_DEFAULT)
   // const router = useRouter()
   // useEffect(() => {
   //   const token = Cookies.get('jwt_token')

@@ -55,18 +55,18 @@ const RegisterForm = ({ setAuthenticateType }: IRegisterFormProps) => {
     <div className="p-6 max-[991px]:w-full rounded-2xl shadow-2xl">
       <div className="text-center">
         <Button variant="outlined" size="small" startIcon={<ArrowBackIcon />}>
-          <Link href="/" className=" text-blue-700">
+          <Link href="/" className=" text-[#ff385c]">
             Về trang chủ
           </Link>
         </Button>
-        <h3 className="mt-6 text-blue-800  font-bold text-3xl md:text-3xl">
+        <h3 className="mt-6 text-gray-600  font-bold text-3xl md:text-3xl">
           Đăng kí với Culture Stay 💕
         </h3>
         <div className="mx-auto mt-4 max-w-[480px] mb-5 md:mb-6 lg:mb-8">
-          <div className="text-sm  text-cyan-700">
+          <div className="text-sm  text-gray-600">
             Bạn đã có tài khoản ? &nbsp;
             <span
-              className="underline text-blue-700 cursor-pointer"
+              className="underline text-gray-600 cursor-pointer"
               onClick={() => setAuthenticateType(AuthenticateType.LOGIN)}
             >
               Đăng nhập ngay
@@ -215,7 +215,6 @@ const RegisterForm = ({ setAuthenticateType }: IRegisterFormProps) => {
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </div>
-
                   <Button
                     sx={{
                       height: '50px',

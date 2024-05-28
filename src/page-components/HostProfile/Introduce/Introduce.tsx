@@ -11,7 +11,7 @@ interface Propstype {
 const Introduce = ({ name, introduction, address, city }: Propstype) => {
   return (
     <div className="pb-5">
-      <h4 className="font-semibold text-2xl text-cyan-700">
+      <h4 className="font-semibold text-2xl text-gray-600">
         Thông tin về {name}
       </h4>
       <p className="py-2 flex gap-2 items-end font-thin text-gray-500">
@@ -24,7 +24,7 @@ const Introduce = ({ name, introduction, address, city }: Propstype) => {
       </p>
 
       <p className="py-4 font-thin text-gray-500 line-clamp-3">
-        <span className="font-medium text-cyan-700">Giới thiệu: </span>
+        <span className="font-medium text-gray-600">Giới thiệu: </span>
         {introduction}
       </p>
     </div>

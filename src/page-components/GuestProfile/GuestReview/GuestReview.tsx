@@ -17,7 +17,6 @@ import { CheckGuestStayedInPropertyOfHost } from '@/src/apis/guest'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 import { DEFAULT_DATA_REVIEW } from '@/src/page-components/HostProfile/HostProfile.type'
 
-
 const labels: { [index: string]: string } = {
   1: 'Quá tệ',
   2: 'Tệ',
@@ -65,8 +64,7 @@ const GuestReview = ({
     try {
       const { data } = await CheckGuestStayedInPropertyOfHost(guestId)
       setIsStayed(data)
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   useEffect(() => {
@@ -107,7 +105,7 @@ const GuestReview = ({
 
   return (
     <div className="py-4">
-      <h2 className="font-semibold text-2xl text-cyan-700 py-4">
+      <h2 className="font-semibold text-2xl text-gray-600 py-4">
         Đánh giá về {name}
       </h2>
       <>
@@ -161,12 +159,12 @@ const GuestReview = ({
                 Đóng
               </Button>
             </DialogActions>
-            <h2 className="text-center font-medium text-xl text-cyan-700">
+            <h2 className="text-center font-medium text-xl text-gray-600">
               Nhận xét về khách {name}
             </h2>
             <DialogContent>
               <div>
-                <p className="pb-2 text-cyan-700">Sự hài lòng của bạn</p>
+                <p className="pb-2 text-gray-600">Sự hài lòng của bạn</p>
                 <div className="flex items-center gap-4 py-1">
                   <p className="text-gray-700 min-w-[120px]">Địa điểm:</p>
                   <Rating
@@ -185,7 +183,7 @@ const GuestReview = ({
                     }
                   />
                   {dataReview.rating !== null && (
-                    <p className="text-xs text-cyan-700 ">
+                    <p className="text-xs text-gray-600 ">
                       {
                         labels[
                           hoverGuest !== -1 ? hoverGuest : dataReview?.rating
@@ -197,7 +195,7 @@ const GuestReview = ({
               </div>
 
               <div>
-                <p className="pt-4 pb-2 text-cyan-700">Nội dung đánh giá</p>
+                <p className="pt-4 pb-2 text-gray-600">Nội dung đánh giá</p>
                 <textarea
                   rows={4}
                   className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none"

@@ -30,7 +30,7 @@ const BannerIntroduce = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
         {introduce.map((prop, propIndex) => (
           <div key={propIndex} className="py-4">
-            <h2 className="font-semibold text-cyan-700 pb-4">{prop.title}</h2>
+            <h2 className="font-semibold text-gray-600 pb-4">{prop.title}</h2>
             <p className="font-thin text-gray-600">{prop.describe}</p>
           </div>
         ))}

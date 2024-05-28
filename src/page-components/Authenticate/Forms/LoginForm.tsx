@@ -27,13 +27,6 @@ import { routes } from '@/src/routes'
 import { toast } from 'react-toastify'
 import { handleSaveLogin } from '@/src/utils/common'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
-// import { Link, useNavigate } from 'react-router-dom';
-// import ButtonLoginGoogle from '@/components/Authenticate/ButtonLoginGoogle';
-// import { initialValues, LoginSchema } from '@/helpers/AuthenticateValidate/LoginValidate';
-// import { postLogin } from '@/services/AuthService/authService';
-// import { toast } from 'react-toastify';
-// import { useDispatch } from 'react-redux';
-// import { saveUserLogin } from '@/redux-toolkit/auth.slice';
 
 interface ILoginFormProps {
   setAuthenticateType: React.Dispatch<React.SetStateAction<AuthenticateType>>
@@ -81,18 +74,18 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
     <div className="p-6 max-[991px]:w-full rounded-2xl shadow-2xl bg-white">
       <div className="text-center">
         <Button variant="outlined" size="small" startIcon={<ArrowBackIcon />}>
-          <Link href="/" className=" text-blue-700">
+          <Link href="/" className=" text-[#ff385c]">
             Về trang chủ
           </Link>
         </Button>
-        <h3 className="mt-6 text-blue-800 font-bold text-2xl md:text-3xl">
+        <h3 className="mt-6 text-gray-600 font-bold text-2xl md:text-3xl">
           Đăng nhập với CultureStay 💕
         </h3>
         <div className="mx-auto mt-4 max-w-[480px] mb-5 md:mb-6 lg:mb-8 ">
-          <div className="text-sm  text-cyan-700">
+          <div className="text-sm text-gray-600">
             Bạn chưa có tài khoản ? &nbsp;
             <span
-              className="underline text-blue-700 cursor-pointer"
+              className="underline cursor-pointer text-gray-600"
               onClick={() => setAuthenticateType(AuthenticateType.REGISTER)}
             >
               Đăng kí ngay

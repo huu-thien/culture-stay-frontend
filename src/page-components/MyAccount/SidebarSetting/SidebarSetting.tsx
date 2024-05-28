@@ -6,13 +6,13 @@ import SummarizeIcon from '@mui/icons-material/Summarize'
 const SidebarSetting = () => {
   return (
     <div className="w-[300px] text-gray-600">
-      <h2 className="text-cyan-600 text-xl font-semibold">Settings</h2>
+      <h2 className="text-gray-600 text-xl font-semibold">Settings</h2>
       <div className="p-4 my-4 shadow-lg rounded-md border">
         <div className="flex items-center gap-2">
-          <FolderSharedIcon color="primary" />
-          <span className="text-cyan-600">Culture Stay</span>
+          <FolderSharedIcon sx={{ color: 'gray' }} />
+          <span className="text-gray-600">Culture Stay</span>
         </div>
-        <p className="text-cyan-600 font-semibold">Account Centers</p>
+        <p className="text-gray-600 font-semibold">Account Centers</p>
         <p className="text-xs text-gray-400 py-4">
           Manage your connected experiences and account settings across Meta
           technologies.
@@ -31,7 +31,9 @@ const SidebarSetting = () => {
             <span>Ad Preference</span>
           </li>
         </ul>
-        <p className="text-sm text-cyan-600 pt-2">See more in Account center</p>
+        <p className="text-sm text-gray-600 pt-2">
+          See more in Account center
+        </p>
       </div>
     </div>
   )

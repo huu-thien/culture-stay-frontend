@@ -18,6 +18,7 @@ import { IPropertyImage } from '@/src/page-components/Home/Properties/Properties
 import { toast } from 'react-toastify'
 import { postAddToWishlists, postRemoveWishlists } from '@/src/apis/wishlist'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { PRIMARY_COLOR } from '@/src/constant'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -133,7 +134,7 @@ const PropertyItem = ({
         <div className="p-4">
           <div className="flex justify-between">
             <Link href={routes.detailProperty.generatePath(propertyId)}>
-              <h2 className="text-md text-[#3c3834] font-semibold hover:text-cyan-800 line-clamp-2 h-[50px] pr-6">
+              <h2 className="text-md text-gray-700 font-semibold hover:text-[#ff385c] line-clamp-2 h-[50px] pr-6 transition duration-300">
                 {title}
               </h2>
             </Link>
@@ -143,11 +144,7 @@ const PropertyItem = ({
             </span>
           </div>
           <div className="flex justify-between py-3">
-            <p>
-              <Link href="/review" className="text-cyan-700">
-                Review ({numberOfReviews})
-              </Link>
-            </p>
+            <p className="text-gray-600">Review ({numberOfReviews})</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="cursor-pointer">
@@ -156,14 +153,14 @@ const PropertyItem = ({
                   aria-label="add-wishlist"
                   onClick={() => handleRemoveWishlistProperty(propertyId)}
                 >
-                  <FavoriteIcon sx={{ color: '#c92327' }} />
+                  <FavoriteIcon sx={{ color: PRIMARY_COLOR }} />
                 </IconButton>
               ) : (
                 <IconButton
                   aria-label="add-wishlist"
                   onClick={() => handleAddWishlistProperty(propertyId)}
                 >
-                  <FavoriteBorderIcon sx={{ color: '#257b9a' }} />
+                  <FavoriteBorderIcon sx={{ color: PRIMARY_COLOR }} />
                 </IconButton>
               )}
             </div>

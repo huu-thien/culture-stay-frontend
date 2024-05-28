@@ -180,12 +180,9 @@ const FilterProperty = ({
       </div>
       {/* Button */}
       <div className="flex gap-4 justify-center">
-        {/* <Button variant='outlined' size='large' sx={{ color: 'red', borderColor: 'red' }} onClick={handlerClearFilter}>
-          Clear filter
-        </Button> */}
         <Tooltip title="Xóa bộ lọc">
           <IconButton aria-label="clear-filter" onClick={handlerClearFilter}>
-            <DeleteForeverIcon sx={{ color: '#c92327', fontSize: 24 }} />
+            <DeleteForeverIcon sx={{ color: 'gray', fontSize: 24 }} />
           </IconButton>
         </Tooltip>
         <Button

@@ -1,5 +1,19 @@
-
 export const BACK_END_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL
+
+export const THEME_DEFAULT = {
+  typography: {
+    fontFamily: 'Lexend',
+  },
+  palette: {
+    primary: {
+      light: '#ff385c',
+      main: '#ff385c',
+      dark: '#ff385c',
+      contrastText: '#fff',
+    },
+  },
+}
+export const PRIMARY_COLOR = '#ff385c'
 
 export const DEFAULT_PAGE = 1
 export const DEFAULT_PAGE_SIZE = 12

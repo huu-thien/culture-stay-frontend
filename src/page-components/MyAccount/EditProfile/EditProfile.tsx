@@ -86,7 +86,7 @@ const EditProfile = () => {
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between">
-        <h2 className="text-cyan-600 text-xl font-semibold">Edit Profile</h2>
+        <h2 className="text-gray-600 text-xl font-semibold">Edit Profile</h2>
         <div>
           {isEdit ? (
             <div className="flex gap-4">
@@ -134,7 +134,7 @@ const EditProfile = () => {
             />
             <div className="flex flex-col gap-1">
               <span className="font-bold">{myInfo?.fullName}</span>
-              <span className="text-sm text-cyan-700">{myInfo?.email}</span>
+              <span className="text-sm text-gray-600">{myInfo?.email}</span>
             </div>
             {myInfo?.isHost ? (
               <Chip
@@ -160,7 +160,7 @@ const EditProfile = () => {
           </Button>
         </div>
         <div className="py-4">
-          <p className="font-medium text-sm pb-2 text-cyan-700">Introduce</p>
+          <p className="font-medium text-sm pb-2 text-gray-600">Introduce</p>
           <textarea
             rows={4}
             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none
@@ -177,7 +177,7 @@ const EditProfile = () => {
           <div className="mb-2 w-1/2">
             <label
               htmlFor="fullName"
-              className="font-medium text-sm pb-2 text-cyan-700"
+              className="font-medium text-sm pb-2 text-gray-600"
             >
               Your full name
             </label>
@@ -199,7 +199,7 @@ const EditProfile = () => {
           <div className="mb-2 w-1/2">
             <label
               htmlFor="phoneNumber"
-              className="font-medium text-sm pb-2 text-cyan-700"
+              className="font-medium text-sm pb-2 text-gray-600"
             >
               Your phone number
             </label>
@@ -224,7 +224,7 @@ const EditProfile = () => {
           <div className="mb-2 w-1/2">
             <label
               htmlFor="fullName"
-              className="font-medium text-sm pb-2 text-cyan-700"
+              className="font-medium text-sm pb-2 text-gray-600"
             >
               Your city
             </label>
@@ -253,7 +253,7 @@ const EditProfile = () => {
           <div className="mb-2 w-1/2">
             <label
               htmlFor="address"
-              className="font-medium text-sm pb-2 text-cyan-700"
+              className="font-medium text-sm pb-2 text-gray-600"
             >
               Your address
             </label>

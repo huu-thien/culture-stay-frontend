@@ -63,7 +63,7 @@ const BookingProperty = ({ propertyId, maxGuestCount }: Propstype) => {
   return (
     <div className="border shadow-xl rounded-xl ">
       <div className="grid p-5 max-w-[400xp]">
-        <p className="py-4 text-cyan-800 text-md text-center">
+        <p className="py-4 text-gray-600 text-md text-center">
           Với sứ mệnh kết nối nên những căn phòng này là hoàn toàn miễn phí 💕
         </p>
         <Divider />

@@ -40,7 +40,7 @@ const GeneralInformation = ({
               className="w-[100px] h-[100px] rounded-full"
             />
             <div>
-              <p className="text-center font-bold text-xl py-2 text-cyan-700">
+              <p className="text-center font-bold text-xl py-2 text-gray-600">
                 {name}
               </p>
               {userRole === USER_ROLE.HOST ? (
@@ -92,7 +92,7 @@ const GeneralInformation = ({
           <li className="py-1">✅ Địa chỉ email</li>
           <li className="py-1">✅ Số điện thoại</li>
         </ul>
-        <p className='py-2 underline text-xs text-cyan-700'>Tìm hiểu về quy trình xác minh danh tính</p>
+        <p className='py-2 underline text-xs text-gray-600'>Tìm hiểu về quy trình xác minh danh tính</p>
       </div>
     </div>
   )

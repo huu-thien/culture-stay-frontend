@@ -44,7 +44,7 @@ const PropertyForRent = ({ hostId }: PropsType) => {
 
   return (
     <div className="mt-2">
-      <h2 className="font-semibold text-2xl text-cyan-700 py-4">
+      <h2 className="font-semibold text-2xl text-[#ff385c] py-4">
         Danh sách phòng cho thuê
       </h2>
       {isLoading ? (
