@@ -9,6 +9,7 @@ import ConfirmBookingImg from '@/assets/images/confirm-booking.png'
 import Image from 'next/image'
 import { routes } from '@/src/routes'
 import Loading from '@/src/components/Loading/Loading'
+import { toast } from 'react-toastify'
 
 const BookingConfirm = () => {
   const searchParams = useSearchParams()
@@ -22,7 +23,26 @@ const BookingConfirm = () => {
 
   const [noteValue, setNoteValue] = useState('')
 
-  const handleRequestBooking = () => {}
+  const handleRequestBooking = () => {
+    const resolveAfter2Sec = new Promise((resolve) => setTimeout(resolve, 1400))
+    toast
+      .promise(resolveAfter2Sec, {
+        pending: 'Đang xử lý !',
+        success: 'Đợi kết quả',
+      })
+      .then(() => {
+        router.push(
+          routes.bookingResult.sendData.generatePath(
+            propertyId,
+            guestId,
+            checkInDate,
+            checkOutDate,
+            numberOfGuest,
+            noteValue
+          )
+        )
+      })
+  }
   const isReceiveData =
     propertyId && guestId && checkInDate && checkOutDate && numberOfGuest
 
