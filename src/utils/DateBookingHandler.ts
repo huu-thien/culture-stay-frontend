@@ -32,4 +32,5 @@ export const getNextYearDate = (): string => {
   return format(nextYear, 'yyyy-MM-dd')
 }
 
-export const formatDateYYYYMMDD = (date: string | Date) => format(date, 'yyyy-MM-dd')
+export const formatDateYYYYMMDD = (date: string | Date) =>
+  format(date, 'yyyy-MM-dd')
