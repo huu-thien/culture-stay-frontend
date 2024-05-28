@@ -44,4 +44,18 @@ export const routes = {
     },
     generatePath: () => '/booking-confirm',
   },
+  bookingResult: {
+    sendData: {
+      generatePath: (
+        propertyId: number | string,
+        guestId: number | string,
+        checkInDate: Date | string,
+        checkOutDate: Date | string,
+        numberOfGuest: number | string,
+        note: string
+      ) =>
+        `/booking-result?propertyId=${propertyId}&guestId=${guestId}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&numberOfGuest=${numberOfGuest}&note=${note}`,
+    },
+    generatePath: () => '/booking-result',
+  },
 }
