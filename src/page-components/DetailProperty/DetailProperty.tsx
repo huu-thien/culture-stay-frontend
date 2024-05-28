@@ -81,11 +81,8 @@ const DetailProperty = () => {
             />
           </div>
           <BookingProperty
-            pricePerNight={1}
-            propertyId={1}
-            cleaningFee={1}
-            maxAdultCount={1}
-            maxChildCount={1}
+            propertyId={+propertyDetail?.id}
+            maxGuestCount={propertyDetail?.maxGuestCount}
           />
         </div>
         <FormPostReview

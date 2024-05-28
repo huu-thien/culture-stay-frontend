@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { IconButton, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 
-const QuantityContained = () => {
-  const [quantity, setQuantity] = React.useState(0)
+interface QuantityContainedProps {
+  guestCount: number
+  setGuestCount: Dispatch<SetStateAction<number>>
+  maxGuestCount: number
+}
 
+const QuantityContained = ({ guestCount, setGuestCount, maxGuestCount }) => {
   const handleMinusQuantity = () => {
-    if (quantity === 0) return
-    setQuantity((prev) => prev - 1)
+    if (guestCount === 0) return
+    setGuestCount((prev) => prev - 1)
   }
   const handlePlusQuantity = () => {
-    setQuantity((prev) => prev + 1)
+    if (guestCount >= maxGuestCount) return
+    setGuestCount((prev) => prev + 1)
   }
 
   return (
@@ -22,15 +27,16 @@ const QuantityContained = () => {
           aria-label="add"
           sx={{ border: 1 }}
           onClick={handleMinusQuantity}
-          disabled={quantity === 0}
+          disabled={guestCount === 0}
         >
           <RemoveIcon />
         </IconButton>
-        <p className="text-md text-gray-500">{quantity}</p>
+        <p className="text-md text-gray-500">{guestCount}</p>
         <IconButton
           aria-label="minus"
           sx={{ border: 1 }}
           onClick={handlePlusQuantity}
+          disabled={guestCount >= maxGuestCount}
         >
           <AddIcon />
         </IconButton>

@@ -31,4 +31,17 @@ export const routes = {
   hostManageProperty: {
     generatePath: () => '/host-manage-property',
   },
+  bookingConfirm: {
+    sendData: {
+      generatePath: (
+        propertyId: number,
+        guestId: number,
+        checkInDate: Date,
+        checkOutDate: Date,
+        numberOfGuest: number
+      ) =>
+        `/booking-confirm?propertyId=${propertyId}&guestId=${guestId}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&numberOfGuest=${numberOfGuest}`,
+    },
+    generatePath: () => '/booking-confirm',
+  },
 }
