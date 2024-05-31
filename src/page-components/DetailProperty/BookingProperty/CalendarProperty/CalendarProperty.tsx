@@ -5,7 +5,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
-import { formatDateYYYYMMDD, getNextYearDate, mergeBusyDates } from '@/src/utils/DateBookingHandler'
+import {
+  formatDateYYYYMMDD,
+  getNextYearDate,
+  mergeBusyDates,
+} from '@/src/utils/DateBookingHandler'
+import { getListBookingOfproperty } from '@/src/apis/booking'
 
 // import { getCurrentDate, getNextYearDate } from '@/helpers/GetTime/getTime'
 // import { mergeBusyDates } from '@/hooks/mergeBusyDates'
@@ -33,22 +38,23 @@ const CalendarProperty = ({
   useEffect(() => {
     const currentDate = formatDateYYYYMMDD(new Date())
     const nextyear = getNextYearDate()
-    // getScheduleBookingOfProperty(propertyId, currentDate, nextyear)
+    getScheduleBookingOfProperty(propertyId, currentDate, nextyear)
   }, [propertyId, dateStart, dateEnd])
 
-  // const getScheduleBookingOfProperty = async (
-  //   propertyId: number,
-  //   fromDate: string,
-  //   toDate: string
-  // ) => {
-  //   try {
-  //     const response = await getScheduleBooking(propertyId, fromDate, toDate)
-  //     if (response && response.status === 200) {
-  //       setScheduleBooking(response.data)
-  //     }
-  //   } catch (err) {
-  //   }
-  // }
+  const getScheduleBookingOfProperty = async (
+    propertyId: number,
+    fromDate: string,
+    toDate: string
+  ) => {
+    try {
+      const { data } = await getListBookingOfproperty(
+        propertyId,
+        fromDate,
+        toDate
+      )
+      setScheduleBooking(data)
+    } catch (err) {}
+  }
   const shouldDisableDate = (date: Date) => {
     return (
       disabledDates.some(

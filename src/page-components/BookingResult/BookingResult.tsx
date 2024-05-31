@@ -9,36 +9,19 @@ import Loading from '@/src/components/Loading/Loading'
 import Link from 'next/link'
 import PaymentSuccessImage from '@/assets/images/payment-success.webp'
 import PaymentFailedImage from '@/assets/images/payment-failed.jpg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { createBooking } from '@/src/apis/booking'
+import { resolve } from 'node:path/win32'
 
 const BookingResult = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
-
-  const propertyId = searchParams.get('propertyId')
-  const guestId = searchParams.get('guestId')
-  const checkInDate = searchParams.get('checkInDate')
-  const checkOutDate = searchParams.get('checkOutDate')
-  const numberOfGuest = searchParams.get('numberOfGuest')
-  const note = searchParams.get('note')
-
-  const [isSuccess, setIsSuccess] = useState<boolean | null>(true)
-
-  const isReceiveData =
-    propertyId && guestId && checkInDate && checkOutDate && numberOfGuest
+  const isSuccess = searchParams.get('isSuccess')
 
   return (
     <MainLayout>
       <>
-        {isSuccess === null && (
-          <div className="flex flex-col items-center my-4 h-screen ">
-            <h2 className="text-2xl font-bold text-cyan-800 my-4">
-              Đang tiến hành đặt phòng
-            </h2>
-            <Loading />
-          </div>
-        )}
-        {isSuccess === true && (
+        {isSuccess === 'true' && (
           <div className="flex flex-col items-center my-4 h-screen ">
             <Image
               className="w-1/2 my-4"
@@ -49,14 +32,14 @@ const BookingResult = () => {
               Yêu cầu đặt phòng thành công
             </h2>
             <p className="text-gray-600 mb-4">
-              Đơn đặt phòng của bạn đã được xác nhận.
+              Đơn đặt phòng của bạn đang được chủ nhà xử lý
             </p>
             <Button variant="contained">
               <Link href="/list-booking-guest">Quản lý đặt phòng</Link>
             </Button>
           </div>
         )}
-        {isSuccess === false && (
+        {isSuccess === 'false' && (
           <div className="flex flex-col items-center my-4 h-screen ">
             <Image
               className="w-2/5 my-4"

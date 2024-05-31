@@ -10,6 +10,8 @@ import Image from 'next/image'
 import { routes } from '@/src/routes'
 import Loading from '@/src/components/Loading/Loading'
 import { toast } from 'react-toastify'
+import { createBooking } from '@/src/apis/booking'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 const BookingConfirm = () => {
   const searchParams = useSearchParams()
@@ -22,26 +24,31 @@ const BookingConfirm = () => {
   const numberOfGuest = searchParams.get('numberOfGuest')
 
   const [noteValue, setNoteValue] = useState('')
-
-  const handleRequestBooking = () => {
-    const resolveAfter2Sec = new Promise((resolve) => setTimeout(resolve, 1400))
-    toast
-      .promise(resolveAfter2Sec, {
-        pending: 'Đang xử lý !',
-        success: 'Đợi kết quả',
-      })
-      .then(() => {
-        router.push(
-          routes.bookingResult.sendData.generatePath(
-            propertyId,
-            guestId,
-            checkInDate,
-            checkOutDate,
-            numberOfGuest,
-            noteValue
-          )
-        )
-      })
+  const handleBooking = async () => {
+    try {
+      const request = {
+        propertyId: propertyId,
+        checkInDate: new Date(checkInDate),
+        checkOutDate: new Date(checkOutDate),
+        numberOfGuest: +numberOfGuest,
+        note: noteValue,
+      }
+      const resolveAfter2Sec = new Promise((resolve) =>
+        setTimeout(resolve, 1500)
+      )
+      toast
+        .promise(resolveAfter2Sec, {
+          pending: TOAST_MESSAGE.booking.create.pending,
+          success: TOAST_MESSAGE.booking.create.success,
+          error: TOAST_MESSAGE.booking.create.error,
+        })
+        .then(async () => {
+          await createBooking(request)
+          router.push(routes.bookingResult.sendData.generatePath(true))
+        })
+    } catch (err) {
+      router.push(routes.bookingResult.sendData.generatePath(false))
+    }
   }
   const isReceiveData =
     propertyId && guestId && checkInDate && checkOutDate && numberOfGuest
@@ -100,7 +107,7 @@ const BookingConfirm = () => {
                 variant="contained"
                 fullWidth
                 size="large"
-                onClick={handleRequestBooking}
+                onClick={handleBooking}
               >
                 Yêu cầu đặt phòng
               </Button>

@@ -55,4 +55,11 @@ export const TOAST_MESSAGE = {
       error: 'Xóa phòng thất bại !',
     },
   },
+  booking: {
+    create: {
+      pending: 'Đang xử lý !',
+      success: 'Tạo yêu cầu đặt phòng thành công',
+      error: 'Tạo yêu cầu đặt phòng thất bại !',
+    },
+  },
 }
