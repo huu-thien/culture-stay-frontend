@@ -50,11 +50,12 @@ const BookingResult = () => {
               Yêu cầu đặt phòng thất bại !
             </h2>
             <p className="text-gray-600 pb-4">
-              Booking của bạn vẫn sẽ được lưu ở trạng thái đang chờ xác nhận. Đi
-              đến trang quản lý để tiến hành yêu cầu đặt phòng lại nhé !
+              Dường như đã có lỗi xảy ra, vui lòng thử lại sau !
             </p>
             <Button variant="contained">
-              <Link href="/list-booking-guest">Quản lý đặt phòng</Link>
+              <Link href={routes.guestManageBooking.generatePath()}>
+                Quản lý đặt phòng
+              </Link>
             </Button>
           </div>
         )}

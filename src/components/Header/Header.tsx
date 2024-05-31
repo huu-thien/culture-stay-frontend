@@ -162,7 +162,7 @@ const Header = () => {
               <MenuItem onClick={handleClose}>
                 <Link
                   className="w-full text-gray-600"
-                  href="/list-booking-guest"
+                  href={routes.guestManageBooking.generatePath()}
                 >
                   Quản lý đặt phòng
                 </Link>
