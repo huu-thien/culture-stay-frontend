@@ -21,3 +21,10 @@ export const getListBookingOfGuest = (guestId) => {
     `${BOOKING_PATH}/guest/${guestId}?OrderBy=CreatedAt&IsDescending=false`
   )
 }
+
+export const updateStatusBooking = (bookingId, status) => {
+  return http.put(`${BOOKING_PATH}/${bookingId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ status }),
+  })
+}

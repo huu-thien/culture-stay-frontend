@@ -37,3 +37,12 @@ export enum STATUS_PROPERTY {
   APPROVED = 'Approved',
   REJECTED = 'Radio',
 }
+export enum STATUS_BOOKING {
+  Pending = 1,
+  Confirmed = 2,
+  CheckedIn = 3,
+  Rejected = 4,
+  CancelledBeforeCheckIn = 5,
+  CancelledAfterCheckIn = 6,
+  Completed = 7,
+}

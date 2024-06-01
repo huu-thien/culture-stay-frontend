@@ -38,7 +38,8 @@ const CalendarProperty = ({
   useEffect(() => {
     const currentDate = formatDateYYYYMMDD(new Date())
     const nextyear = getNextYearDate()
-    getScheduleBookingOfProperty(propertyId, currentDate, nextyear)
+    propertyId &&
+      getScheduleBookingOfProperty(propertyId, currentDate, nextyear)
   }, [propertyId, dateStart, dateEnd])
 
   const getScheduleBookingOfProperty = async (
