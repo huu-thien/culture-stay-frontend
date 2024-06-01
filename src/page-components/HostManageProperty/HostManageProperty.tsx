@@ -1,7 +1,7 @@
 'use client'
 
 import MainLayout from '@/src/components/layouts/MainLayout'
-import ManageProperty from '@/src/page-components/HostManageProperty/ManageProperty'
+import HostManagePropertyAndBooking from '@/src/page-components/HostManageProperty/TableManagePropertyAndBooking'
 import { routes } from '@/src/routes'
 import { Breadcrumbs, Button } from '@mui/material'
 import Link from 'next/link'
@@ -23,7 +23,7 @@ const HostManageProperty = () => {
           <Link href={routes.becomeHost.generatePath()}>Thêm phòng</Link>
         </Button>
       </div>
-      <ManageProperty />
+      <HostManagePropertyAndBooking />
     </MainLayout>
   )
 }

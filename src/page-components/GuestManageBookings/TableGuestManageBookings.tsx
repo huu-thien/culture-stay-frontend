@@ -29,6 +29,7 @@ import { formatDateYYYYMMDD } from '@/src/utils/DateBookingHandler'
 import { FileObject } from '@/src/page-components/BecomeHost/constant'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import ImageListMUI from '@mui/material/ImageList'
+import Loading from '@/src/components/Loading/Loading'
 
 function createData(
   id: number,
@@ -143,7 +144,6 @@ function Row(props: { row: ReturnType<typeof createData> }) {
               <button
                 type="button"
                 className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-                // onClick={() => handlePaymentAgain(row.id)}
               >
                 Nhắn tin cho chủ nhà
               </button>
@@ -319,14 +319,15 @@ function Row(props: { row: ReturnType<typeof createData> }) {
   )
 }
 
-export default function CollapsibleTable() {
+export default function TableGuestManageBookings() {
   const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
   const [bookings, setBookings] = useState([])
   const [totalPages, setTotalPages] = useState(0)
-  const [currentPage, setCurerntPage] = useState(DEFAULT_PAGE)
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
+  const [loading, setLoading] = useState(false)
 
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
-    setCurerntPage(page)
+    setCurrentPage(page)
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -335,6 +336,7 @@ export default function CollapsibleTable() {
 
   const fetchBookings = async () => {
     try {
+      setLoading(true)
       const { data, totalPages } = await getListBookingOfGuest(userLogin?.id)
       setTotalPages(totalPages)
       const rows = data.map((booking) =>
@@ -349,44 +351,54 @@ export default function CollapsibleTable() {
         )
       )
       setBookings(rows)
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
     userLogin && fetchBookings()
   }, [userLogin?.id])
+  console.log(bookings)
 
   return (
-    <div className="w-full">
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="right">ID</TableCell>
-              <TableCell>Tên phòng</TableCell>
-              <TableCell align="right">Tên chủ phòng</TableCell>
-              <TableCell align="right">Ngày Check In</TableCell>
-              <TableCell align="right">Ngày Checkout </TableCell>
-              <TableCell align="right">Trạng thái</TableCell>
-              <TableCell align="right">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {bookings.map((booking) => (
-              <Row key={booking.propertyName} row={booking} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div className="py-8 w-full flex items-center justify-center">
-        <Pagination
-          color="primary"
-          count={totalPages}
-          page={currentPage}
-          onChange={handleChangePage}
-          sx={{ mx: 'auto' }}
-        />
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="w-full">
+          <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="right">ID</TableCell>
+                  <TableCell>Tên phòng</TableCell>
+                  <TableCell align="right">Tên chủ phòng</TableCell>
+                  <TableCell align="right">Ngày Check In</TableCell>
+                  <TableCell align="right">Ngày Checkout </TableCell>
+                  <TableCell align="right">Trạng thái</TableCell>
+                  <TableCell align="right">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {bookings.map((booking) => (
+                  <Row key={booking.propertyName} row={booking} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className="py-8 w-full flex items-center justify-center">
+            <Pagination
+              color="primary"
+              count={totalPages}
+              page={currentPage}
+              onChange={handleChangePage}
+              sx={{ mx: 'auto' }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   )
 }

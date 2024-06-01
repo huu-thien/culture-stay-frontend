@@ -61,5 +61,10 @@ export const TOAST_MESSAGE = {
       success: 'Tạo yêu cầu đặt phòng thành công',
       error: 'Tạo yêu cầu đặt phòng thất bại !',
     },
+    update: {
+      pending: 'Đang xử lý !',
+      success: 'Cập nhật yêu cầu đặt phòng thành công',
+      error: 'Cập nhật yêu cầu đặt phòng thất bại !',
+    },
   },
 }
