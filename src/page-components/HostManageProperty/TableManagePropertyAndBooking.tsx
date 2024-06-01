@@ -69,7 +69,7 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
 
   const [openModalDelete, setOpenModalDelete] = React.useState(false)
 
-  const handlerDeleteProperty = async (id: number) => {
+  const handleDeleteProperty = async (id: number) => {
     try {
       await toast.promise(deleteProperty(id), {
         pending: TOAST_MESSAGE.property.delete.pending,
@@ -79,9 +79,7 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
       setIsRefresh(true)
     } catch (error) {}
   }
-  const handlerEditProperty = (id: number) => {
-    console.log('delete property', id)
-  }
+  const handlerEditProperty = (id: number) => {}
 
   const handleChangeSatusBooking = async (
     bookingId: number,
@@ -164,7 +162,7 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
                 </p>
                 <div className="flex gap-4 justify-center ">
                   <Button
-                    onClick={() => handlerDeleteProperty(row.id)}
+                    onClick={() => handleDeleteProperty(row.id)}
                     variant="contained"
                     color="primary"
                   >

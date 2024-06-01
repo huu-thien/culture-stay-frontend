@@ -17,7 +17,6 @@ import {
   Pagination,
   Select,
   SelectChangeEvent,
-  ImageListItem,
 } from '@mui/material'
 import { getListBookingOfGuest } from '@/src/apis/booking'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -26,10 +25,10 @@ import React from 'react'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
 import { formatDateYYYYMMDD } from '@/src/utils/DateBookingHandler'
-import { FileObject } from '@/src/page-components/BecomeHost/constant'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import ImageListMUI from '@mui/material/ImageList'
 import Loading from '@/src/components/Loading/Loading'
+import { toast } from 'react-toastify'
+import { createCancellationTicket } from '@/src/apis/cancellation'
+import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 function createData(
   id: number,
@@ -51,31 +50,46 @@ function createData(
   }
 }
 const CancellationReason = ['PersonalIssue', 'Other']
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props
 
+interface IRowProps {
+  row: ReturnType<typeof createData>
+  setIsRefresh: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Row = ({ row, setIsRefresh }: IRowProps) => {
   const [cancellationReason, setCancellationReason] = useState<string>(
     CancellationReason[0]
   )
   const [reason, setReason] = useState<string>('')
-  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([])
-
   const handleChangeCancellationReason = (event: SelectChangeEvent) => {
     setCancellationReason(event.target.value as string)
   }
-  console.log(cancellationReason)
-
-  const [openModalCancel, setOpenModalCancel] = useState(false)
-  const handleOpenModalCancel = () => setOpenModalCancel(true)
+  const [openModalCancellation, setOpenModalCancellation] = useState(false)
   const handleCloseModalCancel = () => {
-    setOpenModalCancel(false)
+    setOpenModalCancellation(false)
     setCancellationReason(CancellationReason[0])
     setReason('')
-    setSelectedFiles([])
   }
-  // Hàm kiểm tra xem một tệp đã tồn tại trong danh sách chưa
-  const fileExists = (fileName: string): boolean => {
-    return selectedFiles.some((file) => file.name === fileName)
+  console.log(openModalCancellation)
+
+  const createCancellationRequest = async () => {
+    try {
+      const dataCancelBooking = {
+        bookingId: row.id,
+        cancellationReason: cancellationReason,
+        reason: reason,
+        isGuest: true,
+        attachments: [],
+      }
+      await toast.promise(createCancellationTicket(dataCancelBooking), {
+        pending: TOAST_MESSAGE.cancellation.create.pending,
+        success: TOAST_MESSAGE.cancellation.create.success,
+        error: TOAST_MESSAGE.cancellation.create.error,
+      })
+      handleCloseModalCancel()
+      console.log('dataCancelBooking', dataCancelBooking)
+      setIsRefresh(true)
+    } catch (error) {}
   }
 
   return (
@@ -138,168 +152,38 @@ function Row(props: { row: ReturnType<typeof createData> }) {
             />
           )}
         </TableCell>
-        <TableCell align="right">
+        <TableCell>
           <>
             {row.status === 'Pending' && (
-              <button
-                type="button"
-                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-              >
-                Nhắn tin cho chủ nhà
-              </button>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                >
+                  Nhắn tin cho chủ nhà
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                  onClick={() => {
+                    console.log(123)
+
+                    setOpenModalCancellation(true)
+                  }}
+                >
+                  Hủy phòng
+                </button>
+              </div>
             )}
             {row.status === 'Confirmed' && (
               <>
                 <button
                   type="button"
                   className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-                  onClick={handleOpenModalCancel}
+                  onClick={() => setOpenModalCancellation(true)}
                 >
                   Hủy phòng
                 </button>
-                <Dialog
-                  open={openModalCancel}
-                  onClose={handleCloseModalCancel}
-                  maxWidth="xs"
-                  fullWidth
-                >
-                  <DialogActions className="">
-                    <Button onClick={handleCloseModalCancel} color="primary">
-                      Đóng
-                    </Button>
-                  </DialogActions>
-                  <h3 className="text-cyan-800 font-medium uppercase pb-4 text-center">
-                    Đơn hủy phòng
-                  </h3>
-
-                  <DialogContent>
-                    <div className="">
-                      <FormControl fullWidth>
-                        <InputLabel id="cancellationReason">Lý do</InputLabel>
-                        <Select
-                          labelId="cancellationReason"
-                          id="demo-simple-select"
-                          value={cancellationReason}
-                          label="Lý do"
-                          onChange={handleChangeCancellationReason}
-                          size="medium"
-                        >
-                          <MenuItem value={CancellationReason[0]} selected>
-                            Vấn để cá nhân
-                          </MenuItem>
-                          <MenuItem value={CancellationReason[1]}>
-                            Lý do khác
-                          </MenuItem>
-                        </Select>
-                      </FormControl>
-                      <p className="text-sm pt-3 pb-2 text-gray-700">
-                        Mô tả cụ thể
-                      </p>
-                      <textarea
-                        rows={4}
-                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none"
-                        placeholder="Mô tả cụ thể ..."
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                      ></textarea>
-
-                      <p className="text-sm pt-3 pb-2 text-gray-700">
-                        Hình ảnh minh chứng
-                      </p>
-                      <div>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const files = e.target.files
-                            if (files) {
-                              const selectedFileList = Array.from(files)
-                              // Lọc ra các tệp mới không trùng tên
-                              const newFiles: FileObject[] =
-                                selectedFileList.filter(
-                                  (file) => !fileExists(file.name)
-                                )
-
-                              if (newFiles.length > 0) {
-                                // Thêm các tệp mới vào danh sách
-                                setSelectedFiles((prevSelectedFiles) => [
-                                  ...prevSelectedFiles,
-                                  ...newFiles,
-                                ])
-                              }
-                            }
-                          }}
-                          multiple
-                          id="listImage"
-                          style={{ display: 'none' }}
-                        />
-                        <label htmlFor="listImage">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            component="span"
-                            startIcon={<CloudUploadIcon />}
-                            size="small"
-                          >
-                            Upload Images
-                          </Button>
-                        </label>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => {
-                            setSelectedFiles([])
-                            // setFieldValue('listImage', []);
-                          }}
-                          style={{ marginLeft: '10px' }}
-                          size="small"
-                        >
-                          Reset
-                        </Button>
-                        <div>
-                          {selectedFiles.length > 0 && (
-                            <div className="py-2">
-                              {/* <h3 className="text-sm py-2">Selected Images:</h3> */}
-                              <ImageListMUI
-                                sx={{ height: 200 }}
-                                variant="quilted"
-                                cols={1}
-                                rowHeight={200}
-                              >
-                                {selectedFiles.map((file, index) => (
-                                  <ImageListItem key={index}>
-                                    <img
-                                      src={URL.createObjectURL(file)}
-                                      alt={`Image ${index}`}
-                                      loading="lazy"
-                                    />
-                                  </ImageListItem>
-                                ))}
-                              </ImageListMUI>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-end gap-4 pt-8">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={handleCloseModalCancel}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          // onClick={() => handleCancelRequestBooking(row.id)}
-                        >
-                          Yêu cầu hủy phòng
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </>
             )}
             {row.status === 'Completed' && (
@@ -313,6 +197,62 @@ function Row(props: { row: ReturnType<typeof createData> }) {
               </button>
             )}
           </>
+          <Dialog
+            open={openModalCancellation}
+            onClose={handleCloseModalCancel}
+            maxWidth="xs"
+            fullWidth
+          >
+            <h3 className="text-cyan-800 font-medium uppercase py-4 text-center">
+              Đơn hủy phòng
+            </h3>
+            <DialogContent>
+              <div className="">
+                <FormControl fullWidth>
+                  <InputLabel id="cancellationReason">Lý do</InputLabel>
+                  <Select
+                    labelId="cancellationReason"
+                    id="demo-simple-select"
+                    value={cancellationReason}
+                    label="Lý do"
+                    onChange={handleChangeCancellationReason}
+                    size="medium"
+                  >
+                    <MenuItem value={CancellationReason[0]} selected>
+                      Vấn để cá nhân
+                    </MenuItem>
+                    <MenuItem value={CancellationReason[1]}>
+                      Lý do khác
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <p className="text-sm pt-3 pb-2 text-gray-700">Mô tả cụ thể</p>
+                <textarea
+                  rows={4}
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none"
+                  placeholder="Mô tả cụ thể ..."
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                ></textarea>
+                <div className="flex items-center justify-end gap-4 pt-8">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={handleCloseModalCancel}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={createCancellationRequest}
+                  >
+                    Yêu cầu hủy phòng
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -325,6 +265,7 @@ export default function TableGuestManageBookings() {
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
   const [loading, setLoading] = useState(false)
+  const [isRefresh, setIsRefresh] = useState(false)
 
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page)
@@ -358,9 +299,8 @@ export default function TableGuestManageBookings() {
   }
 
   useEffect(() => {
-    userLogin && fetchBookings()
-  }, [userLogin?.id])
-  console.log(bookings)
+    fetchBookings()
+  }, [userLogin?.id, isRefresh])
 
   return (
     <>
@@ -383,7 +323,11 @@ export default function TableGuestManageBookings() {
               </TableHead>
               <TableBody>
                 {bookings.map((booking) => (
-                  <Row key={booking.propertyName} row={booking} />
+                  <Row
+                    key={booking.propertyName}
+                    row={booking}
+                    setIsRefresh={setIsRefresh}
+                  />
                 ))}
               </TableBody>
             </Table>
