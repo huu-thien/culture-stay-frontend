@@ -158,7 +158,7 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
       </p>
       <div className="flex text-gray-800">
         <div className="pt-4 pr-4 ">
-          <RateReviewIcon sx={{ color: '#ff385c' }} />
+          <RateReviewIcon sx={{ color: '#4b7782' }} />
           <span className="pl-2">
             {hostInfo.numberOfReviews > 0
               ? hostInfo.numberOfReviews
@@ -168,7 +168,7 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
         </div>
         <Divider orientation="vertical" />
         <div className="pt-4">
-          <StarIcon sx={{ color: '#ff385c' }} />
+          <StarIcon sx={{ color: '#4b7782' }} />
           <span className="pl-2">
             {hostInfo.rating > 0 ? hostInfo.rating.toFixed(2) : 'Chưa có'} điểm
             rating

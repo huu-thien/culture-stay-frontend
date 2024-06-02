@@ -95,20 +95,16 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell align="right">{row.id}</TableCell>
+        <TableCell>{row.id}</TableCell>
         <TableCell component="th" scope="row">
           <Link href={routes.detailProperty.generatePath(row.propertyId)}>
             {row.propertyName}
           </Link>
         </TableCell>
-        <TableCell align="right">{row.hostName}</TableCell>
-        <TableCell align="right">
-          {formatDateYYYYMMDD(row.checkInDate)}
-        </TableCell>
-        <TableCell align="right">
-          {formatDateYYYYMMDD(row.checkOutDate)}
-        </TableCell>
-        <TableCell align="right">
+        <TableCell>{row.hostName}</TableCell>
+        <TableCell>{formatDateYYYYMMDD(row.checkInDate)}</TableCell>
+        <TableCell>{formatDateYYYYMMDD(row.checkOutDate)}</TableCell>
+        <TableCell>
           {row.status === 'Pending' && (
             <Chip
               label="Chờ xác nhận"
@@ -310,15 +306,15 @@ export default function TableGuestManageBookings() {
         <div className="w-full">
           <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
-              <TableHead>
+              <TableHead sx={{ background: '#4b7782' }}>
                 <TableRow>
-                  <TableCell align="right">ID</TableCell>
-                  <TableCell>Tên phòng</TableCell>
-                  <TableCell align="right">Tên chủ phòng</TableCell>
-                  <TableCell align="right">Ngày Check In</TableCell>
-                  <TableCell align="right">Ngày Checkout </TableCell>
-                  <TableCell align="right">Trạng thái</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>ID</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Tên phòng</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Tên chủ phòng</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Ngày Check In</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Ngày Checkout </TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

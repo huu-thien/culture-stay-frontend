@@ -397,17 +397,17 @@ export default function HostManagePropertyAndBooking() {
         <>
           <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
-              <TableHead sx={{ background: 'blue' }}>
+              <TableHead sx={{ background: '#4b7782' }}>
                 <TableRow>
                   <TableCell />
-                  <TableCell>ID</TableCell>
-                  <TableCell>Tên phòng</TableCell>
-                  <TableCell>Thành phố</TableCell>
-                  <TableCell>Địa chỉ</TableCell>
-                  <TableCell>Loại phòng</TableCell>
-                  <TableCell>Số khách</TableCell>
-                  <TableCell>Trạng thái</TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>ID</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Tên phòng</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Thành phố</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Địa chỉ</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Loại phòng</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Số khách</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

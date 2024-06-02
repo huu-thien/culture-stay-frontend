@@ -19,7 +19,7 @@ const Title = ({ title, address, city }: ITitleProps) => {
       <Breadcrumbs aria-label="breadcrumb">
         <Link
           href={routes.home.generatePath()}
-          className="hover:underline hover:text-[#ff385c]"
+          className="hover:underline hover:text-[#4b7782]"
         >
           Trang chủ
         </Link>

@@ -1,5 +1,7 @@
 'use client'
 import { getListProperty } from '@/src/apis/property'
+import { Contacts } from '@/src/components/Contacts'
+import { Sidebar } from '@/src/components/Sidebar'
 import HomePageLayout from '@/src/components/layouts/HomePageLayout'
 import MainLayout from '@/src/components/layouts/MainLayout'
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/src/constant'
@@ -40,18 +42,18 @@ const Home = () => {
 
   return (
     <HomePageLayout>
-      <main className="flex flex-col items-center justify-between">
-        <FilterProperty
-          filterParams={filterParams}
-          setFilterParams={setFilterParams}
-          getListPropertyAsync={getListPropertyAsync}
-        />
-        <Properties
-          filterParams={filterParams}
-          setFilterParams={setFilterParams}
-          properties={properties}
-          isLoading={isLoading}
-        />
+      <main className="">
+        <Sidebar />
+        <div className="flex items-center justify-center">
+          <Properties
+            filterParams={filterParams}
+            setFilterParams={setFilterParams}
+            properties={properties}
+            isLoading={isLoading}
+            getListPropertyAsync={getListPropertyAsync}
+          />
+        </div>
+        <Contacts />
       </main>
     </HomePageLayout>
   )

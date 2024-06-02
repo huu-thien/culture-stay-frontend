@@ -8,7 +8,6 @@ import { Flip, ToastContainer } from 'react-toastify'
 import Head from 'next/head'
 import '@/styles/global.css'
 
-// const inter = Inter({ subsets: ['latin'] })
 const lexend = Lexend({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </Head>
-      <body className={lexend.className}>
+      <body className={`${lexend.className} bg-[#f0f2f5]`}>
         {children}
         <ToastContainer
           style={{ fontFamily: 'Lexend', fontSize: '13px', width: `255px` }}

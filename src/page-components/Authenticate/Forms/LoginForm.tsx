@@ -74,7 +74,7 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
     <div className="p-6 max-[991px]:w-full rounded-2xl shadow-2xl bg-white">
       <div className="text-center">
         <Button variant="outlined" size="small" startIcon={<ArrowBackIcon />}>
-          <Link href="/" className=" text-[#ff385c]">
+          <Link href="/" className=" text-[#4b7782]">
             Về trang chủ
           </Link>
         </Button>
@@ -174,7 +174,7 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
                 </form>
               )}
             </Formik>
-            <Divider sx={{ mt: '8px', color: '#ff385c' }} />
+            <Divider sx={{ mt: '8px', color: '#4b7782' }} />
             <ButtonLoginGoogle />
           </div>
         </div>

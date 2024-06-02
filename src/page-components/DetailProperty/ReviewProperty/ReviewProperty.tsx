@@ -73,7 +73,7 @@ const ReviewProperty = ({
   return (
     <div className="pt-6">
       <>
-        <h2 className="text-xl text-[#ff385c] font-bold pb-2 pt-5">Đánh giá</h2>
+        <h2 className="text-xl text-[#4b7782] font-bold pb-2 pt-5">Đánh giá</h2>
         {listReview?.length > 0 ? (
           <>
             <div className="grid grid-cols-2 gap-5">

@@ -32,7 +32,8 @@ const Authenticate = () => {
       <div className="px-5 md:px-10 pb-5 md:pb-0 bg-gradient bg-no-repeat">
         <div className="mx-auto w-full max-w-7xl h-screen">
           <div className="">
-            <div className="grid items-center max-[991px]:justify-items-start grid-cols-1 md:grid-cols-2 gap-8 h-screen">
+            {/* <div className="grid items-center max-[991px]:justify-items-start grid-cols-1 md:grid-cols-2 gap-8 h-screen"> */}
+            <div className="flex justify-center items-center h-screen">
               <GoogleOAuthProvider clientId={clientID}>
                 {authenticatetype === AuthenticateType.LOGIN && (
                   <LoginForm setAuthenticateType={setAuthenticateType} />
@@ -41,13 +42,13 @@ const Authenticate = () => {
                   <RegisterForm setAuthenticateType={setAuthenticateType} />
                 )}
               </GoogleOAuthProvider>
-              <div className="max-[991px]:mx-auto max-[991px]:max-w-[720px]">
+              {/* <div className="max-[991px]:mx-auto max-[991px]:max-w-[720px]">
                 <Image
                   src={BannerAuthenticatie}
                   alt="banner-authenticate"
                   className="inline-block max-w-full rounded-lg"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

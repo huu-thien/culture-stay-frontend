@@ -9,16 +9,18 @@ import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 import Link from 'next/link'
 import StarIcon from '@mui/icons-material/Star'
-import { IconButton } from '@mui/material'
+import { Avatar, IconButton } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { routes } from '@/src/routes'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IPropertyImage } from '@/src/page-components/Home/Properties/Properties.type'
 import { toast } from 'react-toastify'
 import { postAddToWishlists, postRemoveWishlists } from '@/src/apis/wishlist'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 import { PRIMARY_COLOR } from '@/src/constant'
+import { IHostInfo } from '@/src/page-components/HostProfile/HostProfile.type'
+import { getHostInfo } from '@/src/apis/host'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -29,6 +31,8 @@ interface IPropertyItemProps {
   numberOfReviews: number
   rating: number
   isFavorite: boolean
+  hostId: number
+  detailProperty: string
 }
 
 const PropertyItem = ({
@@ -38,12 +42,24 @@ const PropertyItem = ({
   numberOfReviews,
   rating,
   isFavorite,
+  hostId,
+  detailProperty,
 }: IPropertyItemProps) => {
   const theme = useTheme()
   const [activeStep, setActiveStep] = React.useState(0)
   const maxSteps = propertyImages.length
 
   const [showFavorite, setShowFavorite] = useState(isFavorite)
+  const [hostInfo, setHostInfo] = useState<IHostInfo>()
+  const getHostInfoAsync = async () => {
+    try {
+      const { data } = await getHostInfo(hostId)
+      setHostInfo(data)
+    } catch (err) {}
+  }
+  useEffect(() => {
+    hostId && getHostInfoAsync()
+  }, [hostId])
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -81,8 +97,17 @@ const PropertyItem = ({
   }
 
   return (
-    <div className="shadow-md p-2 rounded-lg mx-auto">
-      <Box sx={{ maxWidth: 350, flexGrow: 1 }}>
+    <div className="shadow-md p-2 rounded-lg mx-auto bg-white max-w-[500px]">
+      <div className="pt-2 pb-4">
+        <div className="flex items-center gap-2 pb-4">
+          <Avatar src={hostInfo?.avatarUrl} />
+          <p>
+            <span className="">{hostInfo?.name}</span>
+          </p>
+        </div>
+        <span className="text-sm line-clamp-2">{detailProperty}</span>
+      </div>
+      <Box sx={{ maxWidth: 500, flexGrow: 1 }}>
         <AutoPlaySwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={activeStep}
@@ -97,7 +122,7 @@ const PropertyItem = ({
                   sx={{
                     height: 255,
                     display: 'block',
-                    maxWidth: 400,
+                    maxWidth: 500,
                     overflow: 'hidden',
                     width: '100%',
                   }}
@@ -134,7 +159,7 @@ const PropertyItem = ({
         <div className="p-4">
           <div className="flex justify-between">
             <Link href={routes.detailProperty.generatePath(propertyId)}>
-              <h2 className="text-md text-gray-700 font-semibold hover:text-[#ff385c] line-clamp-2 h-[50px] pr-6 transition duration-300">
+              <h2 className="text-md text-gray-700 font-semibold hover:text-[#4b7782] line-clamp-2 h-[50px] pr-6 transition duration-300">
                 {title}
               </h2>
             </Link>
@@ -143,10 +168,7 @@ const PropertyItem = ({
               {rating.toFixed(2)}
             </span>
           </div>
-          <div className="flex justify-between py-3">
-            <p className="text-gray-600">Review ({numberOfReviews})</p>
-          </div>
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between py-2">
             <div className="cursor-pointer">
               {showFavorite ? (
                 <IconButton
@@ -164,23 +186,9 @@ const PropertyItem = ({
                 </IconButton>
               )}
             </div>
-            {/* {isHostEditable && (
-              <div className="flex">
-                <IconButton aria-label="add-wishlist">
-                  <AutoFixHighIcon
-                    sx={{ color: '#0a67af' }}
-                    onClick={() => handleHostEditProperty(id)}
-                  />
-                </IconButton>
-                <IconButton
-                  aria-label="add-wishlist"
-                  onClick={() => handleHostDeleteProperty(id)}
-                >
-                  <DeleteIcon sx={{ color: '#c92327' }} />
-                </IconButton>
-              </div>
-            )} */}
+            <p className="text-gray-600">Review ({numberOfReviews})</p>
           </div>
+          <div className="flex items-center justify-between"></div>
         </div>
       </Box>
     </div>
