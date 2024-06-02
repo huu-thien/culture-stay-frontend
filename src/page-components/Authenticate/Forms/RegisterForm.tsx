@@ -52,10 +52,10 @@ const RegisterForm = ({ setAuthenticateType }: IRegisterFormProps) => {
     event.preventDefault()
   }
   return (
-    <div className="p-6 max-[991px]:w-full rounded-2xl shadow-2xl">
+    <div className="p-6 max-[991px]:w-full rounded-2xl shadow-2xl bg-white">
       <div className="text-center">
         <Button variant="outlined" size="small" startIcon={<ArrowBackIcon />}>
-          <Link href="/" className=" text-[#ff385c]">
+          <Link href="/" className=" text-[#4b7782]">
             Về trang chủ
           </Link>
         </Button>

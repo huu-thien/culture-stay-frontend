@@ -7,12 +7,14 @@ import Skeleton from '@/src/page-components/Home/Properties/Skeleton/Skeleton'
 import { IFilterPamrams } from '@/src/page-components/Home/FilterProperties/FilterProperty.type'
 import Image from 'next/image'
 import EmtyData from '@/src/assets/images/empty_box.png'
+import FilterProperty from '@/src/page-components/Home/FilterProperties/FilterProperty'
 
 interface IPropertiesProps {
   filterParams: IFilterPamrams
   setFilterParams: Dispatch<SetStateAction<IFilterPamrams>>
   properties: IProperty[]
   isLoading: boolean
+  getListPropertyAsync: (params: IFilterPamrams) => Promise<void>
 }
 
 const Properties = ({
@@ -20,6 +22,7 @@ const Properties = ({
   setFilterParams,
   properties,
   isLoading,
+  getListPropertyAsync,
 }: IPropertiesProps) => {
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     setFilterParams({ ...filterParams, PageIndex: page })
@@ -30,9 +33,14 @@ const Properties = ({
   }
 
   return (
-    <>
+    <div className="flex flex-col items-center">
+      <FilterProperty
+        filterParams={filterParams}
+        setFilterParams={setFilterParams}
+        getListPropertyAsync={getListPropertyAsync}
+      />
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 mt-5">
+        <div className="grid grid-cols-1 gap-6 mt-5">
           <Skeleton />
           <Skeleton />
           <Skeleton />
@@ -48,7 +56,7 @@ const Properties = ({
         </div>
       ) : properties.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 mt-5">
+          <div className="grid grid-cols-1 gap-6 mt-5">
             {properties.map((property) => (
               <PropertyItem
                 key={property.id}
@@ -58,17 +66,19 @@ const Properties = ({
                 numberOfReviews={property.numberOfReviews}
                 rating={property.rating}
                 isFavorite={property.isFavorite}
+                hostId={property.hostId}
+                detailProperty={property.description}
               />
             ))}
-          </div>
-          <div className="py-8 flex items-center">
-            <Pagination
-              color="primary"
-              count={filterParams.TotalPages}
-              page={filterParams.PageIndex}
-              onChange={handleChangePage}
-              sx={{ width: '100%', mx: 'auto' }}
-            />
+            <div className="py-8 flex items-center">
+              <Pagination
+                color="primary"
+                count={filterParams.TotalPages}
+                page={filterParams.PageIndex}
+                onChange={handleChangePage}
+                sx={{ mx: 'auto' }}
+              />
+            </div>
           </div>
         </>
       ) : (
@@ -88,7 +98,7 @@ const Properties = ({
           </p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

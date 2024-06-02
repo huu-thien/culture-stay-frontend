@@ -12,7 +12,7 @@ const HomePageLayout = ({ children }) => {
       <div className="mx-auto w-full max-w-[1440px] mt-[80px] py-10 overflow-hidden">
         {children}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </ThemeProvider>
   )
 }

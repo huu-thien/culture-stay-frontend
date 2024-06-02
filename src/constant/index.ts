@@ -1,4 +1,5 @@
 export const BACK_END_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL
+export const API_CHAT = `${BACK_END_API_URL}/chathub`
 
 export const THEME_DEFAULT = {
   typography: {
@@ -6,14 +7,14 @@ export const THEME_DEFAULT = {
   },
   palette: {
     primary: {
-      light: '#ff385c',
-      main: '#ff385c',
-      dark: '#ff385c',
+      light: '#4b7782',
+      main: '#4b7782',
+      dark: '#4b7782',
       contrastText: '#fff',
     },
   },
 }
-export const PRIMARY_COLOR = '#ff385c'
+export const PRIMARY_COLOR = '#4b7782'
 
 export const DEFAULT_PAGE = 1
 export const DEFAULT_PAGE_SIZE = 12

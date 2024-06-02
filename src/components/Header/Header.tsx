@@ -87,31 +87,6 @@ const Header = () => {
             </IconButton>
           </div> */}
         <div className="flex items-center gap-8">
-          <div className="hidden md:block">
-            {userLogin?.isHost ? (
-              <Tooltip title="Trở nhà chủ nhà và kinh doanh" arrow>
-                <Button
-                  variant="contained"
-                  size="medium"
-                  endIcon={<GiteIcon />}
-                >
-                  <Link href="/host-manage-property">
-                    Quản lý phòng cho thuê
-                  </Link>
-                </Button>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Trở nhà chủ nhà và kinh doanh" arrow>
-                <Button
-                  variant="contained"
-                  size="medium"
-                  endIcon={<GiteIcon />}
-                >
-                  <Link href="/become-host">Become a host</Link>
-                </Button>
-              </Tooltip>
-            )}
-          </div>
           <span
             className="flex items-center gap-2 border px-2 py-1 rounded-full cursor-pointer"
             aria-controls={open ? 'account-menu' : undefined}
@@ -185,29 +160,6 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               )}
-              {userLogin?.isHost && (
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    className="w-full text-gray-600"
-                    href="/host-manage-booking"
-                  >
-                    Quản lý booking
-                  </Link>
-                </MenuItem>
-              )}
-
-              {role === 'Admin' && (
-                <MenuItem onClick={handleClose}>
-                  <Link className="w-full text-gray-600" href="/admin">
-                    Chức năng Admin
-                  </Link>{' '}
-                </MenuItem>
-              )}
-              <MenuItem onClick={handleClose}>
-                <Link className="w-full text-gray-600" href="/chat">
-                  Tin nhắn
-                </Link>
-              </MenuItem>
               <Divider />
               <MenuItem onClick={handleClose}>
                 <Link className="w-full text-gray-600" href="/help">

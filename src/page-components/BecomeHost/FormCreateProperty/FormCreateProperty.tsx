@@ -159,7 +159,7 @@ const FormCreateProperty = () => {
 
   return (
     <div className="py-8">
-      <h2 className="text-center text-2xl text-[#ff385c] pb-4">
+      <h2 className="text-center text-2xl text-[#4b7782] pb-4">
         NHẬP CÁC THÔNG TIN VỀ PHÒNG, ĐIỀU KHOẢN VÀ CHÍNH SÁCH
       </h2>
       <div className="max-w-4xl mx-auto">
@@ -179,7 +179,7 @@ const FormCreateProperty = () => {
           }) => {
             return (
               <form onSubmit={handleSubmit} name="become-host" method="get">
-                <p className="text-xl py-3 text-[#ff385c] uppercase">
+                <p className="text-xl py-3 text-[#4b7782] uppercase">
                   Thông tin tổng quan
                 </p>
                 <div className="mb-2">
@@ -323,7 +323,7 @@ const FormCreateProperty = () => {
                     />
                   </div>
                 </>
-                <p className="text-xl py-3 text-[#ff385c] uppercase">
+                <p className="text-xl py-3 text-[#4b7782] uppercase">
                   Thông tin chi tiết
                 </p>
 
@@ -474,7 +474,7 @@ const FormCreateProperty = () => {
                   )}
                 </div>
                 <div className="py-8">
-                  <p className="text-xl py-3 text-[#ff385c] uppercase">
+                  <p className="text-xl py-3 text-[#4b7782] uppercase">
                     THÊM ẢNH ĐỂ QUẢNG BÁ PHÒNG CỦA BẠN
                   </p>
                   <div>
