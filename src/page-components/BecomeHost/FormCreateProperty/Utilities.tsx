@@ -51,15 +51,14 @@ const Utilities: React.FC<Props> = ({ onSelectedValuesChange }) => {
       target: { value },
     } = event
     setPropertyType(
-      // On autofill we get a stringified value.
+  
       typeof value === 'string' ? value.split(',') : value
     )
   }
   useEffect(() => {
-    // Gọi hàm callback và truyền selectedValues khi selectedValues thay đổi
+
     onSelectedValuesChange(propertyType)
   }, [propertyType, onSelectedValuesChange])
-  console.log(propertyType)
   return (
     <div>
       <FormControl>

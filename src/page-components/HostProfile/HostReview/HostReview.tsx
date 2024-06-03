@@ -74,7 +74,7 @@ const ModalReviewGuest = ({ hostId, name, getHostInfoAsync }: PropsType) => {
   const CheckUserStayedInPropertyOfHost = async (hostId: number) => {
     try {
       const { data } = await CheckHostRentedGuestYet(hostId)
-      setIsStayed(true)
+      setIsStayed(data)
     } catch (err) {}
   }
 
@@ -155,19 +155,15 @@ const ModalReviewGuest = ({ hostId, name, getHostInfoAsync }: PropsType) => {
             maxWidth="xs"
             fullWidth
           >
-            <DialogActions className="">
-              <Button onClick={handleCancelReview} color="primary">
-                Đóng
-              </Button>
-            </DialogActions>
-            <h2 className="text-center font-medium text-xl text-gray-600">
+            <h2 className="text-center font-medium text-xl text-gray-600 pt-6">
               Đánh giá chủ nhà {name}
             </h2>
             <DialogContent>
               <div>
-                <p className="pb-2 text-gray-600">Sự hài lòng của bạn</p>
-                <div className="flex items-center gap-4 py-1">
-                  <p className="text-gray-700 min-w-[120px]">Tốt bụng</p>
+                <p className=" text-gray-600">
+                  Sự hài lòng của bạn về trải nghiệm văn hóa
+                </p>
+                <div className="flex items-center gap-4 pt-4">
                   <Rating
                     name="scoreHost"
                     value={dataReview.rating}
@@ -190,7 +186,6 @@ const ModalReviewGuest = ({ hostId, name, getHostInfoAsync }: PropsType) => {
                   )}
                 </div>
               </div>
-
               <div>
                 <p className="pt-4 pb-2 text-gray-600">Nội dung đánh giá</p>
                 <textarea

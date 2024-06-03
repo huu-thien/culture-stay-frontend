@@ -96,7 +96,7 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
   //   }
   // }
   return (
-    <div className="">
+    <div className="text-sm">
       <div className="flex justify-between items-center">
         <div className="flex flex-col items-center">
           <Avatar
@@ -153,7 +153,7 @@ const IntroduceHost = ({ hostId }: IIntroduceHostProps) => {
           </Link>
         </Button>
       </div>
-      <p className="font-thin text-gray-500 pt-2 italic">
+      <p className="font-thin text-gray-500 pt-2 italic line-clamp-2">
         {hostInfo.introduction}
       </p>
       <div className="flex text-gray-800">

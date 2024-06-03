@@ -31,7 +31,10 @@ const DetailProperty = () => {
     setCurrentPage(value)
   }
   useEffect(() => {
-    getListReviewProperty(currentPage)
+    if (id) {
+      getInfoProperty()
+      getListReviewProperty(currentPage)
+    }
   }, [id, currentPage])
 
   const getListReviewProperty = async (currentPage: number) => {
@@ -46,65 +49,64 @@ const DetailProperty = () => {
 
   const getInfoProperty = async () => {
     try {
-      const { data } = await getPropertyById(id)
+      const { data } = await getPropertyById(+id)
       setPropertyDetail(data)
     } catch ({ title }) {
       toast.error(title)
     }
   }
 
-  useEffect(() => {
-    getInfoProperty()
-  }, [])
+  console.log('id', id)
 
   return (
     <MainLayout>
-      <main className="">
-        <Title
-          title={propertyDetail?.title}
-          address={propertyDetail?.address}
-          city={propertyDetail?.city}
-        />
-        <Attachments propertyImages={propertyDetail?.propertyImages} />
-        <div className="lg:flex lg:items-start lg:justify-between mb-5 gap-16">
-          <div className="flex flex-col gap-6 w-full lg:w-3/5">
-            <IntroduceHost hostId={propertyDetail?.hostId} />
-            <Divider />
-            <IntroduceProperty
-              bathroomCount={propertyDetail?.bathroomCount}
-              bedCount={propertyDetail?.bedCount}
-              description={propertyDetail?.description}
-              numberOfReviews={propertyDetail?.numberOfReviews}
+      {propertyDetail && (
+        <main className="">
+          <Attachments propertyImages={propertyDetail?.propertyImages} />
+          <Title
+            title={propertyDetail?.title}
+            address={propertyDetail?.address}
+            city={propertyDetail?.city}
+          />
+          <div className="lg:flex lg:items-start lg:justify-between mb-5 gap-16">
+            <BookingProperty
+              propertyId={+propertyDetail?.id}
               maxGuestCount={propertyDetail?.maxGuestCount}
-              rating={propertyDetail?.rating}
-              descripion={propertyDetail?.description}
             />
+            <div className="flex flex-col gap-6 w-full lg:w-3/5">
+              <IntroduceHost hostId={propertyDetail?.hostId} />
+              <Divider />
+              <IntroduceProperty
+                bathroomCount={propertyDetail?.bathroomCount}
+                bedCount={propertyDetail?.bedCount}
+                description={propertyDetail?.description}
+                numberOfReviews={propertyDetail?.numberOfReviews}
+                maxGuestCount={propertyDetail?.maxGuestCount}
+                rating={propertyDetail?.rating}
+              />
+            </div>
           </div>
-          <BookingProperty
-            propertyId={+propertyDetail?.id}
-            maxGuestCount={propertyDetail?.maxGuestCount}
+          <FormPostReview
+            propertyId={propertyDetail?.id}
+            getListReviewProperty={getListReviewProperty}
           />
-        </div>
-        <FormPostReview
-          propertyId={propertyDetail?.id}
-          getListReviewProperty={getListReviewProperty}
-        />
-        <ReviewProperty
-          propertyId={id as string}
-          listReview={listReview}
-          getListReviewProperty={getListReviewProperty}
-          totalPages={totalPages}
-          currentPage={currentPage}
-          handleChangePage={handleChangePage}
-        />
-        <Divider className="py-4" />
-        {propertyDetail && (
-          <LocationOnMap
-            latitude={propertyDetail.latitude}
-            longitude={propertyDetail.longitude}
+          <ReviewProperty
+            propertyId={id as string}
+            listReview={listReview}
+            getListReviewProperty={getListReviewProperty}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            handleChangePage={handleChangePage}
           />
-        )}
-      </main>
+          <Divider className="py-4" />
+          {propertyDetail && (
+            <LocationOnMap
+              latitude={propertyDetail.latitude}
+              longitude={propertyDetail.longitude}
+            />
+          )}
+        </main>
+      )}
     </MainLayout>
   )
 }

@@ -82,7 +82,7 @@ const ReviewProperty = ({
                 listReview.map((review, index) => (
                   <div
                     key={`${review.guestName}_${index}`}
-                    className="flex flex-col p-2 shadow-md rounded-md"
+                    className="flex flex-col p-2 shadow-md rounded-md bg-white"
                   >
                     <div className="">
                       <div className="flex items-center gap-4 p-3">
@@ -160,53 +160,50 @@ const ReviewProperty = ({
                           )}
                         </div>
                       </div>
-                      <p className="min-h-[48px] line-clamp-2 font-thin text-gray-500 px-4 italic text-md">
+                      <p className="line-clamp-2 font-thin text-gray-500 px-4 italic text-md">
                         "{review.content}"
                       </p>
                     </div>
-                    <div className="pt-2">
-                      <p className="text-center pb-4 text-cyan-700">
-                        Đánh giá trên thang điểm 5
-                      </p>
+                    <div className="pt-4">
                       <div className="flex items-center justify-center">
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <EditLocationIcon sx={{ color: '#c92327' }} />
+                          <EditLocationIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.location}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <CleaningServicesIcon sx={{ color: '#feb207' }} />
+                          <CleaningServicesIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.cleanliness}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <MessageIcon sx={{ color: '#28a745' }} />
+                          <MessageIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.communication}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <CheckCircleIcon sx={{ color: '#1e5bf8' }} />
+                          <CheckCircleIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.checkIn}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <AccessTimeFilledIcon sx={{ color: '#27a645' }} />
+                          <AccessTimeFilledIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.accuracy}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <LocalOfferIcon sx={{ color: '#371881' }} />
+                          <LocalOfferIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.value}
                           </span>
                         </div>
                         <div className="text-sm px-4 text-center flex flex-col">
-                          <StarIcon sx={{ color: '#feb207' }} />
+                          <StarIcon sx={{ color: '#4b7782' }} />
                           <span className="pt-1 text-cyan-700">
                             {review.averageRating.toFixed(2)}
                           </span>

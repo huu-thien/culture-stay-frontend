@@ -29,7 +29,6 @@ const MessageLeft: React.FC<MessageLeftProps> = (props) => {
           sx={{ width: 30, height: 30 }}
         ></Avatar>
         <div>
-          <div className={classes.displayName}>{displayName}</div>
           <div className={classes.messageBlue}>
             <div>
               <p className={classes.messageContent}>{message}</p>

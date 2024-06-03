@@ -23,6 +23,7 @@ const GuestProfile = () => {
   useEffect(() => {
     getGuestInfoAsync()
   }, [id])
+  console.log(guestInfo)
 
   return (
     <MainLayout>
@@ -35,6 +36,7 @@ const GuestProfile = () => {
             numberOfReviews={guestInfo.numberOfReviews}
             rating={guestInfo.rating}
             userRole={USER_ROLE.GUEST}
+            userId={guestInfo.userId}
           />
           <div className="grid">
             <Introduce

@@ -1,7 +1,15 @@
 // import { formatDateTime } from '@/helpers/FormatDateTime/formatDateTime';
 import StarIcon from '@mui/icons-material/Star'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Fade, Modal, Box, Backdrop, IconButton, Button } from '@mui/material'
+import {
+  Fade,
+  Modal,
+  Box,
+  Backdrop,
+  IconButton,
+  Button,
+  Avatar,
+} from '@mui/material'
 import { useState } from 'react'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
@@ -17,7 +25,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 2,
@@ -43,8 +50,8 @@ const ReviewCard = ({
 }: PropsType) => {
   const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
 
-  const yellowStars = Math.round(review.rating) // Số ngôi sao màu vàng
-  const grayStars = 5 - yellowStars // Số ngôi sao màu xám
+  const yellowStars = Math.round(review.rating)
+  const grayStars = 5 - yellowStars
   const yellowStarArray = Array(yellowStars).fill('yellow')
   const grayStarArray = Array(grayStars).fill('gray')
 
@@ -75,14 +82,14 @@ const ReviewCard = ({
   }
 
   return (
-    <div className="shadow-md border p-4 rounded-lg">
+    <div className="shadow-md border p-4 rounded-lg bg-white">
       <div className="m-2">
         <div className="flex gap-4 items-center">
           <Link href={routes.hostProfile.generatePath(hostId)}>
-            <img
+            <Avatar
               src={review.reviewerAvatarUrl}
               alt={review.reviewerName}
-              className="w-[70px] h-[70px] rounded-full"
+              sx={{ width: 40, height: 40 }}
             />
           </Link>
           <div className="">
@@ -92,7 +99,7 @@ const ReviewCard = ({
             </p>
           </div>
         </div>
-        <p className="font-light text-sm text-gray-500 py-4 line-clamp-3 min-h-[76px]">
+        <p className="font-light text-sm text-gray-500 line-clamp-3 my-4">
           "{review.content}"
         </p>
       </div>
@@ -125,7 +132,7 @@ const ReviewCard = ({
             >
               <Fade in={open}>
                 <Box sx={style}>
-                  <p>Bạn có chắc chắn muốn xóa đánh giá này không ?</p>
+                  <p>Bạn có chắc chắn muốn xóa đánh giá này không?</p>
                   <div className="pt-4 flex justify-center gap-4">
                     <Button
                       variant="outlined"

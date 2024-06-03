@@ -13,18 +13,18 @@ const REVIEWS_PATH = `${BACK_END_API_URL}/api/reviews`
 // GET
 export const getPropertyReview = (id, page) => {
   return http.get<{ data: IReviewProperty[]; totalPages: number }>(
-    `${REVIEWS_PATH}/property/${id}?OrderBy=CreatedAt&IsDescending=false&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_PROPERTY}&PageIndex=${page}`
+    `${REVIEWS_PATH}/property/${id}?OrderBy=CreatedAt&IsDescending=true&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_PROPERTY}&PageIndex=${page}`
   )
 }
 export const getGuestReviews = (guestId: number, page: number) => {
   return http.get<{ data: IGuestReview[]; totalPages: number }>(
-    `${REVIEWS_PATH}/guest/${guestId}?OrderBy=CreatedAt&IsDescending=false&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_HOST_GUEST}&PageIndex=${page}`
+    `${REVIEWS_PATH}/guest/${guestId}?OrderBy=CreatedAt&IsDescending=true&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_HOST_GUEST}&PageIndex=${page}`
   )
 }
 
 export const getHostReviews = (hostId: number, page: number) => {
   return http.get<{ data: IHostReview[]; totalPages: number }>(
-    `${REVIEWS_PATH}/host/${hostId}?OrderBy=CreatedAt&IsDescending=false&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_HOST_GUEST}&PageIndex=${page}`
+    `${REVIEWS_PATH}/host/${hostId}?OrderBy=CreatedAt&IsDescending=true&PageSize=${DEFAULT_PAGE_SIZE_REVIEW_HOST_GUEST}&PageIndex=${page}`
   )
 }
 

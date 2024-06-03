@@ -29,6 +29,7 @@ import Loading from '@/src/components/Loading/Loading'
 import { toast } from 'react-toastify'
 import { createCancellationTicket } from '@/src/apis/cancellation'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { EmptyData } from '@/src/components/EmptyData'
 
 function createData(
   id: number,
@@ -70,7 +71,6 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
     setCancellationReason(CancellationReason[0])
     setReason('')
   }
-  console.log(openModalCancellation)
 
   const createCancellationRequest = async () => {
     try {
@@ -87,7 +87,6 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         error: TOAST_MESSAGE.cancellation.create.error,
       })
       handleCloseModalCancel()
-      console.log('dataCancelBooking', dataCancelBooking)
       setIsRefresh(true)
     } catch (error) {}
   }
@@ -162,8 +161,6 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
                   type="button"
                   className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
                   onClick={() => {
-                    console.log(123)
-
                     setOpenModalCancellation(true)
                   }}
                 >
@@ -274,7 +271,10 @@ export default function TableGuestManageBookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true)
-      const { data, totalPages } = await getListBookingOfGuest(userLogin?.id)
+      const { data, totalPages } = await getListBookingOfGuest(
+        userLogin?.id,
+        currentPage
+      )
       setTotalPages(totalPages)
       const rows = data.map((booking) =>
         createData(
@@ -296,48 +296,63 @@ export default function TableGuestManageBookings() {
 
   useEffect(() => {
     fetchBookings()
-  }, [userLogin?.id, isRefresh])
+  }, [userLogin?.id, isRefresh, currentPage])
 
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full">
-          <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-              <TableHead sx={{ background: '#4b7782' }}>
-                <TableRow>
-                  <TableCell sx={{ color: '#fff' }}>ID</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Tên phòng</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Tên chủ phòng</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Ngày Check In</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Ngày Checkout </TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {bookings.map((booking) => (
-                  <Row
-                    key={booking.propertyName}
-                    row={booking}
-                    setIsRefresh={setIsRefresh}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <div className="py-8 w-full flex items-center justify-center">
-            <Pagination
-              color="primary"
-              count={totalPages}
-              page={currentPage}
-              onChange={handleChangePage}
-              sx={{ mx: 'auto' }}
+        <>
+          {bookings.length > 0 ? (
+            <div className="w-full">
+              <TableContainer component={Paper}>
+                <Table aria-label="guest-booking">
+                  <TableHead sx={{ background: '#4b7782' }}>
+                    <TableRow>
+                      <TableCell sx={{ color: '#fff' }}>ID</TableCell>
+                      <TableCell sx={{ color: '#fff' }}>Tên phòng</TableCell>
+                      <TableCell sx={{ color: '#fff' }}>
+                        Tên chủ phòng
+                      </TableCell>
+                      <TableCell sx={{ color: '#fff' }}>
+                        Ngày Check In
+                      </TableCell>
+                      <TableCell sx={{ color: '#fff' }}>
+                        Ngày Checkout{' '}
+                      </TableCell>
+                      <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
+                      <TableCell sx={{ color: '#fff' }}>Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {bookings.map((booking) => (
+                      <Row
+                        key={booking.propertyName}
+                        row={booking}
+                        setIsRefresh={setIsRefresh}
+                      />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <div className="py-8 w-full flex items-center justify-center">
+                <Pagination
+                  color="primary"
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handleChangePage}
+                  sx={{ mx: 'auto' }}
+                />
+              </div>
+            </div>
+          ) : (
+            <EmptyData
+              title="Danh sách đặt phòng của bạn đang trống"
+              description="Hãy đặt phòng tại địa điểm mà bạn yêu thích và trải nghiệm chúng !"
             />
-          </div>
-        </div>
+          )}
+        </>
       )}
     </>
   )

@@ -308,6 +308,21 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
                               </button>
                             </div>
                           )}
+
+                          {booking.status === 'CheckedIn' && (
+                            <button
+                              type="button"
+                              className="text-white bg-gradient-to-br from-purple-600 to-cyan-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                              onClick={() =>
+                                handleChangeSatusBooking(
+                                  booking.id,
+                                  STATUS_BOOKING.Completed
+                                )
+                              }
+                            >
+                              Check Out
+                            </button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -396,7 +411,7 @@ export default function HostManagePropertyAndBooking() {
       ) : (
         <>
           <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
+            <Table aria-label="host-property-booking">
               <TableHead sx={{ background: '#4b7782' }}>
                 <TableRow>
                   <TableCell />

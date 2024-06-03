@@ -1,10 +1,25 @@
-import { Box, Chip, Divider } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  TextField,
+} from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 
 import RateReviewIcon from '@mui/icons-material/RateReview'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import { formatDateYYYYMMDD } from '@/src/utils/DateBookingHandler'
-import { USER_ROLE } from '@/src/constant'
+import { API_CHAT, USER_ROLE } from '@/src/constant'
+import Cookies from 'js-cookie'
+import { useState } from 'react'
+import * as signalR from '@microsoft/signalr'
+import { toast } from 'react-toastify'
 
 interface IGeneralInformationProps {
   avatarUrl: string
@@ -13,6 +28,7 @@ interface IGeneralInformationProps {
   numberOfReviews: number
   rating: number
   userRole: USER_ROLE
+  userId: number
 }
 const GeneralInformation = ({
   avatarUrl,
@@ -21,7 +37,60 @@ const GeneralInformation = ({
   numberOfReviews,
   rating,
   userRole,
+  userId,
 }: IGeneralInformationProps) => {
+  const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const [message, setMessage] = useState(
+    'Xin chào! Tôi muốn tìm hiểu thêm về phòng của bạn.'
+  )
+  const accessToken = Cookies.get('jwt_token')
+
+  const toggleDialog = (isOpen: boolean) => {
+    setIsOpenDialog(isOpen)
+    if (!isOpen) setMessage('')
+  }
+  const closeDialog = () => {
+    toggleDialog(false)
+  }
+  const sendMessage = () => {
+    if (message && signalR) {
+      const connection = new signalR.HubConnectionBuilder()
+        .withUrl(API_CHAT, {
+          accessTokenFactory: () =>
+            accessToken ? accessToken : Promise.reject('Access token is null.'),
+          skipNegotiation: true,
+          transport: signalR.HttpTransportType.WebSockets,
+        })
+        .build()
+
+      connection
+        .start()
+        .then(() => {
+          console.log('Connected!')
+          if (
+            connection &&
+            connection.state === signalR.HubConnectionState.Connected
+          ) {
+            connection
+              .invoke('SendMessageToUser', userId.toString(), message)
+              .then(() => {
+                setMessage('')
+                toast.success('Đã gửi tin nhắn thành công.')
+              })
+              .catch((error) =>
+                console.error('Error invoking SendMessageToUser:', error)
+              )
+          } else {
+            console.error('SignalR connection not in a valid state.')
+          }
+          closeDialog()
+        })
+        .catch((err) => {
+          console.error(err.toString())
+        })
+    }
+  }
+
   return (
     <div className="">
       <Box
@@ -30,6 +99,7 @@ const GeneralInformation = ({
           borderRadius: 3,
           boxShadow: 4,
           p: 2,
+          backgroundColor: '#fff',
         }}
       >
         <div className="flex flex-col gap-6">
@@ -83,7 +153,51 @@ const GeneralInformation = ({
           </div>
         </div>
       </Box>
-      <div className="my-12 border p-4 text-sm shadow-sm text-gray-600 bg-gray-100 rounded-md">
+      <div className="pt-12">
+        <Button
+          variant="contained"
+          onClick={() => {
+            toggleDialog(true)
+          }}
+        >
+          Nhắn tin cho chủ nhà
+        </Button>
+        <Dialog open={isOpenDialog} onClose={closeDialog}>
+          <DialogTitle>Nhắn tin nhanh</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Gửi tin nhắn</DialogContentText>
+            <TextField
+              id="standard-text"
+              label="Nhập tin nhắn"
+              margin="normal"
+              autoFocus
+              fullWidth
+              sx={{ width: 500 }}
+              value={message}
+              onChange={(event) => {
+                setMessage(event.target.value)
+              }}
+              onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                const keycode = e.keyCode ? e.keyCode : e.which
+                if (keycode === 13) {
+                  sendMessage()
+                }
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeDialog}>Hủy</Button>
+            <Button
+              variant="contained"
+              disabled={!setMessage}
+              onClick={sendMessage}
+            >
+              Gửi
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      <div className="my-12 border p-4 text-sm shadow-sm text-gray-600 bg-white rounded-md">
         <p className="font-medium py-2">
           Thông tin đã được xác nhận của {name}
         </p>
@@ -92,7 +206,9 @@ const GeneralInformation = ({
           <li className="py-1">✅ Địa chỉ email</li>
           <li className="py-1">✅ Số điện thoại</li>
         </ul>
-        <p className='py-2 underline text-xs text-gray-600'>Tìm hiểu về quy trình xác minh danh tính</p>
+        <p className="py-2 underline text-xs text-gray-600">
+          Tìm hiểu về quy trình xác minh danh tính
+        </p>
       </div>
     </div>
   )

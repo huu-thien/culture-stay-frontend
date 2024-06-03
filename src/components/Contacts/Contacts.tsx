@@ -2,6 +2,7 @@ import {
   Alert,
   Avatar,
   Button,
+  CircularProgress,
   IconButton,
   Skeleton,
   Snackbar,
@@ -16,6 +17,7 @@ import Cookies from 'js-cookie'
 import * as signalR from '@microsoft/signalr'
 import { API_CHAT } from '@/src/constant'
 import { toast } from 'react-toastify'
+import { SkeletonContact } from '@/src/components/SkeletonContact'
 
 const Contacts = () => {
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
@@ -24,7 +26,10 @@ const Contacts = () => {
   const [selectedContact, setSelectedContact] = useState<IContact | null>(null)
   const selectedContactRef = useRef<IContact | null>(null)
   const [contacts, setContacts] = useState<IContact[]>([])
+  const contactRef = useRef<IContact[]>([])
   const [loadingContact, setLoadingContact] = useState<boolean>(false)
+  const [loadingMessage, setLoadingMessage] = useState<boolean>(false)
+  const [loadingSend, setLoadingSend] = useState<boolean>(false)
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   )
@@ -45,22 +50,6 @@ const Contacts = () => {
     setOpen(false)
   }
 
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  )
-
   const fetchContacts = async () => {
     try {
       setLoadingContact(true)
@@ -75,10 +64,13 @@ const Contacts = () => {
 
   const fetchMessages = async (userId: number) => {
     try {
+      setLoadingMessage(true)
       const { data } = await getMessagesByUserId(userId)
       setMessages(data)
     } catch (error) {
-      console.log(error)
+      throw error
+    } finally {
+      setLoadingMessage(false)
     }
   }
 
@@ -93,11 +85,16 @@ const Contacts = () => {
       .build()
 
     newConnection.on('ReceiveMessage', async (message) => {
-      if (message.fromUserId !== userLogin.id) {
+      if (message.fromUserId !== userLogin.id && !open) {
         setNotifyMessage(`Bạn nhận tin nhắn từ ${message.fromUserName}`)
-        setOpen(true)
+        const newSelectedContact = contactRef.current.find(
+          (contact) => contact.id === message.fromUserId
+        )
+        setSelectedContact(newSelectedContact)
+        setShowChat(true)
+        setOpen((prev) => !prev)
+        await fetchMessages(selectedContactRef?.current?.id)
       }
-
       if (selectedContactRef.current) {
         await fetchMessages(selectedContactRef.current.id)
       }
@@ -115,7 +112,7 @@ const Contacts = () => {
     setConnection(newConnection)
   }
 
-  const sendMessage = () => {
+  const sendMessage = (message) => {
     if (
       connection &&
       connection.state === signalR.HubConnectionState.Connected &&
@@ -123,6 +120,7 @@ const Contacts = () => {
       selectedContact
     ) {
       setMessage('')
+      setLoadingSend(true)
       connection
         .invoke('SendMessageToUser', selectedContact.id.toString(), message)
         .then(async () => {
@@ -131,9 +129,13 @@ const Contacts = () => {
         .catch((error) =>
           console.error('Error invoking SendMessageToUser:', error)
         )
+        .finally(() => setLoadingSend(false))
     } else {
       console.error('SignalR connection not in a valid state.')
     }
+  }
+  const handleSendIcon = () => {
+    sendMessage('💕')
   }
 
   useEffect(() => {
@@ -147,15 +149,26 @@ const Contacts = () => {
 
   useEffect(() => {
     selectedContactRef.current = selectedContact
-  }, [selectedContact])
+    contactRef.current = contacts
+  }, [selectedContact, contacts])
 
   return (
-    <div className="mt-0 fixed top-24 right-0 bottom-0 custom-scrollbar">
+    <div className="mt-0 fixed top-24 right-0 bottom-0 custom-scrollbar bg-[#f0f2f5]">
       {userLogin && (
         <>
           {loadingContact ? (
             <>
-              <Skeleton variant="rectangular" width={210} height={118} />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
+              <SkeletonContact />
             </>
           ) : (
             <ul className="px-4">
@@ -165,7 +178,7 @@ const Contacts = () => {
                   key={contact.fullName}
                 >
                   <div
-                    className="flex items-center cursor-pointer py-2 break-all border-b-2 border-solid hover:bg-gray-200"
+                    className="flex items-center cursor-pointer py-2 break-all border-b-2 border-solid hover:bg-gray-200 relative"
                     onClick={() => {
                       setSelectedContact(contact)
                       setShowChat(true)
@@ -176,6 +189,7 @@ const Contacts = () => {
                       sx={{ width: 30, height: 30 }}
                       className="m-3"
                     />
+                    <div className="w-3 h-3 border-white border-2 rounded-lg bg-green-700 absolute top-[40px] left-[32px]"></div>
                     <div className="grid grid-cols-1">
                       <span className="font-medium">{contact.fullName}</span>
                       <div className="inline-flex gap-4 font-light text-sm"></div>
@@ -193,11 +207,12 @@ const Contacts = () => {
           >
             <div className="flex flex-col justify-between">
               <div className="flex justify-between items-center border-b-2 bg-[#4b7782] text-white rounded-t-md">
-                <div className="flex gap-2 items-center p-2">
+                <div className="flex gap-2 items-center p-2 relative">
                   <Avatar
                     src={selectedContact?.avatarUrl}
                     sx={{ width: 30, height: 30 }}
                   />
+                  <div className="w-3 h-3 border-white border-2 rounded-lg bg-green-700 absolute top-[28px] left-[28px]"></div>
                   <p>{selectedContact?.fullName}</p>
                 </div>
                 <div className="m-2">
@@ -210,23 +225,40 @@ const Contacts = () => {
                 selectedContact={selectedContact}
                 messages={messages}
                 fetchMessages={fetchMessages}
+                loadingMessage={loadingMessage}
               />
               <div className="flex items-center p-2 gap-3">
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="username"
+                  className="shadow-sm appearance-none border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
-                  placeholder="message"
+                  placeholder="Aa"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    const keycode = e.keyCode ? e.keyCode : e.which
+                    if (keycode === 13) {
+                      sendMessage(message)
+                    }
+                  }}
                 />
-                <IconButton>
-                  <SendIcon fontSize="small" onClick={sendMessage} />
-                </IconButton>
+
+                {message.length > 0 ? (
+                  <IconButton>
+                    <SendIcon
+                      fontSize="small"
+                      onClick={() => sendMessage(message)}
+                      sx={{ color: '#4b7782' }}
+                    />
+                  </IconButton>
+                ) : (
+                  <>
+                    <IconButton onClick={handleSendIcon}>💕</IconButton>
+                  </>
+                )}
               </div>
             </div>
           </div>
-          <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+          <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
             <Alert
               onClose={handleClose}
               severity="info"

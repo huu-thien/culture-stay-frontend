@@ -3,6 +3,7 @@ import { Lexend } from 'next/font/google'
 
 import 'photoswipe/dist/photoswipe.css'
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 import { Flip, ToastContainer } from 'react-toastify'
 import Head from 'next/head'
@@ -25,7 +26,9 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </Head>
-      <body className={`${lexend.className} bg-[#f0f2f5]`}>
+      <body
+        className={`${lexend.className} bg-[#f0f2f5] text-sm custom-scrollbar`}
+      >
         {children}
         <ToastContainer
           style={{ fontFamily: 'Lexend', fontSize: '13px', width: `255px` }}

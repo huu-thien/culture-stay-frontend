@@ -107,7 +107,7 @@ const PropertyItem = ({
         </div>
         <span className="text-sm line-clamp-2">{detailProperty}</span>
       </div>
-      <Box sx={{ maxWidth: 500, flexGrow: 1 }}>
+      <Box sx={{ maxWidth: 500, minWidth: 350, flexGrow: 1 }}>
         <AutoPlaySwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={activeStep}

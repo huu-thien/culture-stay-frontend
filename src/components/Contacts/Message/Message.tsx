@@ -3,6 +3,7 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import MessageLeft from '@/src/components/Contacts/Message/MessageLeft'
 import MessageRight from '@/src/components/Contacts/Message/MessageRight'
 import { IMessage } from '@/src/components/Contacts/Contacts.type'
+import { CircularProgress } from '@mui/material'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,12 +39,14 @@ interface MessageProps {
   messages: IMessage[]
   selectedContact?: any
   fetchMessages: (userId: number) => Promise<void>
+  loadingMessage: boolean
 }
 
 const Message: React.FC<MessageProps> = ({
   selectedContact,
   messages,
   fetchMessages,
+  loadingMessage,
 }) => {
   const user = JSON.parse(localStorage.getItem('user_login'))
   const classes = useStyles()
@@ -63,9 +66,13 @@ const Message: React.FC<MessageProps> = ({
       <div className={classes.paper}>
         <div
           id="style-1"
-          className={classes.messagesBody}
+          className={`${classes.messagesBody} custom-scrollbar`}
           ref={scrollableDivRef}
         >
+          {/* {loadingMessage ? (
+            <div className='flex items-center justify-center py-4'><CircularProgress/></div>
+          ) : (
+            <> */}
           {messages.map((message) => {
             const selectedContact = 103
             if (selectedContact && message.receiverId == user?.id) {
@@ -81,6 +88,8 @@ const Message: React.FC<MessageProps> = ({
             }
             return null
           })}
+          {/* </>
+          )} */}
         </div>
       </div>
     </div>

@@ -54,16 +54,12 @@ const EditProfile = () => {
 
   const handleAvatarChange = async (event: any) => {
     const selectedFile = event.target.files[0]
-    console.log('selectedFile', selectedFile)
 
     try {
       const formData = new FormData()
       formData.append('file', selectedFile)
-      console.log('formData', formData)
 
       const { data } = await postUploadAttachment(formData)
-      console.log('data', data)
-
       const infoUpdate: IMyAccountUpdate = {
         fullName: myInfo?.fullName,
         phoneNumber: myInfo?.phoneNumber,
@@ -86,7 +82,9 @@ const EditProfile = () => {
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between">
-        <h2 className="text-gray-600 text-xl font-semibold">Edit Profile</h2>
+        <h2 className="text-[#4b7782] text-xl font-semibold">
+          Chỉnh sửa trang cá nhân
+        </h2>
         <div>
           {isEdit ? (
             <div className="flex gap-4">
@@ -105,7 +103,7 @@ const EditProfile = () => {
                   handleUpdateProfile(infoUpdate)
                 }}
               >
-                Save
+                Lưu
               </Button>
               <Button
                 variant="outlined"
@@ -114,18 +112,18 @@ const EditProfile = () => {
                   getMyInfoByIdAsync()
                 }}
               >
-                Cancel
+                Hủy
               </Button>
             </div>
           ) : (
             <Button variant="outlined" onClick={() => setIsEdit(true)}>
-              Edit
+              Chỉnh sửa
             </Button>
           )}
         </div>
       </div>
       <div>
-        <div className="flex items-center justify-between gap-12 w-full bg-slate-100 p-6 my-4 rounded-xl">
+        <div className="flex items-center justify-between gap-12 w-full bg-white p-6 my-4 rounded-xl">
           <div className="flex items-center gap-4">
             <Avatar
               alt={myInfo?.fullName}
@@ -156,14 +154,14 @@ const EditProfile = () => {
             style={{ display: 'none' }}
           />
           <Button variant="contained" onClick={handleUploadAvatar}>
-            Change photo
+            Đổi ảnh
           </Button>
         </div>
         <div className="py-4">
-          <p className="font-medium text-sm pb-2 text-gray-600">Introduce</p>
+          <p className="font-medium text-sm pb-2 text-gray-600">Giới thiệu</p>
           <textarea
             rows={4}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none
+            className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-blue-500 outline-none
             disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed"
             placeholder="Introduce yourself"
             value={myInfo?.introduction}
@@ -173,18 +171,19 @@ const EditProfile = () => {
             disabled={!isEdit}
           ></textarea>
         </div>
-        <div className="flex gap-6">
+        <div className="flex gap-6 ">
           <div className="mb-2 w-1/2">
             <label
               htmlFor="fullName"
               className="font-medium text-sm pb-2 text-gray-600"
             >
-              Your full name
+              Họ tên
             </label>
             <TextField
               sx={{
                 fontFamily: 'Lexend',
                 marginTop: '10px',
+                bgcolor: !isEdit ? '' : 'white',
               }}
               fullWidth
               id="fullName"
@@ -201,13 +200,14 @@ const EditProfile = () => {
               htmlFor="phoneNumber"
               className="font-medium text-sm pb-2 text-gray-600"
             >
-              Your phone number
+              Số điện thoại
             </label>
             <TextField
               type="number"
               sx={{
                 fontFamily: 'Lexend',
                 marginTop: '10px',
+                bgcolor: !isEdit ? '' : 'white',
               }}
               fullWidth
               id="phoneNumber"
@@ -226,7 +226,7 @@ const EditProfile = () => {
               htmlFor="fullName"
               className="font-medium text-sm pb-2 text-gray-600"
             >
-              Your city
+              Thành phố
             </label>
             <FormControl fullWidth sx={{ marginTop: 1.5 }}>
               <Select
@@ -241,6 +241,7 @@ const EditProfile = () => {
                 }
                 MenuProps={MenuProps}
                 disabled={!isEdit}
+                sx={{ bgcolor: !isEdit ? '' : 'white' }}
               >
                 {provinces.map((city, index) => (
                   <MenuItem key={`city-${index}`} value={city}>
@@ -255,12 +256,13 @@ const EditProfile = () => {
               htmlFor="address"
               className="font-medium text-sm pb-2 text-gray-600"
             >
-              Your address
+              Địa chỉ
             </label>
             <TextField
               sx={{
                 fontFamily: 'Lexend',
                 marginTop: '10px',
+                bgcolor: !isEdit ? '' : 'white',
               }}
               fullWidth
               id="phoneNumber"
