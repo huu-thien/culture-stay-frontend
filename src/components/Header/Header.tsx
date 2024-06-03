@@ -60,10 +60,9 @@ const Header = () => {
     } catch (error) {}
   }
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
-  // console.log('user', userLogin)
-  const role = 'Admin'
+
   return (
-    <header className="block h-[70px] sm:h-[80px] shadow-md fixed top-0 left-0 right-0 bg-white z-10">
+    <header className="block h-[70px] sm:h-[80px] shadow-md fixed top-0 left-0 right-0 bg-[#4b7782] z-10">
       <div className="py-4 mx-auto w-full max-w-7xl flex items-center justify-between sm:h-full sm:py-0">
         <Link href="/">
           <Image
@@ -74,29 +73,17 @@ const Header = () => {
             height={200}
           />
         </Link>
-        {/* <div className="relative w-full xs:w-[50%] md:max-w-[400px] ">
-            <TextField
-              id="search-input"
-              label="Search"
-              variant="outlined"
-              size="small"
-              fullWidth
-            />
-            <IconButton sx={{ position: 'absolute', right: '5px' }}>
-              <SearchIcon />
-            </IconButton>
-          </div> */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 text-white">
           <span
-            className="flex items-center gap-2 border px-2 py-1 rounded-full cursor-pointer"
+            className="flex items-center gap-2 border px-2 py-1 rounded-full cursor-pointer bg-white"
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <MenuIcon sx={{ color: '#9a9a9a' }} />
+            <MenuIcon sx={{ color: '#4b7782' }} />
             <Avatar
-              alt={'userLogin?.fullName'}
+              alt={userLogin?.fullName}
               sx={
                 true
                   ? { width: 30, height: 30, bgcolor: PRIMARY_COLOR }
@@ -107,11 +94,7 @@ const Header = () => {
                   ? `${userLogin?.avatarUrl}`
                   : ``
               }
-            >
-              {userLogin && userLogin.avatarUrl
-                ? ``
-                : userLogin?.fullName[0].toUpperCase()}
-            </Avatar>
+            />
           </span>
           {userLogin && (
             <Menu
@@ -130,7 +113,10 @@ const Header = () => {
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
               <MenuItem onClick={handleClose}>
-                <Link className="w-full text-gray-600" href="/wishlist">
+                <Link
+                  className="w-full text-gray-600"
+                  href={routes.wishlist.generatePath()}
+                >
                   Danh sách yêu thích
                 </Link>
               </MenuItem>

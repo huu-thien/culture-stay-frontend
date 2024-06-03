@@ -16,9 +16,9 @@ export const getListBookingOfproperty = (propertyId, fromDate, toDate) => {
   )
 }
 
-export const getListBookingOfGuest = (guestId) => {
+export const getListBookingOfGuest = (guestId, currentPage) => {
   return http.get<{ data: IBookingOfGuest[]; totalPages: number }>(
-    `${BOOKING_PATH}/guest/${guestId}?OrderBy=CreatedAt&IsDescending=true`
+    `${BOOKING_PATH}/guest/${guestId}?OrderBy=CreatedAt&IsDescending=true&PageSize=7&PageIndex=${currentPage}`
   )
 }
 

@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Checkbox,
@@ -18,24 +15,18 @@ import {
   TextField,
   useTheme,
 } from '@mui/material'
-import Radio from '@mui/material/Radio'
-import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
+
 import ImageListMUI from '@mui/material/ImageList'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
 import { Formik } from 'formik'
 
-// import { postCreateProperty } from '@/services/PropertyService/propertyService'
-// import { ChangFileImageToUrl } from '@/helpers/ChangFileImageToUrl/ChangFileImagePostPropertyToUrl'
-// import { useDispatch } from 'react-redux';
-// import { saveLogout } from '@/redux-toolkit/auth.slice';
 import { toast } from 'react-toastify'
 import _, { debounce } from 'lodash'
 import { useRef, useEffect } from 'react'
 import mapboxgl from 'mapbox-gl'
 import { Map } from 'mapbox-gl'
-// import { getAddressResult } from '@/services/GetMapService/getMapService'
+
 import AddressResult from './AddressResult'
 import CancelIcon from '@mui/icons-material/Cancel'
 import {
@@ -72,7 +63,7 @@ const FormCreateProperty = () => {
   })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<Map | null>(null)
-  const [zoom] = useState(15)
+  const [zoom] = useState(10)
   const [listAddressResult, setListAddressResult] = useState([])
   const [city, setCity] = useState<string>('')
   useEffect(() => {
@@ -103,7 +94,6 @@ const FormCreateProperty = () => {
 
   const handleSubmitBecomeHost = async (values) => {
     try {
-      console.log('values.listImage', values.listImage)
       const propertyImages: { url: string }[] | undefined =
         await ChangFileImageToUrl(values.listImage)
 
@@ -124,8 +114,6 @@ const FormCreateProperty = () => {
         propertyImages: propertyImages,
         propertyUtilities: propertyUtilities,
       }
-      console.log('valueCreatePeroperty ,', valueCreatePeroperty)
-
       await toast.promise(postCreateProperty(valueCreatePeroperty), {
         pending: TOAST_MESSAGE.property.create.pending,
         success: TOAST_MESSAGE.property.create.success,
@@ -133,7 +121,7 @@ const FormCreateProperty = () => {
       })
       router.push(routes.home.generatePath())
     } catch (err) {
-      console.log(err)
+      throw err
     }
   }
   const customHandleChange = debounce(
@@ -144,18 +132,14 @@ const FormCreateProperty = () => {
         const { value } = event.target
         const response = await getAddressResult(value as string)
         if (response && response.status === 200) {
-          console.log(response.data.results)
           setListAddressResult(response.data.results)
         }
       } catch (err) {
-        console.log(err)
         toast.error('Địa chỉ bạn nhập chưa chính xác !')
       }
     },
     1000
   )
-
-  console.log('listAddressResult', listAddressResult)
 
   return (
     <div className="py-8">
@@ -190,6 +174,7 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     fullWidth
                     id="roomName"
@@ -211,6 +196,7 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     fullWidth
                     id="description"
@@ -245,6 +231,7 @@ const FormCreateProperty = () => {
                       fullWidth
                       sx={{
                         fontFamily: 'Lexend',
+                        backgroundColor: '#fff',
                       }}
                     >
                       {listTypeRooms.map((typeRoom, index) => (
@@ -271,6 +258,7 @@ const FormCreateProperty = () => {
                       sx={{
                         fontFamily: 'Lexend',
                         marginTop: '10px',
+                        backgroundColor: '#fff',
                       }}
                       fullWidth
                       id="address"
@@ -335,11 +323,12 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     type="number"
                     fullWidth
                     id="quantityGuest"
-                    label="Nhập số lượng người lớn tối đa"
+                    label="Nhập số lượng khách"
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -358,6 +347,7 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     type="number"
                     fullWidth
@@ -384,6 +374,7 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     type="number"
                     fullWidth
@@ -407,6 +398,7 @@ const FormCreateProperty = () => {
                     sx={{
                       fontFamily: 'Lexend',
                       marginTop: '10px',
+                      backgroundColor: '#fff',
                     }}
                     type="number"
                     fullWidth
@@ -448,6 +440,7 @@ const FormCreateProperty = () => {
                     )}
                     sx={{
                       mt: 1,
+                      backgroundColor: '#fff',
                     }}
                     fullWidth
                     MenuProps={MenuProps}
@@ -497,7 +490,6 @@ const FormCreateProperty = () => {
                               ...prevSelectedFiles,
                               ...newFiles,
                             ])
-                            // console.log(selectedFiles);
                             setFieldValue('listImage', [
                               ...selectedFiles,
                               ...newFiles,

@@ -16,9 +16,6 @@ const HostProfile = () => {
   const { id } = useParams()
 
   const [hostInfo, setHostInfo] = useState<IHostInfo>(null)
-
-  const [postReviewUpdate, setPostReviewUpdate] = useState(0)
-
   const getHostInfoAsync = async () => {
     try {
       const { data } = await getHostInfo(+id)
@@ -41,6 +38,7 @@ const HostProfile = () => {
             numberOfReviews={hostInfo.numberOfReviews}
             rating={hostInfo.rating}
             userRole={USER_ROLE.HOST}
+            userId={hostInfo.userId}
           />
 
           <div className="grid">

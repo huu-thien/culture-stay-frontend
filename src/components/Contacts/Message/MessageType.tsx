@@ -1,5 +1,5 @@
-import { deepOrange } from '@mui/material/colors';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import { deepOrange } from '@mui/material/colors'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,15 +11,16 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'flex-end',
     },
     messageBlue: {
+      flex: '1',
       position: 'relative',
-      marginLeft: '20px',
+      marginLeft: '10px',
       marginBottom: '10px',
       padding: '10px',
       backgroundColor: '#f0f0f0',
       color: '#333',
-      maxWidth: '90%',
+      maxWidth: '180px',
       textAlign: 'left',
-      font: "400 .9em 'Open Sans', sans-serif",
+      fontSize: '.9em',
       border: '1px solid #97C6E3',
       borderRadius: '10px',
     },
@@ -30,9 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '10px',
       backgroundColor: '#4b7782',
       color: '#fff',
-      maxWidth: '60%',
+      maxWidth: '180px',
       textAlign: 'left',
-      font: "400 .9em 'Open Sans', sans-serif",
+      fontSize: '.9em',
       border: '1px solid #dfd087',
       borderRadius: '10px',
     },
@@ -64,6 +65,6 @@ const useStyles = makeStyles((theme: Theme) =>
     displayName: {
       marginLeft: '20px',
     },
-  }),
-);
-export { useStyles };
+  })
+)
+export { useStyles }

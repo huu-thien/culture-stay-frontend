@@ -42,7 +42,6 @@ const ImageListRoom: React.FC = () => {
   const handleReset = () => {
     setSelectedFiles([])
   }
-  console.log('File anh dc upload: ', selectedFiles)
   return (
     <div>
       <h2>THÊM ẢNH ĐỂ QUẢNG BÁ PHÒNG CỦA BẠN</h2>

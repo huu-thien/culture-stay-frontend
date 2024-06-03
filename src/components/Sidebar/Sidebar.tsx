@@ -17,7 +17,7 @@ const Sidebar = () => {
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
 
   return (
-    <div className="mt-0 fixed top-24 left-0 bottom-0  hover:overflow-y-auto custom-scrollbar">
+    <div className="mt-0 fixed top-24 left-0 bottom-0  hover:overflow-y-auto custom-scrollbar bg-[#f0f2f5]">
       {userLogin && (
         <ul className="px-4">
           <li className="hover:bg-gray-200 pr-6 rounded-md hover:cursor-pointer">

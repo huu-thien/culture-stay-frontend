@@ -6,7 +6,7 @@ import PropertyItem from '@/src/page-components/Home/Properties/PropertyItem/Pro
 import { routes } from '@/src/routes'
 
 import { useRouter } from 'next/navigation'
-import EmptyWishList from '@/src/page-components/WishList/EmptyWishList/EmptyWishList'
+import EmptyData from '@/src/components/EmptyData/EmptyData'
 import { DEFAULT_PAGE } from '@/src/constant'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
 import { getWishlists } from '@/src/apis/wishlist'
@@ -88,6 +88,8 @@ const WishList = () => {
                   numberOfReviews={property.numberOfReviews}
                   rating={property.rating}
                   isFavorite={property.isFavorite}
+                  hostId={property.hostId}
+                  detailProperty={property.description}
                 />
               ))}
             </div>
@@ -102,7 +104,10 @@ const WishList = () => {
             </div>
           </div>
         ) : (
-          <EmptyWishList />
+          <EmptyData
+            title="Danh sách yêu thích của bạn đang trống 💓"
+            description="Hãy thêm những địa điểm mà bạn yêu thích và trải nghiệm chúng !"
+          />
         )}
       </>
     </HomePageLayout>

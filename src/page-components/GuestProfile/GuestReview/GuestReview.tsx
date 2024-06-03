@@ -133,7 +133,7 @@ const GuestReview = ({
               </div>
             </>
           ) : (
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-gray-700 py-4">
               Người này chưa có đánh giá nào !
             </p>
           )}
