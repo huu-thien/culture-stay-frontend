@@ -46,24 +46,26 @@ import { ChangFileImageToUrl } from '@/src/helpers/ChangFileImageToUrl/ChangFile
 import { getAddressResult } from '@/src/apis/map'
 import { useRouter } from 'next/navigation'
 import { postCreateProperty } from '@/src/apis/property'
-import { routes } from '@/src/routes'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicHAzMTEiLCJhIjoiY2xvMW9hazBtMWRuczJ0cWh0eDl1andncCJ9.cINZ3UYbzs7plrM2seqPjg'
 const listTypeRooms = ['Room', 'HomeStay', 'House', 'Apartment']
 
-const FormCreateProperty = () => {
-  const router = useRouter()
+interface IProps {
+  onCreateSuccess: () => void
+}
+
+const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
 
   // Map
   const [position, setPosition] = useState<{ lat: number; lon: number }>({
-    lat: 0,
-    lon: 0,
+    lat: 21.4859,
+    lon: 105.4364,
   })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<Map | null>(null)
-  const [zoom] = useState(10)
+  const [zoom, setZoom] = useState(1)
   const [listAddressResult, setListAddressResult] = useState([])
   const [city, setCity] = useState<string>('')
   useEffect(() => {
@@ -119,7 +121,7 @@ const FormCreateProperty = () => {
         success: TOAST_MESSAGE.property.create.success,
         error: TOAST_MESSAGE.property.create.error,
       })
-      router.push(routes.home.generatePath())
+      onCreateSuccess()
     } catch (err) {
       throw err
     }
@@ -143,8 +145,8 @@ const FormCreateProperty = () => {
 
   return (
     <div className="py-8">
-      <h2 className="text-center text-2xl text-[#4b7782] pb-4">
-        NHẬP CÁC THÔNG TIN VỀ PHÒNG, ĐIỀU KHOẢN VÀ CHÍNH SÁCH
+      <h2 className="text-center text-xl font-semibold text-[#4b7782] pb-4 ">
+        ĐĂNG PHÒNG CỦA BẠN VÀ ĐÓN CHỜ NHỮNG LƯỢT KHÁCH DU LỊCH TỪ KHẮP NƠI !!!
       </h2>
       <div className="max-w-4xl mx-auto">
         <Formik
@@ -163,9 +165,6 @@ const FormCreateProperty = () => {
           }) => {
             return (
               <form onSubmit={handleSubmit} name="become-host" method="get">
-                <p className="text-xl py-3 text-[#4b7782] uppercase">
-                  Thông tin tổng quan
-                </p>
                 <div className="mb-2">
                   <label htmlFor="roomName" className="">
                     Tên phòng
@@ -298,6 +297,7 @@ const FormCreateProperty = () => {
                             setListAddressResult={setListAddressResult}
                             setFieldValue={setFieldValue}
                             setCity={setCity}
+                            setZoom={setZoom}
                           />
                         ))}
                       </div>
@@ -311,9 +311,6 @@ const FormCreateProperty = () => {
                     />
                   </div>
                 </>
-                <p className="text-xl py-3 text-[#4b7782] uppercase">
-                  Thông tin chi tiết
-                </p>
 
                 <div className="mb-2">
                   <label htmlFor="quantityGuest" className="">
@@ -466,10 +463,7 @@ const FormCreateProperty = () => {
                     </FormHelperText>
                   )}
                 </div>
-                <div className="py-8">
-                  <p className="text-xl py-3 text-[#4b7782] uppercase">
-                    THÊM ẢNH ĐỂ QUẢNG BÁ PHÒNG CỦA BẠN
-                  </p>
+                <div className="py-8 flex justify-center">
                   <div>
                     <input
                       type="file"
@@ -501,7 +495,6 @@ const FormCreateProperty = () => {
                       id="listImage"
                       style={{ display: 'none' }}
                     />
-                    {/* <button onClick={handleUpload}>Upload Images</button> */}
                     <label htmlFor="listImage">
                       <Button
                         variant="contained"
@@ -510,7 +503,7 @@ const FormCreateProperty = () => {
                         startIcon={<CloudUploadIcon />}
                         size="small"
                       >
-                        Upload Images
+                        Thêm ảnh
                       </Button>
                     </label>
                     <Button
@@ -523,7 +516,7 @@ const FormCreateProperty = () => {
                       style={{ marginLeft: '10px' }}
                       size="small"
                     >
-                      Reset
+                      Đặt lại
                     </Button>
                     {errors.listImage && touched.listImage && (
                       <FormHelperText
@@ -534,13 +527,13 @@ const FormCreateProperty = () => {
                     )}
                     <div>
                       {selectedFiles.length > 0 && (
-                        <div>
-                          <h3>Selected Images:</h3>
+                        <div className="py-6">
                           <ImageListMUI
                             sx={{ height: 700 }}
                             variant="quilted"
                             cols={2}
                             rowHeight={800}
+                            sx={{}}
                           >
                             {selectedFiles.map((file, index) => (
                               <ImageListItem key={index}>
@@ -557,7 +550,12 @@ const FormCreateProperty = () => {
                     </div>
                   </div>
                 </div>
-                <Button type="submit" variant="contained" color="primary">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
                   Bắt đầu cho thuê
                 </Button>
               </form>

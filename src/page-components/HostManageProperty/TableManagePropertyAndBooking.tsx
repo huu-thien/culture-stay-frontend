@@ -337,7 +337,10 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
   )
 }
 
-export default function HostManagePropertyAndBooking() {
+export default function HostManagePropertyAndBooking({
+  isRefresh,
+  setIsRefresh,
+}) {
   const userLogin = JSON.parse(localStorage.getItem('user_login'))
 
   const [hostId, setHostId] = useState<number>()
@@ -345,7 +348,6 @@ export default function HostManagePropertyAndBooking() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
 
-  const [isRefresh, setIsRefresh] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const getHostIdByUserIdAsync = async () => {

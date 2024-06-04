@@ -33,9 +33,9 @@ export const TOAST_MESSAGE = {
   },
   review: {
     post: {
-      pending: 'Đang tiến hành đánh giá...',
-      success: 'Đánh giá thành công',
-      error: 'Đánh giá thất bại !',
+      pending: 'Đang đăng đánh giá...',
+      success: 'Đăng đánh giá thành công',
+      error: 'Đăng đánh giá thất bại !',
     },
     delete: {
       pending: 'Đang xóa đánh giá...',
@@ -45,9 +45,9 @@ export const TOAST_MESSAGE = {
   },
   property: {
     create: {
-      pending: 'Đang tạo phòng...',
-      success: 'Tạo phòng thành công! Hãy chờ admin duyệt phòng của bạn!',
-      error: 'Tạo phòng thất bại !',
+      pending: 'Đang đăng phòng...',
+      success: 'Đăng phòng thành công!',
+      error: 'Đăng phòng thất bại !',
     },
     delete: {
       pending: 'Đang xóa phòng...',

@@ -11,7 +11,7 @@ const MainLayout = ({ children }) => {
     <SocketContainer>
       <ThemeProvider theme={theme}>
         <Header />
-        <div className="mx-auto w-full max-w-7xl mt-[80px] py-10 overflow-hidden">
+        <div className="mx-auto w-full min-h-screen max-w-7xl mt-[80px] py-10 overflow-hidden">
           {children}
         </div>
         <Footer />

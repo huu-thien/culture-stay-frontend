@@ -31,16 +31,6 @@ const HostProfile = () => {
     <MainLayout>
       {hostInfo && (
         <div className="mx-auto w-full px-2 py-4 flex gap-12">
-          <GeneralInformation
-            avatarUrl={hostInfo.avatarUrl}
-            joinedAt={hostInfo.joinedAt}
-            name={hostInfo.name}
-            numberOfReviews={hostInfo.numberOfReviews}
-            rating={hostInfo.rating}
-            userRole={USER_ROLE.HOST}
-            userId={hostInfo.userId}
-          />
-
           <div className="grid">
             <Introduce
               name={hostInfo.name}
@@ -56,6 +46,15 @@ const HostProfile = () => {
             />
             <Divider />
           </div>
+          <GeneralInformation
+            avatarUrl={hostInfo.avatarUrl}
+            joinedAt={hostInfo.joinedAt}
+            name={hostInfo.name}
+            numberOfReviews={hostInfo.numberOfReviews}
+            rating={hostInfo.rating}
+            userRole={USER_ROLE.HOST}
+            userId={hostInfo.userId}
+          />
         </div>
       )}
       <PropertyForRent hostId={+id} />

@@ -29,15 +29,6 @@ const GuestProfile = () => {
     <MainLayout>
       {guestInfo && (
         <div className="mx-auto w-full px-2 py-4 flex gap-12">
-          <GeneralInformation
-            avatarUrl={guestInfo.avatarUrl}
-            joinedAt={guestInfo.joinedAt}
-            name={guestInfo.name}
-            numberOfReviews={guestInfo.numberOfReviews}
-            rating={guestInfo.rating}
-            userRole={USER_ROLE.GUEST}
-            userId={guestInfo.userId}
-          />
           <div className="grid">
             <Introduce
               name={guestInfo.name}
@@ -52,6 +43,15 @@ const GuestProfile = () => {
               getGuestInfoAsync={getGuestInfoAsync}
             />
           </div>
+          <GeneralInformation
+            avatarUrl={guestInfo.avatarUrl}
+            joinedAt={guestInfo.joinedAt}
+            name={guestInfo.name}
+            numberOfReviews={guestInfo.numberOfReviews}
+            rating={guestInfo.rating}
+            userRole={USER_ROLE.GUEST}
+            userId={guestInfo.userId}
+          />
         </div>
       )}
     </MainLayout>

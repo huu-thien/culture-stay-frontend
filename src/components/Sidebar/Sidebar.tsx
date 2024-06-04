@@ -58,17 +58,6 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
-          {!userLogin?.isHost && (
-            <li className="hover:bg-gray-200 pr-6 rounded-md hover:cursor-pointer">
-              <Link
-                href={routes.becomeHost.generatePath()}
-                className="flex gap-4 p-4"
-              >
-                <GiteIcon sx={{ color: '#4b7782' }} />
-                <span className="text-sm">Trở thành chủ nhà</span>
-              </Link>
-            </li>
-          )}
           <li className="hover:bg-gray-200 pr-6 rounded-md hover:cursor-pointer">
             <Link href={'help-center'} className="flex gap-4 p-4">
               <HelpCenterIcon sx={{ color: '#4b7782' }} />

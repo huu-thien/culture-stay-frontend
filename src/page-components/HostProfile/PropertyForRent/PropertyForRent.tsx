@@ -66,6 +66,8 @@ const PropertyForRent = ({ hostId }: PropsType) => {
                 numberOfReviews={room.numberOfReviews}
                 rating={room.rating}
                 isFavorite={room.isFavorite}
+                hostId={room.hostId}
+                detailProperty={room.description}
               />
             ))}
           </div>

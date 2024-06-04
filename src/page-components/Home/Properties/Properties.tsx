@@ -8,6 +8,7 @@ import { IFilterPamrams } from '@/src/page-components/Home/FilterProperties/Filt
 import Image from 'next/image'
 import EmtyData from '@/src/assets/images/empty_box.png'
 import FilterProperty from '@/src/page-components/Home/FilterProperties/FilterProperty'
+import PostProperty from '@/src/page-components/Home/Post/PostProperty'
 
 interface IPropertiesProps {
   filterParams: IFilterPamrams
@@ -24,6 +25,7 @@ const Properties = ({
   isLoading,
   getListPropertyAsync,
 }: IPropertiesProps) => {
+  const userLogin = JSON.parse(localStorage.getItem('user_login'))
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     setFilterParams({ ...filterParams, PageIndex: page })
     window.scrollTo({
@@ -34,6 +36,13 @@ const Properties = ({
 
   return (
     <div className="flex flex-col items-center">
+      {userLogin && (
+        <PostProperty
+          getListPropertyAsync={getListPropertyAsync}
+          filterParams={filterParams}
+        />
+      )}
+
       <FilterProperty
         filterParams={filterParams}
         setFilterParams={setFilterParams}

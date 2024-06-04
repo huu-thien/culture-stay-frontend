@@ -61,7 +61,7 @@ const DetailProperty = () => {
   return (
     <MainLayout>
       {propertyDetail && (
-        <main className="">
+        <main className="min-h-screen">
           <Attachments propertyImages={propertyDetail?.propertyImages} />
           <Title
             title={propertyDetail?.title}

@@ -23,6 +23,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import dayjs from 'dayjs'
 import { Button, Drawer, IconButton, Tooltip } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import AddIcon from '@mui/icons-material/Add'
 
 const Types: PropertyType[] = [
   PropertyType.ROOM,

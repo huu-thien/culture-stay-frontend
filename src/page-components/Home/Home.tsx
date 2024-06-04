@@ -3,16 +3,13 @@ import { getListProperty } from '@/src/apis/property'
 import { Contacts } from '@/src/components/Contacts'
 import { Sidebar } from '@/src/components/Sidebar'
 import HomePageLayout from '@/src/components/layouts/HomePageLayout'
-import MainLayout from '@/src/components/layouts/MainLayout'
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/src/constant'
-import FilterProperty from '@/src/page-components/Home/FilterProperties/FilterProperty'
 import {
   DEFAULT_FILTER_PARAMS,
   IFilterPamrams,
 } from '@/src/page-components/Home/FilterProperties/FilterProperty.type'
 import Properties from '@/src/page-components/Home/Properties/Properties'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
-import Cookies from 'js-cookie'
+
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 

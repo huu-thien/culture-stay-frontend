@@ -78,7 +78,7 @@ const WishList = () => {
           </div>
         ) : wishlistProperty.length > 0 ? (
           <div className="w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 mt-5">
+            <div className="grid grid-cols-3 gap-6 mt-5">
               {wishlistProperty.map((property) => (
                 <PropertyItem
                   key={property.id}

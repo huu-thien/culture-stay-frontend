@@ -41,7 +41,7 @@ const GeneralInformation = ({
 }: IGeneralInformationProps) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [message, setMessage] = useState(
-    'Xin chào! Tôi muốn tìm hiểu thêm về phòng của bạn.'
+    'Xin chào! Tôi muốn nhắn tin với bạn 💕'
   )
   const accessToken = Cookies.get('jwt_token')
 
@@ -160,7 +160,7 @@ const GeneralInformation = ({
             toggleDialog(true)
           }}
         >
-          Nhắn tin cho chủ nhà
+          Nhắn tin cho người này
         </Button>
         <Dialog open={isOpenDialog} onClose={closeDialog}>
           <DialogTitle>Nhắn tin nhanh</DialogTitle>
