@@ -45,3 +45,9 @@ export const postCreateProperty = (data) => {
 export const deleteProperty = (id) => {
   return http.delete(`${PROPERTY_PATH}/${id}`)
 }
+
+// bank
+
+export const getAllBanks = () => {
+  return http.get<{ data }>(`https://api.vietqr.io/v2/banks`)
+}

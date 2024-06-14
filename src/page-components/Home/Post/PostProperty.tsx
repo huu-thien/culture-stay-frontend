@@ -20,7 +20,7 @@ interface IProps {
 }
 
 const PostProperty = ({ getListPropertyAsync, filterParams }: IProps) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
+  const userLogin = JSON.parse(localStorage.getItem('user_login'))
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {
@@ -32,7 +32,10 @@ const PostProperty = ({ getListPropertyAsync, filterParams }: IProps) => {
   const onCreateSuccess = () => {
     setOpen(false)
     getListPropertyAsync(filterParams)
-    localStorage.setItem('user_login', { ...userLogin, isHost: true })
+    localStorage.setItem(
+      'user_login',
+      JSON.stringify({ ...userLogin, isHost: true })
+    )
   }
   return (
     <div className="bg-white p-5 rounded-lg">

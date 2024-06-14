@@ -12,5 +12,6 @@ export interface IBookingOfGuest {
   numberOfDays: number
   numberOfGuest: number
   note: string
+  totalPrice: number
   checkInCode: null | string
 }

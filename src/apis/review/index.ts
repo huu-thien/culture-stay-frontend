@@ -50,11 +50,26 @@ export const postCreateReviewProperty = (propertyId, data) => {
 
 // DELETE
 export const deleteReviewGuest = (reviewId: number) => {
-  return http.delete(`${REVIEWS_PATH}/guest/${reviewId}`)
+  return http.delete(`${REVIEWS_PATH}/guest/${reviewId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 }
 export const deleteReviewHost = (reviewId: number) => {
-  return http.delete(`${REVIEWS_PATH}/host/${reviewId}`)
+  return http.delete(`${REVIEWS_PATH}/host/${reviewId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 }
 export const deleteReviewProperty = (reviewId: number) => {
-  return http.delete(`${REVIEWS_PATH}/property/${reviewId}`)
+  return http.delete(`${REVIEWS_PATH}/property/${reviewId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 }
