@@ -86,4 +86,10 @@ export interface PropertyInfoPost {
   propertyUtilities?: any
   status?: 'Pending'
   rejectionReason?: string
+  paymentInfo?: {
+    bankName: string
+    accountNumber: string
+    accountHolder: string
+  }
+  pricePerNight?: number
 }

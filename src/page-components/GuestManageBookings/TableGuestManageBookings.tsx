@@ -30,6 +30,9 @@ import { toast } from 'react-toastify'
 import { createCancellationTicket } from '@/src/apis/cancellation'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 import { EmptyData } from '@/src/components/EmptyData'
+import { formatMoney } from '@/src/utils/common'
+import { createBookingPayment } from '@/src/apis/payment'
+import { useRouter } from 'next/navigation'
 
 function createData(
   id: number,
@@ -38,7 +41,8 @@ function createData(
   hostName: string,
   checkInDate: string,
   checkOutDate: string,
-  status: string
+  status: string,
+  totalPrice: number
 ) {
   return {
     id,
@@ -48,6 +52,7 @@ function createData(
     checkInDate,
     checkOutDate,
     status,
+    totalPrice,
   }
 }
 const CancellationReason = ['PersonalIssue', 'Other']
@@ -58,6 +63,8 @@ interface IRowProps {
 }
 
 const Row = ({ row, setIsRefresh }: IRowProps) => {
+  const router = useRouter()
+
   const [cancellationReason, setCancellationReason] = useState<string>(
     CancellationReason[0]
   )
@@ -87,15 +94,26 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         error: TOAST_MESSAGE.cancellation.create.error,
       })
       handleCloseModalCancel()
-      setIsRefresh(true)
+      setIsRefresh((prev) => !prev)
     } catch (error) {}
+  }
+  const handlePaymentAgain = async (bookingId: number) => {
+    try {
+      const { data: url } = await createBookingPayment({
+        bookingId,
+        bankCode: 'VNBANK',
+      })
+      window.open(url, '_self')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>{row.id}</TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" sx={{ maxWidth: 300 }}>
           <Link href={routes.detailProperty.generatePath(row.propertyId)}>
             {row.propertyName}
           </Link>
@@ -103,6 +121,9 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         <TableCell>{row.hostName}</TableCell>
         <TableCell>{formatDateYYYYMMDD(row.checkInDate)}</TableCell>
         <TableCell>{formatDateYYYYMMDD(row.checkOutDate)}</TableCell>
+        <TableCell>
+          {row.totalPrice ? `${formatMoney(row.totalPrice)} đ` : 'Miễn phí'}
+        </TableCell>
         <TableCell>
           {row.status === 'Pending' && (
             <Chip
@@ -149,26 +170,18 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         </TableCell>
         <TableCell>
           <>
-            {row.status === 'Pending' && (
+            {row.status === 'Pending' && row.totalPrice !== 0 && (
               <div className="flex gap-4">
                 <button
                   type="button"
                   className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                  onClick={() => handlePaymentAgain(row.id)}
                 >
-                  Nhắn tin cho chủ nhà
-                </button>
-                <button
-                  type="button"
-                  className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-                  onClick={() => {
-                    setOpenModalCancellation(true)
-                  }}
-                >
-                  Hủy phòng
+                  Thanh toán
                 </button>
               </div>
             )}
-            {row.status === 'Confirmed' && (
+            {(row.status === 'Confirmed' || row.status === 'CheckedIn') && (
               <>
                 <button
                   type="button"
@@ -179,6 +192,7 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
                 </button>
               </>
             )}
+
             {row.status === 'Completed' && (
               <button
                 type="button"
@@ -284,7 +298,8 @@ export default function TableGuestManageBookings() {
           booking.hostName,
           booking.checkInDate,
           booking.checkOutDate,
-          booking.status
+          booking.status,
+          booking.totalPrice
         )
       )
       setBookings(rows)
@@ -319,8 +334,9 @@ export default function TableGuestManageBookings() {
                         Ngày Check In
                       </TableCell>
                       <TableCell sx={{ color: '#fff' }}>
-                        Ngày Checkout{' '}
+                        Ngày Checkout
                       </TableCell>
+                      <TableCell sx={{ color: '#fff' }}>Số tiền</TableCell>
                       <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
                       <TableCell sx={{ color: '#fff' }}>Action</TableCell>
                     </TableRow>

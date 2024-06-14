@@ -21,6 +21,7 @@ import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 import { PRIMARY_COLOR } from '@/src/constant'
 import { IHostInfo } from '@/src/page-components/HostProfile/HostProfile.type'
 import { getHostInfo } from '@/src/apis/host'
+import { formatMoney } from '@/src/utils/common'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -33,6 +34,7 @@ interface IPropertyItemProps {
   isFavorite: boolean
   hostId: number
   detailProperty: string
+  pricePerNight: number
 }
 
 const PropertyItem = ({
@@ -44,6 +46,7 @@ const PropertyItem = ({
   isFavorite,
   hostId,
   detailProperty,
+  pricePerNight,
 }: IPropertyItemProps) => {
   const theme = useTheme()
   const [activeStep, setActiveStep] = React.useState(0)
@@ -168,6 +171,11 @@ const PropertyItem = ({
               {rating.toFixed(2)}
             </span>
           </div>
+          <p className="text-gray-600">
+            {pricePerNight
+              ? `${formatMoney(pricePerNight)} vnd/đêm `
+              : 'Miễn phí'}
+          </p>
           <div className="flex justify-between py-2">
             <div className="cursor-pointer">
               {showFavorite ? (
@@ -188,7 +196,6 @@ const PropertyItem = ({
             </div>
             <p className="text-gray-600">Review ({numberOfReviews})</p>
           </div>
-          <div className="flex items-center justify-between"></div>
         </div>
       </Box>
     </div>

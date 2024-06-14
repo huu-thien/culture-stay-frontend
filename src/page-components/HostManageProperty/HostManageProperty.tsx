@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(
 const HostManageProperty = () => {
   const [open, setOpen] = useState(false)
 
-  const [isRefresh, setIsRefresh] = useState(false)
+  const [isRefresh, setIsRefresh] = useState<boolean>(false)
 
   const handleClose = () => {
     setOpen(false)
@@ -58,7 +58,7 @@ const HostManageProperty = () => {
           aria-describedby="alert-dialog-slide-description"
         >
           <div className="p-6 custom-scrollbar overflow-y-auto overflow-x-hidden">
-            <FormCreateProperty onCreateSuccess={onCreateSuccess}/>
+            <FormCreateProperty onCreateSuccess={onCreateSuccess} />
           </div>
         </Dialog>
       </div>

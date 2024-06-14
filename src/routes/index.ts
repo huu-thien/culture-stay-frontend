@@ -1,5 +1,3 @@
-import { WishList } from '@/src/page-components/WishList'
-
 export const routes = {
   home: {
     generatePath: () => '/',
@@ -28,24 +26,22 @@ export const routes = {
   hostManageProperty: {
     generatePath: () => '/host-manage-property',
   },
-  bookingConfirm: {
-    sendData: {
-      generatePath: (
-        propertyId: number,
-        guestId: number,
-        checkInDate: Date,
-        checkOutDate: Date,
-        numberOfGuest: number
-      ) =>
-        `/booking-confirm?propertyId=${propertyId}&guestId=${guestId}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&numberOfGuest=${numberOfGuest}`,
-    },
-    generatePath: () => '/booking-confirm',
-  },
   bookingResult: {
     sendData: {
-      generatePath: (isSuccess: boolean) =>
-        `/booking-result?isSuccess=${isSuccess}`,
+      generatePath: (bookingSuccess: boolean) =>
+        `/booking-result?bookingSuccess=${bookingSuccess}`,
     },
     generatePath: () => '/booking-result',
+  },
+  admin: {
+    manageProperty: {
+      generatePath: () => '/admin/manage-property',
+    },
+    manageAccounts: {
+      generatePath: () => '/admin/manage-account',
+    },
+    manageStatistics: {
+      generatePath: () => '/admin/manage-statistics',
+    },
   },
 }

@@ -27,6 +27,7 @@ import { routes } from '@/src/routes'
 import { toast } from 'react-toastify'
 import { handleSaveLogin } from '@/src/utils/common'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
+import { APP_ROLE } from '@/src/constant'
 
 interface ILoginFormProps {
   setAuthenticateType: React.Dispatch<React.SetStateAction<AuthenticateType>>
@@ -53,7 +54,7 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
     }
     setDisableButtonLogin(true)
     try {
-      const { accessToken, refreshToken, user } = await toast.promise(
+      const { accessToken, refreshToken, user, role } = await toast.promise(
         postLogin(loginRequest),
         {
           pending: TOAST_MESSAGE.login.pending,
@@ -62,7 +63,10 @@ const Login = ({ setAuthenticateType }: ILoginFormProps) => {
         }
       )
       handleSaveLogin({ accessToken, refreshToken, user })
-      router.push(routes.home.generatePath())
+      console.log(user)
+      if (role === APP_ROLE.ADMIN)
+        router.push(routes.admin.manageStatistics.generatePath())
+      else router.push(routes.home.generatePath())
     } catch (error) {
       toast.error(TOAST_MESSAGE.login.error)
     } finally {

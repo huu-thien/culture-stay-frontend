@@ -55,9 +55,6 @@ const DetailProperty = () => {
       toast.error(title)
     }
   }
-
-  console.log('id', id)
-
   return (
     <MainLayout>
       {propertyDetail && (
@@ -72,6 +69,7 @@ const DetailProperty = () => {
             <BookingProperty
               propertyId={+propertyDetail?.id}
               maxGuestCount={propertyDetail?.maxGuestCount}
+              pricePerNight={propertyDetail?.pricePerNight}
             />
             <div className="flex flex-col gap-6 w-full lg:w-3/5">
               <IntroduceHost hostId={propertyDetail?.hostId} />

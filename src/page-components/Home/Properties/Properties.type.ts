@@ -32,6 +32,7 @@ export interface IProperty {
   propertyImages: IPropertyImage[]
   propertyUtilities: any[]
   status: PropertyStatus
+  pricePerNight: number
   rejectionReason: string | null
 }
 

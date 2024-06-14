@@ -12,6 +12,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  Switch,
   TextField,
   useTheme,
 } from '@mui/material'
@@ -45,7 +46,7 @@ import {
 import { ChangFileImageToUrl } from '@/src/helpers/ChangFileImageToUrl/ChangFileImagePostPropertyToUrl'
 import { getAddressResult } from '@/src/apis/map'
 import { useRouter } from 'next/navigation'
-import { postCreateProperty } from '@/src/apis/property'
+import { getAllBanks, postCreateProperty } from '@/src/apis/property'
 import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 
 mapboxgl.accessToken =
@@ -57,6 +58,7 @@ interface IProps {
 }
 
 const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
+  const userLogin = JSON.parse(localStorage.getItem('user_login'))
 
   // Map
   const [position, setPosition] = useState<{ lat: number; lon: number }>({
@@ -69,6 +71,7 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
   const [listAddressResult, setListAddressResult] = useState([])
   const [city, setCity] = useState<string>('')
   useEffect(() => {
+    getAllBankApi()
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLDivElement,
       style: 'mapbox://styles/pp311/clo1ucw6g00fd01r26ds09u1z',
@@ -115,7 +118,14 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
         city: city,
         propertyImages: propertyImages,
         propertyUtilities: propertyUtilities,
+        paymentInfo: {
+          bankName: values.bankName,
+          accountNumber: values.accountNumber,
+          accountHolder: values.accountHolder,
+        },
+        pricePerNight: values.pricePerNight,
       }
+
       await toast.promise(postCreateProperty(valueCreatePeroperty), {
         pending: TOAST_MESSAGE.property.create.pending,
         success: TOAST_MESSAGE.property.create.success,
@@ -142,6 +152,20 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
     },
     1000
   )
+  const [isFree, setIsFree] = useState(true)
+  // get list bank
+  const [listbank, setListBank] = useState([])
+  const getAllBankApi = async () => {
+    try {
+      const { data } = await getAllBanks()
+      setListBank(data)
+    } catch (error) {
+      throw error
+    }
+  }
+  const handleSetFree = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFree(event.target.checked)
+  }
 
   return (
     <div className="py-8">
@@ -533,7 +557,6 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
                             variant="quilted"
                             cols={2}
                             rowHeight={800}
-                            sx={{}}
                           >
                             {selectedFiles.map((file, index) => (
                               <ImageListItem key={index}>
@@ -550,6 +573,145 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
                     </div>
                   </div>
                 </div>
+                {!userLogin?.isHost && (
+                  <>
+                    <p className="text-xl py-3 text-cyan-700 uppercase">
+                      Thông tin thanh toán
+                    </p>
+                    <div className="mb-2">
+                      <label htmlFor="bankName" className="">
+                        Tên ngân hàng
+                      </label>
+                      <FormControl fullWidth sx={{ marginTop: '10px' }}>
+                        <InputLabel id="bankName">Chọn ngân hàng</InputLabel>
+                        <Select
+                          labelId="type-room"
+                          id="type-room"
+                          name="bankName"
+                          value={values.bankName}
+                          label="Chọn ngân hàng"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          MenuProps={MenuProps}
+                          error={!!touched.bankName && !!errors.bankName}
+                          fullWidth
+                          sx={{
+                            fontFamily: 'Lexend',
+                          }}
+                        >
+                          {listbank &&
+                            listbank?.map((bank, index) => (
+                              <MenuItem
+                                key={`bank-${index}`}
+                                value={bank.shortName}
+                              >
+                                <div className="flex gap-4 items-center">
+                                  <img
+                                    src={bank.logo}
+                                    alt=""
+                                    className="w-[100px] h-[40px]"
+                                  />
+                                  <span>{bank.shortName}</span>
+                                </div>
+                              </MenuItem>
+                            ))}
+                        </Select>
+                        {touched.bankName && errors.bankName && (
+                          <FormHelperText
+                            style={{ color: '#D32F2F', marginLeft: '10px' }}
+                          >
+                            {errors.bankName}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </div>
+                    <div className="mb-2">
+                      <label htmlFor="accountNumber" className="">
+                        Số thẻ
+                      </label>
+                      <TextField
+                        sx={{
+                          fontFamily: 'Lexend',
+                          marginTop: '10px',
+                        }}
+                        fullWidth
+                        id="accountNumber"
+                        label="Nhập số thẻ (16 số)"
+                        variant="outlined"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.accountNumber}
+                        error={
+                          !!touched.accountNumber && !!errors.accountNumber
+                        }
+                        helperText={
+                          touched.accountNumber &&
+                          (errors.accountNumber as string)
+                        }
+                      />
+                    </div>
+
+                    <div className="mb-2">
+                      <label htmlFor="accountHolder" className="">
+                        Tên chủ thẻ
+                      </label>
+                      <TextField
+                        sx={{
+                          fontFamily: 'Lexend',
+                          marginTop: '10px',
+                        }}
+                        fullWidth
+                        id="accountHolder"
+                        label="Nhập tên chủ thẻ"
+                        variant="outlined"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.accountHolder}
+                        error={
+                          !!touched.accountHolder && !!errors.accountHolder
+                        }
+                        helperText={
+                          touched.accountHolder &&
+                          (errors.accountHolder as string)
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+                <div className="mb-2 flex justify-between items-center">
+                  <span>Cho thuê miễn phí</span>
+                  <Switch
+                    checked={isFree}
+                    onChange={handleSetFree}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    label="Cho thuê miễn phí"
+                  />
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="pricePerNight" className="">
+                    Giá phòng 1 đêm
+                  </label>
+                  <TextField
+                    sx={{
+                      fontFamily: 'Lexend',
+                      marginTop: '10px',
+                    }}
+                    type="number"
+                    fullWidth
+                    id="pricePerNight"
+                    label="Nhập giá tiền / đêm"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    disabled={isFree}
+                    value={isFree ? '' : values.pricePerNight}
+                    error={!!touched.pricePerNight && !!errors.pricePerNight}
+                    helperText={
+                      touched.pricePerNight && (errors.pricePerNight as string)
+                    }
+                  />
+                </div>
+
                 <Button
                   type="submit"
                   variant="contained"

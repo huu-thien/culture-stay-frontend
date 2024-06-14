@@ -77,6 +77,7 @@ const Properties = ({
                 isFavorite={property.isFavorite}
                 hostId={property.hostId}
                 detailProperty={property.description}
+                pricePerNight={property.pricePerNight}
               />
             ))}
             <div className="py-8 flex items-center">

@@ -38,6 +38,8 @@ import {
   updateStatusBooking,
 } from '@/src/apis/booking'
 import Loading from '@/src/components/Loading/Loading'
+import { formatMoney } from '@/src/utils/common'
+import { postRejectdProperty } from '@/src/apis/admin'
 
 function createData(
   id: number,
@@ -47,6 +49,7 @@ function createData(
   type: string,
   maxGuets: number,
   status: string,
+  pricePerNight: number,
   bookings: any[]
 ) {
   return {
@@ -57,6 +60,7 @@ function createData(
     type,
     maxGuets,
     status,
+    pricePerNight,
     bookings,
   }
 }
@@ -71,12 +75,12 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
 
   const handleDeleteProperty = async (id: number) => {
     try {
-      await toast.promise(deleteProperty(id), {
+      await toast.promise(postRejectdProperty(id, { reason: 'Admin reject' }), {
         pending: TOAST_MESSAGE.property.delete.pending,
         success: TOAST_MESSAGE.property.delete.success,
         error: TOAST_MESSAGE.property.delete.error,
       })
-      setIsRefresh(true)
+      setIsRefresh((prev) => !prev)
     } catch (error) {}
   }
   const handlerEditProperty = (id: number) => {}
@@ -91,7 +95,7 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         success: TOAST_MESSAGE.booking.update.success,
         error: TOAST_MESSAGE.booking.update.error,
       })
-      setIsRefresh(true)
+      setIsRefresh((prev) => !prev)
     } catch (error) {}
   }
 
@@ -116,6 +120,11 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
         <TableCell>{row.city}</TableCell>
         <TableCell>{row.address}</TableCell>
         <TableCell>{row.type}</TableCell>
+        <TableCell>
+          {row.pricePerNight
+            ? `${formatMoney(row.pricePerNight)} đ`
+            : 'Miễn phí'}
+        </TableCell>
         <TableCell>{row.maxGuets}</TableCell>
         <TableCell>
           {row.status === STATUS_PROPERTY.PENDING && (
@@ -145,12 +154,15 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
             >
               <AutoFixHighIcon sx={{ color: '#1976d2', fontSize: 24 }} />
             </IconButton>
-            <IconButton
-              aria-label="delete-property"
-              onClick={() => setOpenModalDelete(true)}
-            >
-              <DeleteForeverIcon sx={{ color: '#c92327', fontSize: 24 }} />
-            </IconButton>
+            {row.bookings.length <= 0 && (
+              <IconButton
+                aria-label="delete-property"
+                onClick={() => setOpenModalDelete(true)}
+              >
+                <DeleteForeverIcon sx={{ color: '#c92327', fontSize: 24 }} />
+              </IconButton>
+            )}
+
             {/* Dialog */}
             <Dialog
               onClose={() => setOpenModalDelete(false)}
@@ -280,35 +292,49 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
                           )}
                         </TableCell>
                         <TableCell sx={{ p: 1.5 }}>
-                          {booking.status === 'Pending' && (
-                            <div className="flex gap-4">
-                              <button
-                                type="button"
-                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-                                onClick={() =>
-                                  handleChangeSatusBooking(
-                                    booking.id,
-                                    STATUS_BOOKING.Confirmed
-                                  )
-                                }
-                              >
-                                Chấp nhận
-                              </button>
-                              <button
-                                type="button"
-                                className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
-                                onClick={() =>
-                                  handleChangeSatusBooking(
-                                    booking.id,
-                                    STATUS_BOOKING.Rejected
-                                  )
-                                }
-                              >
-                                Từ chối
-                              </button>
-                            </div>
+                          {booking.status === 'Pending' &&
+                            !row.pricePerNight && (
+                              <div className="flex gap-4">
+                                <button
+                                  type="button"
+                                  className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                                  onClick={() =>
+                                    handleChangeSatusBooking(
+                                      booking.id,
+                                      STATUS_BOOKING.Confirmed
+                                    )
+                                  }
+                                >
+                                  Chấp nhận
+                                </button>
+                                <button
+                                  type="button"
+                                  className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-pink-200  font-medium rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                                  onClick={() =>
+                                    handleChangeSatusBooking(
+                                      booking.id,
+                                      STATUS_BOOKING.Rejected
+                                    )
+                                  }
+                                >
+                                  Từ chối
+                                </button>
+                              </div>
+                            )}
+                          {booking.status === 'Confirmed' && (
+                            <button
+                              type="button"
+                              className="text-white bg-gradient-to-br from-purple-600 to-cyan-400 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300  font-sm rounded-md text-xs px-3 py-1.5 text-center mr-2 mb-2"
+                              onClick={() =>
+                                handleChangeSatusBooking(
+                                  booking.id,
+                                  STATUS_BOOKING.CheckedIn
+                                )
+                              }
+                            >
+                              Check In
+                            </button>
                           )}
-
                           {booking.status === 'CheckedIn' && (
                             <button
                               type="button"
@@ -383,6 +409,7 @@ export default function HostManagePropertyAndBooking({
           property.type,
           property.maxGuestCount,
           property.status,
+          property.pricePerNight,
           property.bookings
         )
       )
@@ -422,6 +449,7 @@ export default function HostManagePropertyAndBooking({
                   <TableCell sx={{ color: '#fff' }}>Thành phố</TableCell>
                   <TableCell sx={{ color: '#fff' }}>Địa chỉ</TableCell>
                   <TableCell sx={{ color: '#fff' }}>Loại phòng</TableCell>
+                  <TableCell sx={{ color: '#fff' }}>Giá 1 đêm</TableCell>
                   <TableCell sx={{ color: '#fff' }}>Số khách</TableCell>
                   <TableCell sx={{ color: '#fff' }}>Trạng thái</TableCell>
                   <TableCell sx={{ color: '#fff' }}>Action</TableCell>
