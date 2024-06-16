@@ -437,7 +437,7 @@ export default function HostManagePropertyAndBooking({
   useEffect(() => {
     getHostIdByUserIdAsync()
     hostId && getPropertyOfHostAsync()
-  }, [hostId, isRefresh])
+  }, [hostId, isRefresh, userLogin])
 
   return (
     <>
