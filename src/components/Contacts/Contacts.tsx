@@ -20,7 +20,6 @@ import { toast } from 'react-toastify'
 import { SkeletonContact } from '@/src/components/SkeletonContact'
 
 const Contacts = () => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
   const [showChat, setShowChat] = useState(false)
   const [message, setMessage] = useState('')
   const [selectedContact, setSelectedContact] = useState<IContact | null>(null)
@@ -39,6 +38,14 @@ const Contacts = () => {
 
   const [open, setOpen] = React.useState(false)
   const [notifyMessage, setNotifyMessage] = React.useState('')
+
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -64,6 +71,8 @@ const Contacts = () => {
 
   const fetchMessages = async (userId: number) => {
     try {
+      console.log(2312312)
+
       setLoadingMessage(true)
       const { data } = await getMessagesByUserId(userId)
       setMessages(data)
@@ -145,7 +154,7 @@ const Contacts = () => {
     if (accessToken) {
       initializeConnection()
     }
-  }, [accessToken])
+  }, [accessToken, userLogin])
 
   useEffect(() => {
     selectedContactRef.current = selectedContact

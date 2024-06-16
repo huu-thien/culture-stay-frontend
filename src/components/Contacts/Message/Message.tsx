@@ -48,9 +48,16 @@ const Message: React.FC<MessageProps> = ({
   fetchMessages,
   loadingMessage,
 }) => {
-  const user = JSON.parse(localStorage.getItem('user_login'))
   const classes = useStyles()
   const scrollableDivRef = useRef<HTMLDivElement | null>(null)
+
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   useEffect(() => {
     selectedContact && fetchMessages(selectedContact.id)
@@ -75,7 +82,7 @@ const Message: React.FC<MessageProps> = ({
             <> */}
           {messages.map((message) => {
             const selectedContact = 103
-            if (selectedContact && message.receiverId == user?.id) {
+            if (selectedContact && message.receiverId == userLogin?.id) {
               return (
                 <MessageLeft
                   key={message.id}
@@ -83,7 +90,7 @@ const Message: React.FC<MessageProps> = ({
                   photoURL={message.senderAvatarUrl}
                 />
               )
-            } else if (selectedContact && message.senderId == user?.id) {
+            } else if (selectedContact && message.senderId == userLogin?.id) {
               return <MessageRight key={message.id} message={message.content} />
             }
             return null

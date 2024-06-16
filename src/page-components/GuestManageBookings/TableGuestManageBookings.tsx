@@ -267,7 +267,13 @@ const Row = ({ row, setIsRefresh }: IRowProps) => {
 }
 
 export default function TableGuestManageBookings() {
-  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const [bookings, setBookings] = useState([])
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)

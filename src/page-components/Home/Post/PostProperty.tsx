@@ -1,5 +1,5 @@
 import { Avatar, Button, Divider, Dialog, DialogActions } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
 import FormCreateProperty from '@/src/page-components/BecomeHost/FormCreateProperty/FormCreateProperty'
@@ -20,7 +20,13 @@ interface IProps {
 }
 
 const PostProperty = ({ getListPropertyAsync, filterParams }: IProps) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {

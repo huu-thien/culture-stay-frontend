@@ -3,11 +3,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar'
 import 'react-pro-sidebar/dist/css/styles.css'
-import {
-  Avatar,
-  Box,
-  IconButton,
-} from '@mui/material'
+import { Avatar, Box, IconButton } from '@mui/material'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import PieChartOutlineIcon from '@mui/icons-material/PieChartOutline'
@@ -41,11 +37,16 @@ const Item = ({ title, to, icon, selected, setSelected }: PropsType) => {
 }
 
 const AdminSidebar = () => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [selected, setSelected] = useState('Dashboard')
 
-  useEffect(() => {}, [userLogin])
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   return (
     <Box

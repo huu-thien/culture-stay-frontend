@@ -10,7 +10,7 @@ import {
   Button,
   Avatar,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
 import { formatDateYYYYMMDD } from '@/src/utils/DateBookingHandler'
@@ -48,7 +48,13 @@ const ReviewCard = ({
   getGuestInfoAsync,
   getHostInfoAsync,
 }: PropsType) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   const yellowStars = Math.round(review.rating)
   const grayStars = 5 - yellowStars

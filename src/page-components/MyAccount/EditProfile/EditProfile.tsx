@@ -22,7 +22,13 @@ import { TOAST_MESSAGE } from '@/src/toast-message/ToastMessage'
 import { postUploadAttachment } from '@/src/apis/attachments'
 
 const EditProfile = () => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const [myInfo, setMyInfo] = useState<IMyAccount>()
   const [isEdit, setIsEdit] = useState<boolean>(false)
 
@@ -35,7 +41,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     getMyInfoByIdAsync()
-  }, [])
+  }, [userLogin])
 
   const handleUpdateProfile = async (infoUpdate) => {
     try {

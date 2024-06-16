@@ -367,7 +367,13 @@ export default function HostManagePropertyAndBooking({
   isRefresh,
   setIsRefresh,
 }) {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   const [hostId, setHostId] = useState<number>()
   const [properties, setProperties] = useState([])

@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { routes } from '@/src/routes'
 
@@ -14,7 +15,13 @@ import CakeIcon from '@mui/icons-material/Cake'
 import { Avatar, Divider } from '@mui/material'
 
 const Sidebar = () => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   return (
     <div className="mt-0 fixed top-24 left-0 bottom-0  hover:overflow-y-auto custom-scrollbar bg-[#f0f2f5]">

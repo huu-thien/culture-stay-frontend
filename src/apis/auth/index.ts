@@ -9,7 +9,7 @@ import {
 const AUTHENTICATE_PATH = `${BACK_END_API_URL}/api/auth`
 
 export const postLogin = (loginRequest: LoginRequest) => {
-  return http.post<{ accessToken; refreshToken; user }>(
+  return http.post<{ accessToken; refreshToken; user; role }>(
     `${AUTHENTICATE_PATH}/login`,
     {
       method: 'POST',

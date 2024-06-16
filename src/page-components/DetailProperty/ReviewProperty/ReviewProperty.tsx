@@ -14,7 +14,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import StarIcon from '@mui/icons-material/Star'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import Pagination from '@mui/material/Pagination'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { toast } from 'react-toastify'
@@ -52,7 +52,13 @@ const ReviewProperty = ({
   totalPages,
   handleChangePage,
 }: PropsType) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)

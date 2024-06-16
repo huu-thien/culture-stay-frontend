@@ -1,5 +1,11 @@
 import PropertyItem from '@/src/page-components/Home/Properties/PropertyItem/PropertyItem'
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 import { Pagination } from '@mui/material'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
 
@@ -25,7 +31,13 @@ const Properties = ({
   isLoading,
   getListPropertyAsync,
 }: IPropertiesProps) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     setFilterParams({ ...filterParams, PageIndex: page })
     window.scrollTo({

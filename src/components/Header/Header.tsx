@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Logo from '@/assets/images/culture-stay-logo.png'
 import {
@@ -59,7 +59,13 @@ const Header = () => {
         })
     } catch (error) {}
   }
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   return (
     <header className="block h-[70px] sm:h-[80px] shadow-md fixed top-0 left-0 right-0 bg-[#4b7782] z-10">

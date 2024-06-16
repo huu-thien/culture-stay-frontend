@@ -58,7 +58,13 @@ interface IProps {
 }
 
 const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login'))
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
 
   // Map
   const [position, setPosition] = useState<{ lat: number; lon: number }>({
@@ -90,7 +96,7 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
 
   // =======================================
   const [utilities] = useState<string[]>([])
-  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([])
+  const [selectedFiles, setSelectedFiles] = useState([])
   const theme = useTheme()
   // Hàm kiểm tra xem một tệp đã tồn tại trong danh sách chưa
   const fileExists = (fileName: string): boolean => {
@@ -620,7 +626,7 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
                           <FormHelperText
                             style={{ color: '#D32F2F', marginLeft: '10px' }}
                           >
-                            {errors.bankName}
+                            {errors.bankName as string}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -684,7 +690,6 @@ const FormCreateProperty = ({ onCreateSuccess }: IProps) => {
                     checked={isFree}
                     onChange={handleSetFree}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    label="Cho thuê miễn phí"
                   />
                 </div>
                 <div className="mb-2">
