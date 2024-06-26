@@ -135,7 +135,7 @@ const AdminSidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Đơn tạo phòng"
+              title="Bài đăng chỗ ở"
               to={routes.admin.manageProperty.generatePath()}
               icon={<MeetingRoomIcon />}
               selected={selected}

@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 // import { PropertyType } from '@/@types/property';
 import { Pagination } from '@mui/material'
 import PropertyItem from '@/src/page-components/Home/Properties/PropertyItem/PropertyItem'
-import { getListPropertyOfHost } from '@/src/apis/property'
+import { getListPropertyOfHostInfoPage } from '@/src/apis/property'
 import Skeleton from '@/src/page-components/Home/Properties/Skeleton/Skeleton'
 import { IProperty } from '@/src/page-components/Home/Properties/Properties.type'
 import { DEFAULT_PAGE } from '@/src/constant'
@@ -27,7 +27,7 @@ const PropertyForRent = ({ hostId }: PropsType) => {
   const getListPropertyOfHostAsyns = async () => {
     try {
       setIsLoading(true)
-      const { data, totalPages } = await getListPropertyOfHost(
+      const { data, totalPages } = await getListPropertyOfHostInfoPage(
         hostId,
         currentPage
       )
@@ -68,6 +68,7 @@ const PropertyForRent = ({ hostId }: PropsType) => {
                 isFavorite={room.isFavorite}
                 hostId={room.hostId}
                 detailProperty={room.description}
+                pricePerNight={room.pricePerNight}
               />
             ))}
           </div>
