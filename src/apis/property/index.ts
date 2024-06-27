@@ -27,7 +27,7 @@ export const getPropertyById = (id) => {
 
 export const getListPropertyOfHost = (hostId: number, pageIndex: number) => {
   return http.get<{ data: IProperty[]; totalPages: number }>(
-    `${PROPERTY_PATH}/host/${hostId}?PageIndex=${pageIndex}&PageSize=6`
+    `${PROPERTY_PATH}/host/${hostId}?PageIndex=${pageIndex}&PageSize=8`
   )
 }
 
