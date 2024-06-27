@@ -103,10 +103,12 @@ const PropertyItem = ({
     <div className="shadow-md p-2 rounded-lg mx-auto bg-white max-w-[500px]">
       <div className="pt-2 pb-4">
         <div className="flex items-center gap-2 pb-4">
-          <Avatar src={hostInfo?.avatarUrl} />
-          <p>
-            <span className="">{hostInfo?.name}</span>
-          </p>
+          <Link href={routes.hostProfile.generatePath(hostId)}>
+            <Avatar src={hostInfo?.avatarUrl} />
+          </Link>
+          <Link href={routes.hostProfile.generatePath(hostId)}>
+            <span className="font-semibold">{hostInfo?.name}</span>
+          </Link>
         </div>
         <span className="text-sm line-clamp-2">{detailProperty}</span>
       </div>
