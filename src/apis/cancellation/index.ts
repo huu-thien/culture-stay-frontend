@@ -7,6 +7,9 @@ const CANCELLATION_PATH = `${BACK_END_API_URL}/api/cancellations`
 export const createCancellationTicket = (data) => {
   return http.post(`${CANCELLATION_PATH}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }

@@ -14,6 +14,9 @@ export const getInfoUserById = async (id: number) => {
 export const putUpdateInfoUser = async (id: number, data: IMyAccountUpdate) => {
   return http.put<{ data: IMyAccount }>(`${USER_PATH}/${id}`, {
     method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }

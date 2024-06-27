@@ -8,6 +8,9 @@ const BOOKING_PATH = `${BACK_END_API_URL}/api/bookings`
 export const createBooking = (data) => {
   return http.post<{ data: IBookingInfo }>(`${BOOKING_PATH}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }

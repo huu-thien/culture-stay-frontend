@@ -32,18 +32,27 @@ export const getHostReviews = (hostId: number, page: number) => {
 export const postCreateReviewGuest = (guestId, data) => {
   return http.post(`${REVIEWS_PATH}/guest/${guestId}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }
 export const postCreateReviewHost = (hostId, data) => {
   return http.post(`${REVIEWS_PATH}/host/${hostId}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }
 export const postCreateReviewProperty = (propertyId, data) => {
   return http.post(`${REVIEWS_PATH}/property/${propertyId}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }

@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button'
 import { Divider } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CalendarProperty } from '@/src/page-components/DetailProperty/BookingProperty/CalendarProperty'
 import { QuantityContained } from '@/src/page-components/DetailProperty/QuantityContained'
@@ -21,7 +21,13 @@ const BookingProperty = ({
   maxGuestCount,
   pricePerNight,
 }: Propstype) => {
-  const userLogin = JSON.parse(localStorage.getItem('user_login') || '{}')
+  const [userLogin, setUserLogin] = useState(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserLogin = localStorage.getItem('user_login')
+      storedUserLogin && setUserLogin(JSON.parse(storedUserLogin))
+    }
+  }, [])
   const router = useRouter()
 
   const [dateStart, setDateStart] = useState<Date | null>(null)
@@ -35,15 +41,19 @@ const BookingProperty = ({
   const handleBooking = async () => {
     if (userLogin) {
       if (dateStart && dateEnd && guestCount > 0) {
+        const incrementDateByOne = (date) => {
+          const newDate = new Date(date)
+          newDate.setDate(newDate.getDate() + 1)
+          return newDate.toISOString().split('T')[0]
+        }
+
         const dataBooking = {
           propertyId,
-          checkInDate: new Date(String(dateStart)),
-          checkOutDate: new Date(String(dateEnd)),
+          checkInDate: incrementDateByOne(dateStart),
+          checkOutDate: incrementDateByOne(dateEnd),
           numberOfGuest: guestCount,
           note: '',
         }
-        console.log(dataBooking)
-
         try {
           if (pricePerNight) {
             const { data } = await createBooking(dataBooking)
@@ -57,10 +67,7 @@ const BookingProperty = ({
           } else {
             const request = {
               propertyId: propertyId,
-              checkInDate: new Date(dateStart),
-              checkOutDate: new Date(dateEnd),
-              numberOfGuest: +guestCount,
-              note: '',
+              ...dataBooking,
             }
             const resolveAfter2Sec = new Promise((resolve) =>
               setTimeout(resolve, 1500)

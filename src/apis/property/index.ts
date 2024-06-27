@@ -47,7 +47,9 @@ export const checkUserStayedInProperty = (propertyId: number) => {
 export const postCreateProperty = (data) => {
   return http.post(`${PROPERTY_PATH}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 }
