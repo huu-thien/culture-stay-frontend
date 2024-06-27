@@ -162,7 +162,7 @@ const Contacts = () => {
   }, [selectedContact, contacts])
 
   return (
-    <div className="mt-0 fixed top-24 right-0 bottom-0 custom-scrollbar bg-[#f0f2f5]">
+    <div className="mt-0 fixed top-24 right-0 bottom-0 bg-[#f0f2f5]">
       {userLogin && (
         <>
           {loadingContact ? (
@@ -180,7 +180,7 @@ const Contacts = () => {
               <SkeletonContact />
             </>
           ) : (
-            <ul className="px-4">
+            <ul className="px-4 overflow-y-auto custom-scrollbar h-screen">
               {contacts.map((contact) => (
                 <li
                   className="hover:bg-gray-200 pr-6 rounded-md hover:cursor-pointer text-sm min-w-[300px]"
